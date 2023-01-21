@@ -3,11 +3,6 @@ Tried to trim it with https://github.com/newren/git-filter-repo, but this tool r
 
 Used to do analysis, postprocessing, and visualization for [arXiv:2212.13946](https://ui.adsabs.harvard.edu/abs/2022arXiv221213946G/abstract)
 
-<p align="center">
-<video width=" 615" height="625.13"  loop="loop" muted="muted" plays-inline="true" autoplay>
-  <source type="video/mp4" src="https://terpconnect.umd.edu/~fgarcia4/cosmology/halo_D/lowsfe_butterfly.mp4">
-</video>
-</p>
 
 
 >Astrophysical simulation analyses for RAMSES and yt.
