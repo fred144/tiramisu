@@ -99,7 +99,7 @@ if __name__ == "__main__":
         print(sys.argv[0], "usage:")
         print("{} data_directory_to_scrape".format(sys.argv[0]))
         exit()
-    container = "../container_ram-py/"
+    container = "../_container_ram-py/"
     newpath = os.path.join(container)
     if not os.path.exists(newpath):
         print("====================================================")
@@ -120,7 +120,7 @@ if __name__ == "__main__":
                 # get simulation run names; e.g., fs07_refine, fs035_ms10
                 # last entry of directory abs path is the directory/ simulation run itself
                 sim_name = os.path.basename(os.path.dirname(full_path_to_files))
-                save_folder_name = "./" + sim_name
+                save_folder_name = os.path.join(container, sim_name)
 
                 # folder for saving in the script directory
                 if not os.path.exists(save_folder_name):
@@ -143,6 +143,6 @@ if __name__ == "__main__":
         # get the run name
         run_name = os.path.split(os.path.split(latest_snapshots_abs_dir)[0])[1]
         # save path based on the simulation run name
-        save_path = container + run_name
+        save_path = os.path.join(container, run_name)
         print("# Saving latest results for", run_name)
         snap_shot_info(latest_snapshots_abs_dir, save_path)
