@@ -111,6 +111,7 @@ if __name__ == "__main__":
     run_directories = sys.argv[1]
     print(sys.argv[1])
     # get latest sim results
+    run_directories = filter(os.path.isdir, os.listdir(run_directories))
     sim_runs = [x for x in os.listdir(run_directories) if "old" not in x]
     print("> found the following runs")
     print(sim_runs)
