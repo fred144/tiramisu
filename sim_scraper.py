@@ -110,6 +110,10 @@ if __name__ == "__main__":
     # lustre = "/afs/shell.umd.edu/project/ricotti-prj/user/fgarcia4/dwarf/data/cluster_evolution/"
     run_directories = sys.argv[1]
     print(sys.argv[1])
+    # get latest sim results
+    sim_runs = [x for x in os.listdir(run_directories) if "old" not in x]
+    print("> found the following runs")
+    print(sim_runs)
     for path, subdirs, files in os.walk(run_directories):
         # path is lustre simulation run names, and output directories
         for file_name in files:
@@ -132,9 +136,6 @@ if __name__ == "__main__":
                 shutil.copy(src=full_path_to_files, dst=save_folder_name)
 
                 print("# Copied: ", full_path_to_files)
-
-    # get latest sim results
-    sim_runs = [x for x in os.listdir(run_directories) if "old" not in x]
 
     for simrun in sim_runs:
         sim_folder = os.path.join(run_directories, simrun)
