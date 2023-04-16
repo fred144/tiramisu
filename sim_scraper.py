@@ -99,7 +99,7 @@ if __name__ == "__main__":
         print(sys.argv[0], "usage:")
         print("{} data_directory_to_scrape".format(sys.argv[0]))
         exit()
-    container = "../_container_ram-py/"
+    container = "../container_ram-py/"
     newpath = os.path.join(container)
     if not os.path.exists(newpath):
         print("====================================================")
@@ -109,6 +109,7 @@ if __name__ == "__main__":
 
     # lustre = "/afs/shell.umd.edu/project/ricotti-prj/user/fgarcia4/dwarf/data/cluster_evolution/"
     run_directories = sys.argv[1]
+    print(sys.argv[1])
     for path, subdirs, files in os.walk(run_directories):
         # path is lustre simulation run names, and output directories
         for file_name in files:
