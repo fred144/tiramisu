@@ -111,8 +111,8 @@ if __name__ == "__main__":
     run_directories = sys.argv[1]
     print(sys.argv[1])
     # get latest sim results
-    run_directories = next(os.walk(run_directories))[1]
-    sim_runs = [x for x in run_directories if "old" or "." not in x]
+    cleaned_run_directories = next(os.walk(run_directories))[1]
+    sim_runs = [x for x in os.listdir(cleaned_run_directories) if "old" or "." not in x]
     print("> found the following runs")
     print(sim_runs)
     for path, subdirs, files in os.walk(run_directories):
