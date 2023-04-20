@@ -33,12 +33,12 @@ warnings.simplefilter(action="ignore", category=RuntimeWarning)
 processor_number = 0
 
 cell_fields, epf = ram_fields()
-datadir = os.path.relpath("../../cosm_test_data/refine")
-datadir = os.path.relpath("../../sim_data/cluster_evolution")
+#datadir = os.path.relpath("../../cosm_test_data/refine")
+datadir = os.path.relpath("../../sim_data/cluster_evolution/fs035_ms10")
 
 sim_run = datadir.split("/")[-1]
 
-snaps, snap_strings = filter_snapshots(datadir, 150, 1450, sampling=50, str_snaps=True)
+snaps, snap_strings = filter_snapshots(datadir, 150, 1600, sampling=50, str_snaps=True)
 
 simulation_run = datadir
 
@@ -100,7 +100,11 @@ for i, sn in enumerate(snaps):
     z.append(redshft)
     m_vir.append(dm_halo_m)
     r_vir.append(vir_rad)
-    tot_m_star.append(np.sum(np.array(ad["star", "particle_mass"].to("Msun"))))
+    mstar = np.sum(np.array(ad["star", "particle_mass"].to("Msun")))
+    tot_m_star.append(mstar)
+
+    efficiency = mstar / dm_halo_m
+    
     # center of the major halo
     halo_x = ds.arr(cata_yt["all", "particle_position_x"]).to("pc")[haloidx]
     halo_y = ds.arr(cata_yt["all", "particle_position_y"]).to("pc")[haloidx]
@@ -110,31 +114,37 @@ for i, sn in enumerate(snaps):
         [halo_x, halo_y, halo_z],
         ds.arr(cata_yt["all", "virial_radius"]).to("pc")[haloidx],
     )
-    plot = yt.PhasePlot(
-        galaxy,
-        ("gas", "density"),
-        ("gas", "temperature"),
-        ("gas", "mass"),
-        weight_field=None,
-    )
+    # plot = yt.PhasePlot(
+    #     galaxy,
+    #     ("gas", "density"),
+    #     ("gas", "temperature"),
+    #     ("gas", "mass"),
+    #     weight_field=None,
+    # )
 
     # Set the units of mass to be in solar masses (not the default in cgs)
-    plot.set_unit(("gas", "mass"), "Msun")
-    plot.save()
+    #plot.set_unit(("gas", "mass"), "Msun")
+    #plot.save()
     #%%
+    lims = {
+    ("gas", "density"): (1e-31, 1e-18),
+    ("gas", "temperature"): (10, 1e9),
+    ("gas", "mass"): ((1e-6,"msun"), (1e6, "msun")),
+    }
     profile2d = galaxy.profile(
         # the x bin field, the y bin field
         [("gas", "density"), ("gas", "temperature")],
         [("gas", "mass")],  # the profile field
         weight_field=None,  # sums each quantity in each bin
-        n_bins=(132, 132),
+        n_bins=(120, 120),
+        extrema=lims
     )
 
     #%%
 
     gas_mass = np.array(profile2d["gas", "mass"].to("msun")).T
     temp = np.array(profile2d.y)
-    dens = np.array(profile2d.x) / 1.6e-24
+    dens = np.array(profile2d.x) #/ 1.6e-24
     fig, ax = plt.subplots(1, 1, figsize=(5, 5), dpi=400)
     nt_image = ax.imshow(
         np.log10(gas_mass),
@@ -145,10 +155,10 @@ for i, sn in enumerate(snaps):
         # ),
         origin="lower",
         extent=[
-            np.log10(dens.min()),
-            np.log10(dens.max()),
-            np.log10(temp.min()),
-            np.log10(temp.max()),
+            np.log10(lims[("gas", "density")][0]),
+            np.log10(lims[("gas", "density")][1]),
+            np.log10(lims[("gas", "temperature")][0]),
+            np.log10(lims[("gas", "temperature")][1]),
         ],
         cmap="inferno",
         # vmin=24,
@@ -156,14 +166,14 @@ for i, sn in enumerate(snaps):
     )
 
     ax.set(
-        ylabel=r"$\mathrm{Temperature\:(T)}$",
-        xlabel=r"$\mathrm{nH\:(\:cm^{-3})}$",
+        ylabel=r"$\mathrm{\log_{10}\:Temperature\:(T)}$",
+        xlabel=r"$\mathrm{\log_{10}\:Gas Density\:(g\:cm^{-3})}$",
     )
     ax.text(
         0.05,
         0.05,
-        (r"$\mathrm{{t = {:.2f} \: Myr}}$" "\n" r"$\mathrm{{z = {:.2f} }}$").format(
-            current_time, redshft
+        (r"$\mathrm{{t = {:.2f} \: Myr}}$" "\n" r"$\mathrm{{z = {:.2f} }}$" "\n" r"$\mathrm{{SFE_{{halo}} = {:.2e}}}$").format(
+            current_time, redshft, efficiency
         ),
         ha="left",
         va="bottom",
@@ -181,5 +191,5 @@ for i, sn in enumerate(snaps):
         os.path.join(container, f"{snap_strings[i]}.png"),
         dpi=400,
         bbox_inches="tight",
-        pad_inches=0.00,
+        #pad_inches=0.00,
     )
