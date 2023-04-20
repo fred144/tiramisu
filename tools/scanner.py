@@ -3,7 +3,12 @@ import numpy as np
 
 
 def filter_snapshots(
-    folder_path, start_snap: int, end_snap: int, sampling=1, str_snaps=False
+    folder_path,
+    start_snap: int,
+    end_snap: int,
+    sampling=1,
+    str_snaps=False,
+    snapshots=True,
 ):
     r"""Given a directory of outputs, return a list of relative file
     paths given a range of snapshot values.
@@ -13,6 +18,8 @@ def filter_snapshots(
     """
 
     files = sorted(os.listdir(folder_path))
+    if snapshots == True:
+        files = [x for x in files if "output_" in x]
     sn_nums = np.array([int(i.split("_")[-1]) for i in files])
     print("> filter_snapshots")
     print("> found", len(files), "snapshots")
