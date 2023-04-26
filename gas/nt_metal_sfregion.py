@@ -33,8 +33,8 @@ warnings.simplefilter(action="ignore", category=RuntimeWarning)
 processor_number = 0
 
 cell_fields, epf = ram_fields()
-datadir = os.path.relpath("../../cosm_test_data/refine")
-# datadir = os.path.relpath("../../sim_data/cluster_evolution")
+# datadir = os.path.relpath("../../cosm_test_data/refine")
+datadir = os.path.relpath("../../sim_data/cluster_evolution/fs07_refine")
 
 
 snaps, snap_strings = filter_snapshots(datadir, 500, 500, sampling=1, str_snaps=True)
@@ -44,9 +44,11 @@ plot_name = "nT_metal_phase_sfregion"
 lims = {
     ("gas", "density"): ((5e-31, "g/cm**3"), (1e-18, "g/cm**3")),
     ("gas", "temperature"): ((1, "K"), (1e9, "K")),
-    ("gas", "mass"): ((1e-6, "msun"), (1e10, "msun")),
+    ("ramses", "Metallicity"): (2e-5, 0.5),
 }
 m_h = 1.6735e-24  # grams
+zsun = 0.0134
+zsun = 0.02
 sim_run = datadir.split("/")[-1]
 dm_container = os.path.join("../../container_ram-py", "dm_hop", sim_run)
 if not os.path.exists(dm_container):
@@ -121,7 +123,7 @@ for i, sn in enumerate(snaps):
             np.mean(ad["star", "particle_position_y"]).to("pc"),
             np.mean(ad["star", "particle_position_z"]).to("pc"),
         ],
-        (500, "pc"),
+        (250, "pc"),
     )
 
     # useful info
@@ -145,21 +147,21 @@ for i, sn in enumerate(snaps):
 
     profile2d = galaxy.profile(
         # the x bin field, the y bin field
-        [("gas", "density"), ("gas", "temperature")],
-        [("gas", "mass")],  # the profile field
-        weight_field=None,  # sums each quantity in each bin
+        bin_fields=[("gas", "density"), ("gas", "temperature")],
+        fields=[("ramses", "Metallicity")],  # the profile field
+        weight_field=("gas", "mass"),
         n_bins=(125, 125),
         extrema=lims,
     )
 
     #%%
 
-    gas_mass = np.array(profile2d["gas", "mass"].to("msun")).T
+    gas_metallicity = np.array(profile2d["ramses", "Metallicity"] / zsun).T
     temp = np.array(profile2d.y)
     dens = np.array(profile2d.x)  # / 1.6e-24
     fig, ax = plt.subplots(1, 1, figsize=(6, 7), dpi=300)
     nt_image = ax.imshow(
-        np.log10(gas_mass),
+        np.log10(gas_metallicity),
         # np.log10(
         #     gas_mass,
         #     where=(gas_mass != 0),
@@ -172,9 +174,9 @@ for i, sn in enumerate(snaps):
             np.log10(lims[("gas", "temperature")][0][0]),
             np.log10(lims[("gas", "temperature")][1][0]),
         ],
-        cmap="magma",
-        vmin=np.log10(lims[("gas", "mass")][0][0]),
-        vmax=np.log10(1e7),
+        cmap="viridis_r",
+        vmin=np.log10(lims[("ramses", "Metallicity")][0] / zsun),
+        vmax=np.log10(lims[("ramses", "Metallicity")][1] / zsun),
         aspect=1.3,
     )
     temp_arr = np.geomspace(
@@ -206,7 +208,7 @@ for i, sn in enumerate(snaps):
             "\n"
             r"$\mathrm{{SFE_{{halo}} = {:.2e}}}$"
             "\n"
-            r"${{\rm R_{{ SF \, region}}}} = 500 {{\rm pc}}$"
+            r"${{\rm R_{{ SF \, region}}}} = 250 {{\rm pc}}$"
             "\n"
             r"${{\rm run-}}\mathrm{{{}}}$"
         ).format(current_time, redshft, efficiency, sim_run),
@@ -227,7 +229,7 @@ for i, sn in enumerate(snaps):
     cbar_ax = ax.inset_axes([0, 1.02, 1, 0.05])
     bar = fig.colorbar(nt_image, cax=cbar_ax, pad=0, orientation="horizontal")
     # bar .ax.xaxis.set_tick_params(pad=2)
-    bar.set_label(r"$\mathrm{\log_{10}\:Total\:Mass\:(M_{\odot}})$")
+    bar.set_label(r"$\mathrm{\log_{10}\:Mass\:Weighted\:Metallicity\:(Z_{\odot}})$")
     bar.ax.xaxis.set_label_position("top")
     bar.ax.xaxis.set_ticks_position("top")
 
