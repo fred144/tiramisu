@@ -33,11 +33,11 @@ warnings.simplefilter(action="ignore", category=RuntimeWarning)
 processor_number = 0
 
 cell_fields, epf = ram_fields()
-datadir = os.path.relpath("../../cosm_test_data/refine")
-# datadir = os.path.relpath("../../sim_data/cluster_evolution/fs07_refine")
+# datadir = os.path.relpath("../../cosm_test_data/refine")
+datadir = os.path.relpath("../../sim_data/cluster_evolution/fs035_ms10")
 
 
-snaps, snap_strings = filter_snapshots(datadir, 500, 500, sampling=1, str_snaps=True)
+snaps, snap_strings = filter_snapshots(datadir, 150, 1450, sampling=25, str_snaps=True)
 # simulation_run = datadir
 plot_name = "nT_metal_massweight_sfregion"
 
