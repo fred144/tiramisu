@@ -33,34 +33,36 @@ warnings.simplefilter(action="ignore", category=RuntimeWarning)
 processor_number = 0
 
 cell_fields, epf = ram_fields()
-# datadir = os.path.relpath("../../cosm_test_data/refine")
-datadir = os.path.relpath("../../sim_data/cluster_evolution/fs07_refine")
+datadir = os.path.relpath("../../cosm_test_data/refine")
+# datadir = os.path.relpath("../../sim_data/cluster_evolution/fs07_refine")
 
 
-snaps, snap_strings = filter_snapshots(datadir, 150, 1450, sampling=1, str_snaps=True)
+snaps, snap_strings = filter_snapshots(datadir, 500, 500, sampling=1, str_snaps=True)
 # simulation_run = datadir
-plot_name = "nT_metal_phase_sfregion"
+plot_name = "nT_metal_massweight_sfregion"
+
+sim_run = datadir.replace("\\", "/").split("/")[-1]
+dm_container = os.path.join("../../container_ram-py", "dm_hop", sim_run)
+if not os.path.exists(dm_container):
+    print("Creating ram-py container", dm_container)
+    os.makedirs(dm_container)
+
+gas_container = os.path.join("../../container_ram-py/plots", plot_name, sim_run)
+if not os.path.exists(gas_container):
+    print("Creating ram-py container", gas_container)
+    os.makedirs(gas_container)
+
+#%%
 
 lims = {
     ("gas", "density"): ((5e-31, "g/cm**3"), (1e-18, "g/cm**3")),
     ("gas", "temperature"): ((1, "K"), (1e9, "K")),
     ("ramses", "Metallicity"): (2e-5, 0.5),
 }
+
 m_h = 1.6735e-24  # grams
 zsun = 0.0134
 zsun = 0.02
-sim_run = datadir.split("/")[-1]
-dm_container = os.path.join("../../container_ram-py", "dm_hop", sim_run)
-if not os.path.exists(dm_container):
-    print("Creating ram-py container", dm_container)
-    os.makedirs(dm_container)
-
-gas_container = os.path.join("../../container_ram-py", plot_name, sim_run)
-if not os.path.exists(gas_container):
-    print("Creating ram-py container", gas_container)
-    os.makedirs(gas_container)
-
-#%%
 
 m_vir = []
 r_vir = []
@@ -210,7 +212,7 @@ for i, sn in enumerate(snaps):
             "\n"
             r"${{\rm R_{{ SF \, region}}}} = 250 {{\rm pc}}$"
             "\n"
-            r"${{\rm run-}}\mathrm{{{}}}$"
+            r"${{\rm run-}} {}$"
         ).format(current_time, redshft, efficiency, sim_run),
         ha="left",
         va="top",
