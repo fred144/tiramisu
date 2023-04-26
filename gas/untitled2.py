@@ -28,20 +28,20 @@ plt.rcParams.update(
     }
 )
 
-# mylog.setLevel(40)
+mylog.setLevel(40)
 warnings.simplefilter(action="ignore", category=RuntimeWarning)
 processor_number = 0
 
 cell_fields, epf = ram_fields()
-#datadir = os.path.relpath("../../cosm_test_data/refine")
-datadir = os.path.relpath("../../sim_data/cluster_evolution/fs035_ms10")
+datadir = os.path.relpath("../../cosm_test_data/refine")
+# datadir = os.path.relpath("../../sim_data/cluster_evolution")
+
+
+snaps, snap_strings = filter_snapshots(datadir, 500, 500, sampling=1, str_snaps=True)
+simulation_run = datadir
+center_at = "star"
 
 sim_run = datadir.split("/")[-1]
-
-snaps, snap_strings = filter_snapshots(datadir, 150, 1600, sampling=50, str_snaps=True)
-
-simulation_run = datadir
-
 dm_container = os.path.join("../../container_ram-py", "dm_hop", sim_run)
 if not os.path.exists(dm_container):
     print("====================================================")
@@ -49,12 +49,12 @@ if not os.path.exists(dm_container):
     print("====================================================")
     os.makedirs(dm_container)
 
-container = os.path.join("../../container_ram-py", "gas", sim_run)
-if not os.path.exists(container):
+gas_container = os.path.join("../../container_ram-py", "gas", sim_run)
+if not os.path.exists(gas_container):
     print("====================================================")
-    print("Creating ram-py container", container)
+    print("Creating ram-py container", gas_container)
     print("====================================================")
-    os.makedirs(container)
+    os.makedirs(gas_container)
 
 #%%
 
@@ -73,78 +73,74 @@ for i, sn in enumerate(snaps):
     ds = yt.load(infofile, fields=cell_fields, extra_particle_fields=epf)
     ad = ds.all_data()
 
-    hc = HaloCatalog(
-        data_ds=ds,
-        finder_method="hop",
-        finder_kwargs={"ptype": "DM", "dm_only": False},
-        output_dir=dm_container,
-    )
-    hc.create()
     hop_catalogue = "{}/info_{}/info_{}.{}.h5".format(
         dm_container,
         snap_strings[i],
         snap_strings[i],
         processor_number,
     )
-    #%%
+    if os.path.isfile(hop_catalogue) is True:
+        # print("file already exists")
+        pass
+    else:
+        hc = HaloCatalog(
+            data_ds=ds,
+            finder_method="hop",
+            finder_kwargs={"ptype": "DM", "dm_only": False},
+            output_dir=dm_container,
+        )
+        hc.create()
+
     # need to read in using yt for virial radius for some reason unknown units in catalogue
     cata_yt = yt.load(hop_catalogue)
     cata_yt = cata_yt.all_data()
     dm_halo_m = np.max(np.array(ds.arr(cata_yt["all", "particle_mass"]).to("Msun")))
     haloidx = np.argmax(np.array(ds.arr(cata_yt["all", "particle_mass"]).to("Msun")))
     vir_rad = np.array(ds.arr(cata_yt["all", "virial_radius"]).to("pc"))[haloidx]
-    # useful info
-    current_time = float(ds.current_time.in_units("Myr"))
-    redshft = ds.current_redshift
-    t.append(current_time)
-    z.append(redshft)
     m_vir.append(dm_halo_m)
     r_vir.append(vir_rad)
-    mstar = np.sum(np.array(ad["star", "particle_mass"].to("Msun")))
-    tot_m_star.append(mstar)
-
-    efficiency = mstar / dm_halo_m
-    
     # center of the major halo
     halo_x = ds.arr(cata_yt["all", "particle_position_x"]).to("pc")[haloidx]
     halo_y = ds.arr(cata_yt["all", "particle_position_y"]).to("pc")[haloidx]
     halo_z = ds.arr(cata_yt["all", "particle_position_z"]).to("pc")[haloidx]
 
+    # useful info
+    current_time = float(ds.current_time.in_units("Myr"))
+    redshft = ds.current_redshift
+    t.append(current_time)
+    z.append(redshft)
+
+    tot_m_star.append(np.sum(np.array(ad["star", "particle_mass"].to("Msun"))))
+
     galaxy = ds.sphere(
         [halo_x, halo_y, halo_z],
         ds.arr(cata_yt["all", "virial_radius"]).to("pc")[haloidx],
     )
-    # plot = yt.PhasePlot(
-    #     galaxy,
-    #     ("gas", "density"),
-    #     ("gas", "temperature"),
-    #     ("gas", "mass"),
-    #     weight_field=None,
-    # )
+    plot = yt.PhasePlot(
+        galaxy,
+        ("gas", "density"),
+        ("gas", "temperature"),
+        ("gas", "mass"),
+        weight_field=None,
+    )
 
     # Set the units of mass to be in solar masses (not the default in cgs)
-    #plot.set_unit(("gas", "mass"), "Msun")
-    #plot.save()
+    plot.set_unit(("gas", "mass"), "Msun")
+    plot.save()
     #%%
-    lims = {
-    ("gas", "density"): (1e-31, 1e-18),
-    ("gas", "temperature"): (10, 1e9),
-    ("gas", "mass"): ((1e-6,"msun"), (1e6, "msun")),
-    }
     profile2d = galaxy.profile(
         # the x bin field, the y bin field
         [("gas", "density"), ("gas", "temperature")],
         [("gas", "mass")],  # the profile field
         weight_field=None,  # sums each quantity in each bin
-        n_bins=(120, 120),
-        extrema=lims
+        n_bins=(132, 132),
     )
 
     #%%
 
     gas_mass = np.array(profile2d["gas", "mass"].to("msun")).T
     temp = np.array(profile2d.y)
-    dens = np.array(profile2d.x) #/ 1.6e-24
+    dens = np.array(profile2d.x) / 1.6e-24
     fig, ax = plt.subplots(1, 1, figsize=(5, 5), dpi=400)
     nt_image = ax.imshow(
         np.log10(gas_mass),
@@ -155,10 +151,10 @@ for i, sn in enumerate(snaps):
         # ),
         origin="lower",
         extent=[
-            np.log10(lims[("gas", "density")][0]),
-            np.log10(lims[("gas", "density")][1]),
-            np.log10(lims[("gas", "temperature")][0]),
-            np.log10(lims[("gas", "temperature")][1]),
+            np.log10(dens.min()),
+            np.log10(dens.max()),
+            np.log10(temp.min()),
+            np.log10(temp.max()),
         ],
         cmap="inferno",
         # vmin=24,
@@ -166,14 +162,14 @@ for i, sn in enumerate(snaps):
     )
 
     ax.set(
-        ylabel=r"$\mathrm{\log_{10}\:Temperature\:(T)}$",
-        xlabel=r"$\mathrm{\log_{10}\:Gas Density\:(g\:cm^{-3})}$",
+        ylabel=r"$\mathrm{Temperature\:(T)}$",
+        xlabel=r"$\mathrm{nH\:(\:cm^{-3})}$",
     )
     ax.text(
         0.05,
         0.05,
-        (r"$\mathrm{{t = {:.2f} \: Myr}}$" "\n" r"$\mathrm{{z = {:.2f} }}$" "\n" r"$\mathrm{{SFE_{{halo}} = {:.2e}}}$").format(
-            current_time, redshft, efficiency
+        (r"$\mathrm{{t = {:.2f} \: Myr}}$" "\n" r"$\mathrm{{z = {:.2f} }}$").format(
+            current_time, redshft
         ),
         ha="left",
         va="bottom",
@@ -188,8 +184,8 @@ for i, sn in enumerate(snaps):
     bar.ax.xaxis.set_ticks_position("top")
 
     plt.savefig(
-        os.path.join(container, f"{snap_strings[i]}.png"),
+        os.path.join(gas_container, f"{snap_strings[i]}.png"),
         dpi=400,
         bbox_inches="tight",
-        #pad_inches=0.00,
+        pad_inches=0.00,
     )
