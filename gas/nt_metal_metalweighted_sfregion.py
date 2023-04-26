@@ -34,10 +34,10 @@ processor_number = 0
 
 cell_fields, epf = ram_fields()
 # datadir = os.path.relpath("../../cosm_test_data/refine")
-datadir = os.path.relpath("../../sim_data/cluster_evolution/fs035_ms10")
+datadir = os.path.relpath("../../sim_data/cluster_evolution/fs07_refine")
 
 
-snaps, snap_strings = filter_snapshots(datadir, 150, 1600, sampling=25, str_snaps=True)
+snaps, snap_strings = filter_snapshots(datadir, 150, 1495, sampling=25, str_snaps=True)
 # simulation_run = datadir
 plot_name = "nT_metal_metalweight_sfregion"
 
@@ -212,7 +212,7 @@ for i, sn in enumerate(snaps):
             "\n"
             r"${{\rm R_{{ SF \, region}}}} = 250 {{\rm pc}}$"
             "\n"
-            r"${{\rm run-}} {}$"
+            r"${{\rm run-}}$ {}"
         ).format(current_time, redshft, efficiency, sim_run),
         ha="left",
         va="top",
