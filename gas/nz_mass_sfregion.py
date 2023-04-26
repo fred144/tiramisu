@@ -54,8 +54,8 @@ if not os.path.exists(gas_container):
 
 lims = {
     ("gas", "density"): ((5e-31, "g/cm**3"), (1e-18, "g/cm**3")),
-    ("gas", "temperature"): ((1, "K"), (1e9, "K")),
     ("ramses", "Metallicity"): (2e-5, 0.5),
+    ("gas", "temperature"): ((1, "K"), (1e9, "K")),
 }
 
 m_h = 1.6735e-24  # grams

@@ -53,16 +53,15 @@ if not os.path.exists(gas_container):
     os.makedirs(gas_container)
 
 #%%
+m_h = 1.6735e-24  # grams
+zsun = 0.0134
+zsun = 0.02
 
 lims = {
     ("gas", "density"): ((5e-31, "g/cm**3"), (1e-18, "g/cm**3")),
     ("gas", "temperature"): ((1, "K"), (1e9, "K")),
-    ("ramses", "Metallicity"): (2e-5, 0.5),
+    ("ramses", "Metallicity"): (2e-5 * zsun, 0.5 * zsun),
 }
-
-m_h = 1.6735e-24  # grams
-zsun = 0.0134
-zsun = 0.02
 
 m_vir = []
 r_vir = []
@@ -157,7 +156,8 @@ for i, sn in enumerate(snaps):
     )
 
     #%%
-
+    # metallicity computed isunnormalized metallicity Zmetal =(metall mass)/(gas mass)
+    # normalized metallicity Zmetal_in_solar = Zmetal/Zsun, with Zsun = 0.02.
     gas_metallicity = np.array(profile2d["ramses", "Metallicity"] / zsun).T
     temp = np.array(profile2d.y)
     dens = np.array(profile2d.x)  # / 1.6e-24
