@@ -5,7 +5,7 @@ sys.path.append("..")  # makes sure that importing the modules work
 import numpy as np
 import os
 import glob
-from src.lum import lum_lookup
+from src.lum.lum_lookup import lum_look_up_table
 from scipy.ndimage import gaussian_filter
 
 from tools.cosmo import t_myr_from_z, code_age_to_myr
@@ -19,6 +19,7 @@ import matplotlib as mpl
 from matplotlib.colors import LinearSegmentedColormap
 import yt
 
+#%%
 yt.enable_parallelism()
 plt.rcParams.update(
     {
@@ -49,20 +50,34 @@ gas_alpha = 0.5
 lum_alpha = 1
 
 cell_fields, epf = ram_fields()
-datadir = os.path.relpath("../../cosm_test_data/refine")
-# datadir = os.path.relpath("../../sim_data/cluster_evolution/fs035_ms10")
+# datadir = os.path.relpath("../../cosm_test_data/refine")
+datadir = os.path.relpath("../../sim_data/cluster_evolution/fs035_ms10")
 
 
-snaps, snap_strings = filter_snapshots(datadir, 500, 500, sampling=1, str_snaps=True)
+snaps, snap_strings = filter_snapshots(datadir, 0, 500, sampling=1, str_snaps=True)
 
 
 movie_name = "ProjDensTemp"
 sim_run = datadir.replace("\\", "/").split("/")[-1]
 
 container = os.path.join("..", "..", "container_ram-py", "renders", movie_name, sim_run)
+
 if not os.path.exists(container):
     print("Creating ram-py container", container)
     os.makedirs(container)
+else:
+    pass
+
+
+sim_logfile = os.path.join(
+    "..",
+    "..",
+    "container_ram-py",
+    "sim_log_files",
+    "fs07_refine" if sim_run == "refine" else sim_run,
+    "logSFC",
+)
+
 for i, sn in enumerate(snaps):
     print("# ________________________________________________________________________")
     infofile = os.path.abspath(os.path.join(sn, f"info_{snap_strings[i]}.txt"))
@@ -73,122 +88,94 @@ for i, sn in enumerate(snaps):
     hubble = ds.hubble_constant
     tmyr = float(ds.current_time.in_units("Myr"))
     zred = float(ds.current_redshift)
-#%% can the code above is set up to work with time matching
-# but not used since single frame
 
-for m_i, (f7_gas, f3_gas) in enumerate(zip(f7_snap_f, f3_snap_f)):
-    outnum_f7 = f7_gas.split("/")[-1].split("_")[-1]
-    outnum_f3 = f3_gas.split("/")[-1].split("_")[-1]
-
-    #!!!
-    if int(outnum_f3) == 1102:
-        continue
-    # read ramses data
-    print("Reading", f3_gas)
-    f3_info_file = os.path.join(f3_gas, "info_{}.txt".format(outnum_f3))
-    f3_ram_ds = yt.load(f3_info_file, fields=cell_fields, extra_particle_fields=epf)
-    # post processed star data
-    f3_code_ctr = np.loadtxt(f3_pop2_f[m_i], max_rows=5)[2:5, 6]
-    f3_t_myr = np.loadtxt(f3_pop2_f[m_i], max_rows=2)[0, 6]
-    f3_redshift = np.loadtxt(f3_pop2_f[m_i], max_rows=2)[1, 6]
-    try:
-        f3_stars = np.vstack(
-            (
-                np.loadtxt(os.path.join(f3_halo_f[m_i], "field_stars.txt")),
-                np.loadtxt(os.path.join(f3_halo_f[m_i], "bound_stars.txt")),
-            )
-        )
-        f3_star_ids = f3_stars[:, 0]
-        f3_star_lums = f3_stars[:, 2]
-        f3_x = f3_stars[:, 3]
-        f3_y = f3_stars[:, 4]
-        f3_z = f3_stars[:, 5]
-        f3_current_ages = f3_stars[:, 1]
-        f3_star_bes = f3_t_myr - f3_current_ages
-        f3_rounded_times = np.round_(f3_star_bes, 1)
-        f3_unique_birth_times = np.unique(f3_rounded_times)
-    except:
-        print("does not exist, creating luminosity tables")
-        f3_current_hubble = f3_ram_ds.hubble_constant
-        f3_ad = f3_ram_ds.all_data()
-        f3_t_myr = float(f3_ram_ds.current_time.in_units("Myr"))
-        f3_redshift = float(f3_ram_ds.current_redshift)
-
+    if len(ad["star", "particle_position_x"]) == 0:
+        # stars havent formed yet
         # find CoM of the system, starting from the most dense gas coord
-        f3_sphere = f3_ram_ds.sphere("max", (plt_wdth / 2, "pc"))
+        gal = ds.sphere("max", (plt_wdth / 2, "pc"))
         # return CoM in code units
-        f3_com = f3_sphere.quantities.center_of_mass(
+        com = gal.quantities.center_of_mass(
             use_gas=True, use_particles=True, particle_type="star"
         )
 
         # recenter the stars based on the CoM
-        f3_x = np.array((f3_ad["star", "particle_position_x"] - f3_com[0]).to("pc"))
-        f3_y = np.array((f3_ad["star", "particle_position_y"] - f3_com[1]).to("pc"))
-        f3_z = np.array((f3_ad["star", "particle_position_z"] - f3_com[2]).to("pc"))
-        f3_be_star = f3_ad["star", "particle_birth_epoch"]
-        f3_unique_birth_epochs = code_age_to_myr(
-            f3_ad["star", "particle_birth_epoch"], f3_current_hubble, unique_age=True
-        )
-        # calculate the age of the universe when the first star was born
-        # using the logSFC as a reference point for redshift when the first star
-        # was born. Every age is relative to this. Due to our mods of ramses.
-        f3_birth_start = np.round_(
-            float(f3_ram_ds.cosmology.t_from_z(f3_series[0, 2]).in_units("Myr")), 0
-        )
-        # all the birth epochs of the stars
-        f3_converted_unfiltered = code_age_to_myr(
-            f3_ad["star", "particle_birth_epoch"], f3_current_hubble, unique_age=False
-        )
-        f3_abs_birth_epochs = np.round(f3_converted_unfiltered + f3_birth_start, 3)  #!
-        f3_current_ages = np.round(f3_t_myr, 3) - np.round(f3_abs_birth_epochs, 3)
+        x = np.array((ad["star", "particle_position_x"] - com[0]).to("pc"))
+        y = np.array((ad["star", "particle_position_y"] - com[1]).to("pc"))
+        z = np.array((ad["star", "particle_position_z"] - com[2]).to("pc"))
+    else:
+        com_x = np.mean(ad["star", "particle_position_x"])
+        com_y = np.mean(ad["star", "particle_position_y"])
+        com_z = np.mean(ad["star", "particle_position_z"])
 
-        f3_star_lums = (
-            lum_lookup(
-                stellar_ages=f3_current_ages,
-                table_link="../particle_data/luminosity_look_up_tables/l1500_inst_e.txt",
-                column_idx=1,
-                log=True,
-            )
-            * 1e-5
-        )
+        com = np.array([com_x, com_y, com_z])
 
-        # f3_unique_birth_times = np.unique(f3_rounded_times)
-        # f3_unique_birth_times = np.unique(f3_rounded_times)
+        x = np.array((ad["star", "particle_position_x"] - com_x).to("pc"))
+        y = np.array((ad["star", "particle_position_y"] - com_y).to("pc"))
+        z = np.array((ad["star", "particle_position_z"] - com_z).to("pc"))
+
+    unique_birth_epochs = code_age_to_myr(
+        ad["star", "particle_birth_epoch"], hubble, unique_age=True
+    )
+    # calculate the age of the universe when the first star was born
+    # using the logSFC as a reference point for redshift when the first star
+    # was born. Every age is relative to this. Due to our mods of ramses.
+    first_form = np.loadtxt(sim_logfile, usecols=2).max()
+    birth_start = np.round_(float(ds.cosmology.t_from_z(first_form).in_units("Myr")), 0)
+    # all the birth epochs of the stars
+    converted_unfiltered = code_age_to_myr(
+        ad["star", "particle_birth_epoch"], hubble, unique_age=False
+    )
+    abs_birth_epochs = np.round(converted_unfiltered + birth_start, 3)  #!
+    current_ages = np.round(tmyr, 3) - np.round(abs_birth_epochs, 3)
+    #%%
+    print("Looking Up Lums")
+    star_lums = (
+        lum_look_up_table(
+            stellar_ages=current_ages,
+            table_link=os.path.join("..", "starburst", "l1500_inst_e.txt"),
+            column_idx=1,
+            log=True,
+        )
+        * 1e-5
+    )
+
+    # f3_unique_birth_times = np.unique(f3_rounded_times)
+    # f3_unique_birth_times = np.unique(f3_rounded_times)
     # get the projected densities
     #!!!
     print("Integrating Gas")
-    f3_gas = yt.ProjectionPlot(
-        f3_ram_ds, "z", ("gas", "density"), width=(plt_wdth, "pc"), center=f3_code_ctr
+    gas = yt.ProjectionPlot(
+        ds, "z", ("gas", "density"), width=(plt_wdth, "pc"), center=com
     )
-    f3_gas_frb = f3_gas.data_source.to_frb((plt_wdth, "pc"), star_bins)
-    f3_gas_array = np.array(f3_gas_frb["gas", "density"])
+    gas_frb = gas.data_source.to_frb((plt_wdth, "pc"), star_bins)
+    gas_array = np.array(gas_frb["gas", "density"])
 
     print("Getting Temp")
-    f3_t = yt.ProjectionPlot(
-        f3_ram_ds,
+    t = yt.ProjectionPlot(
+        ds,
         "z",
         ("gas", "temperature"),
         width=(plt_wdth, "pc"),
-        center=f3_code_ctr,
+        center=com,
         weight_field=("gas", "density"),
     )
-    f3_temp_frb = f3_t.data_source.to_frb((plt_wdth, "pc"), star_bins)
-    f3_temp_array = np.array(f3_temp_frb["gas", "temperature"])
+    temp_frb = t.data_source.to_frb((plt_wdth, "pc"), star_bins)
+    temp_array = np.array(temp_frb["gas", "temperature"])
 
     print("Integrating Luminosity")
     # get the projected luminosity
-    f3_lums, _, _ = np.histogram2d(
-        f3_x,
-        f3_y,
+    lums, _, _ = np.histogram2d(
+        x,
+        y,
         bins=star_bins,
-        weights=f3_star_lums,
+        weights=star_lums,
         normed=False,
         range=[
             [-plt_wdth / 2, plt_wdth / 2],
             [-plt_wdth / 2, plt_wdth / 2],
         ],
     )
-    f3_lums = f3_lums.T
+    lums = lums.T
 
     #%%
     lum_range = (2e33, 3e36)  # (2e32, 5e35)
@@ -230,11 +217,11 @@ for m_i, (f7_gas, f3_gas) in enumerate(zip(f7_snap_f, f3_snap_f)):
         facecolor=cm.Greys_r(0),
     )
 
-    f3_lum_image = ax.imshow(
+    lum_image = ax.imshow(
         np.log10(
-            f3_lums / pxl_size,
-            where=(f3_lums != 0),
-            out=np.full_like(f3_lums, np.log10(lum_range[0])),
+            lums / pxl_size,
+            where=(lums != 0),
+            out=np.full_like(lums, np.log10(lum_range[0])),
         ),
         cmap="inferno",
         origin="lower",
@@ -243,12 +230,12 @@ for m_i, (f7_gas, f3_gas) in enumerate(zip(f7_snap_f, f3_snap_f)):
         vmax=np.log10(lum_range[1]),
         alpha=1,
     )
-    f3_gas_image = ax.imshow(
+    gas_image = ax.imshow(
         gaussian_filter(
             np.log10(
-                f3_gas_array,
-                where=(f3_gas_array != 0),
-                out=np.full_like(f3_lums, np.log10(gas_range[0])),
+                gas_array,
+                where=(gas_array != 0),
+                out=np.full_like(lums, np.log10(gas_range[0])),
             ),
             8,
         ),
@@ -263,12 +250,12 @@ for m_i, (f7_gas, f3_gas) in enumerate(zip(f7_snap_f, f3_snap_f)):
         vmax=np.log10(gas_range[1]),
         cmap=gascmap,
     )
-    f3_temp_image = ax.imshow(
+    temp_image = ax.imshow(
         gaussian_filter(
             np.log10(
-                f3_temp_array,
-                where=(f3_temp_array != 0),
-                out=np.full_like(f3_temp_array, 0),
+                temp_array,
+                where=(temp_array != 0),
+                out=np.full_like(temp_array, 0),
             ),
             8,
         ),
@@ -285,9 +272,7 @@ for m_i, (f7_gas, f3_gas) in enumerate(zip(f7_snap_f, f3_snap_f)):
     )
 
     lum_cbar_ax = ax.inset_axes([0.05, 0.05, 0.30, 0.028], alpha=0.8)
-    lum_cbar = fig.colorbar(
-        f3_lum_image, cax=lum_cbar_ax, pad=0, orientation="horizontal"
-    )
+    lum_cbar = fig.colorbar(lum_image, cax=lum_cbar_ax, pad=0, orientation="horizontal")
     lum_cbar.ax.xaxis.set_tick_params(pad=2)
     lum_cbar.set_label(
         r"$\mathrm{\log\:UV\:SB}$" r"$\:\mathrm{\left(erg\:\:s^{-1}\:pc^{-2}\right)}$",
@@ -357,7 +342,7 @@ for m_i, (f7_gas, f3_gas) in enumerate(zip(f7_snap_f, f3_snap_f)):
         0.05,
         0.95,
         (r"$\mathrm{{t = {:.2f} \: Myr}}$" "\n" r"$\mathrm{{z = {:.2f} }}$").format(
-            f3_t_myr, f3_redshift
+            tmyr, zred
         ),
         ha="left",
         va="center",
@@ -365,10 +350,15 @@ for m_i, (f7_gas, f3_gas) in enumerate(zip(f7_snap_f, f3_snap_f)):
         transform=ax.transAxes,
     )
     # efficiency labels
+    if sim_run == "fs035_ms10":
+        plt_run_label = r"$\mathrm{low-SFE\:(35\%)}$"
+    elif sim_run == "fs07_refine":
+        plt_run_label = r"$\mathrm{low-SFE\:(70\%)}$"
+    else:
+        plt_run_label = sim_run
     ax.text(
         0.95,
         0.95,
-        r"$\mathrm{low-SFE\:(35\%)}$",
         ha="right",
         va="center",
         color="white",
@@ -378,9 +368,9 @@ for m_i, (f7_gas, f3_gas) in enumerate(zip(f7_snap_f, f3_snap_f)):
     # save frame
     ax.axis("off")
     output_path = os.path.join(
-        sequence_dir,
-        "render_{}_{}.png".format(
-            outnum_f3, str(np.round(f3_redshift, 3)).replace(".", "_")
+        container,
+        r"render-{}-{}.png".format(
+            snap_strings[i], "{:.3f}".format(zred).replace(".", "_")
         ),
     )
     plt.savefig(
