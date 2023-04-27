@@ -67,8 +67,6 @@ if not os.path.exists(container):
     os.makedirs(container)
 else:
     pass
-
-
 sim_logfile = os.path.join(
     "..",
     "..",
@@ -115,32 +113,33 @@ for i, sn in enumerate(snaps):
         y = np.array((ad["star", "particle_position_y"] - com_y).to("pc"))
         z = np.array((ad["star", "particle_position_z"] - com_z).to("pc"))
 
-    unique_birth_epochs = code_age_to_myr(
-        ad["star", "particle_birth_epoch"], hubble, unique_age=True
-    )
-    # calculate the age of the universe when the first star was born
-    # using the logSFC as a reference point for redshift when the first star
-    # was born. Every age is relative to this. Due to our mods of ramses.
-    first_form = np.loadtxt(sim_logfile, usecols=2).max()
-    birth_start = np.round_(float(ds.cosmology.t_from_z(first_form).in_units("Myr")), 0)
-    # all the birth epochs of the stars
-    converted_unfiltered = code_age_to_myr(
-        ad["star", "particle_birth_epoch"], hubble, unique_age=False
-    )
-    abs_birth_epochs = np.round(converted_unfiltered + birth_start, 3)  #!
-    current_ages = np.round(tmyr, 3) - np.round(abs_birth_epochs, 3)
-    #%%
-    print("Looking Up Lums")
-    star_lums = (
-        lum_look_up_table(
-            stellar_ages=current_ages,
-            table_link=os.path.join("..", "starburst", "l1500_inst_e.txt"),
-            column_idx=1,
-            log=True,
+        unique_birth_epochs = code_age_to_myr(
+            ad["star", "particle_birth_epoch"], hubble, unique_age=True
         )
-        * 1e-5
-    )
-
+        # calculate the age of the universe when the first star was born
+        # using the logSFC as a reference point for redshift when the first star
+        # was born. Every age is relative to this. Due to our mods of ramses.
+        first_form = np.loadtxt(sim_logfile, usecols=2).max()
+        birth_start = np.round_(
+            float(ds.cosmology.t_from_z(first_form).in_units("Myr")), 0
+        )
+        # all the birth epochs of the stars
+        converted_unfiltered = code_age_to_myr(
+            ad["star", "particle_birth_epoch"], hubble, unique_age=False
+        )
+        abs_birth_epochs = np.round(converted_unfiltered + birth_start, 3)  #!
+        current_ages = np.round(tmyr, 3) - np.round(abs_birth_epochs, 3)
+        #%%
+        print("Looking Up Lums")
+        star_lums = (
+            lum_look_up_table(
+                stellar_ages=current_ages,
+                table_link=os.path.join("..", "starburst", "l1500_inst_e.txt"),
+                column_idx=1,
+                log=True,
+            )
+            * 1e-5
+        )
     # f3_unique_birth_times = np.unique(f3_rounded_times)
     # f3_unique_birth_times = np.unique(f3_rounded_times)
     # get the projected densities
@@ -359,9 +358,9 @@ for i, sn in enumerate(snaps):
     else:
         plt_run_label = sim_run
     ax.text(
-        s = plt_run_label,
-        x = 0.95,
-        y= 0.95,
+        s=plt_run_label,
+        x=0.95,
+        y=0.95,
         ha="right",
         va="center",
         color="white",
