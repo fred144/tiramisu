@@ -33,11 +33,11 @@ warnings.simplefilter(action="ignore", category=RuntimeWarning)
 processor_number = 0
 
 cell_fields, epf = ram_fields()
-# datadir = os.path.relpath("../../cosm_test_data/refine")
-datadir = os.path.relpath("../../sim_data/cluster_evolution/fs07_refine")
+datadir = os.path.relpath("../../cosm_test_data/refine")
+# datadir = os.path.relpath("../../sim_data/cluster_evolution/fs07_refine")
 
 
-snaps, snap_strings = filter_snapshots(datadir, 150, 1495, sampling=25, str_snaps=True)
+snaps, snap_strings = filter_snapshots(datadir, 500, 500, sampling=25, str_snaps=True)
 # simulation_run = datadir
 plot_name = "nZ_mass_sfregion"
 
@@ -69,8 +69,8 @@ zsun = 0.02
 
 lims = {
     ("gas", "density"): ((5e-31, "g/cm**3"), (1e-18, "g/cm**3")),
-    ("ramses", "Metallicity"): (2e-5 * zsun, 20 * zsun),
-    ("gas", "mass"): ((1e-6, "msun"), (1e10, "msun")),
+    ("ramses", "Metallicity"): (5e-7 * zsun, 10 * zsun),
+    ("gas", "mass"): ((1e-6, "msun"), (1e6, "msun")),
 }
 
 for i, sn in enumerate(snaps):
@@ -134,17 +134,17 @@ for i, sn in enumerate(snaps):
     redshft = ds.current_redshift
     t.append(current_time)
     z.append(redshft)
-
-    # plot = yt.PhasePlot(
-    #     galaxy,
-    #     ("gas", "density"),
-    #     ("gas", "temperature"),
-    #     ("gas", "mass"),
-    #     weight_field=None,
-    # )
+    #%%
+    plot = yt.PhasePlot(
+        galaxy,
+        ("gas", "density"),
+        ("ramses", "Metallicity"),
+        ("gas", "mass"),
+        weight_field=None,
+    )
     # Set the units of mass to be in solar masses (not the default in cgs)
-    # plot.set_unit(("gas", "mass"), "Msun")
-    # plot.save()
+    plot.set_unit(("gas", "mass"), "Msun")
+    plot.save()
 
     #%%
 
