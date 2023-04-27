@@ -102,6 +102,8 @@ for i, sn in enumerate(snaps):
         x = np.array((ad["star", "particle_position_x"] - com[0]).to("pc"))
         y = np.array((ad["star", "particle_position_y"] - com[1]).to("pc"))
         z = np.array((ad["star", "particle_position_z"] - com[2]).to("pc"))
+
+        lums = np.zeros((star_bins, star_bins))
     else:
         com_x = np.mean(ad["star", "particle_position_x"])
         com_y = np.mean(ad["star", "particle_position_y"])
@@ -129,6 +131,7 @@ for i, sn in enumerate(snaps):
         )
         abs_birth_epochs = np.round(converted_unfiltered + birth_start, 3)  #!
         current_ages = np.round(tmyr, 3) - np.round(abs_birth_epochs, 3)
+
         #%%
         print("Looking Up Lums")
         star_lums = (
@@ -140,6 +143,21 @@ for i, sn in enumerate(snaps):
             )
             * 1e-5
         )
+
+        print("Integrating Luminosity")
+        # get the projected luminosity
+        lums, _, _ = np.histogram2d(
+            x,
+            y,
+            bins=star_bins,
+            weights=star_lums,
+            normed=False,
+            range=[
+                [-plt_wdth / 2, plt_wdth / 2],
+                [-plt_wdth / 2, plt_wdth / 2],
+            ],
+        )
+        lums = lums.T
     # f3_unique_birth_times = np.unique(f3_rounded_times)
     # f3_unique_birth_times = np.unique(f3_rounded_times)
     # get the projected densities
@@ -162,21 +180,6 @@ for i, sn in enumerate(snaps):
     )
     temp_frb = t.data_source.to_frb((plt_wdth, "pc"), star_bins)
     temp_array = np.array(temp_frb["gas", "temperature"])
-
-    print("Integrating Luminosity")
-    # get the projected luminosity
-    lums, _, _ = np.histogram2d(
-        x,
-        y,
-        bins=star_bins,
-        weights=star_lums,
-        normed=False,
-        range=[
-            [-plt_wdth / 2, plt_wdth / 2],
-            [-plt_wdth / 2, plt_wdth / 2],
-        ],
-    )
-    lums = lums.T
 
     #%%
     lum_range = (2e33, 3e36)  # (2e32, 5e35)
