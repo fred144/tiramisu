@@ -6,7 +6,7 @@ sys.path.append("..")  # makes sure that importing the modules work
 import yt
 import numpy as np
 import os
-from tools.scanner import filter_snapshots
+from tools.fscanner import filter_snapshots
 from tools.ram_fields import ram_fields
 import h5py as h5
 from yt.funcs import mylog
