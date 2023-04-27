@@ -51,10 +51,10 @@ lum_alpha = 1
 
 cell_fields, epf = ram_fields()
 # datadir = os.path.relpath("../../cosm_test_data/refine")
-datadir = os.path.relpath("../../sim_data/cluster_evolution/C-radius1")
+datadir = os.path.relpath("../../sim_data/cluster_evolution/CC-radius1")
 
 
-snaps, snap_strings = filter_snapshots(datadir, 0, 969, sampling=1, str_snaps=True)
+snaps, snap_strings = filter_snapshots(datadir, 659, 969, sampling=10, str_snaps=True)
 
 
 movie_name = "ProjDensTemp"
@@ -90,6 +90,8 @@ for i, sn in enumerate(snaps):
     zred = float(ds.current_redshift)
 
     if len(ad["star", "particle_position_x"]) == 0:
+        print("no popii yet")
+        continue
         # stars havent formed yet
         # find CoM of the system, starting from the most dense gas coord
         gal = ds.sphere("max", (plt_wdth / 2, "pc"))
@@ -357,8 +359,9 @@ for i, sn in enumerate(snaps):
     else:
         plt_run_label = sim_run
     ax.text(
-        0.95,
-        0.95,
+        s = plt_run_label,
+        x = 0.95,
+        y= 0.95,
         ha="right",
         va="center",
         color="white",
