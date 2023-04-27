@@ -39,7 +39,7 @@ datadir = os.path.relpath("../../sim_data/cluster_evolution/fs07_refine")
 
 snaps, snap_strings = filter_snapshots(datadir, 150, 1495, sampling=5, str_snaps=True)
 # simulation_run = datadir
-plot_name = "nZ_mass_sfregion"
+plot_name = "nZ_temp_sfregion"
 
 
 sim_run = datadir.replace("\\", "/").split("/")[-1]
