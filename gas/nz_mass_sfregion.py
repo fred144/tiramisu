@@ -135,16 +135,16 @@ for i, sn in enumerate(snaps):
     t.append(current_time)
     z.append(redshft)
     #%%
-    plot = yt.PhasePlot(
-        galaxy,
-        ("gas", "density"),
-        ("ramses", "Metallicity"),
-        ("gas", "mass"),
-        weight_field=None,
-    )
-    # Set the units of mass to be in solar masses (not the default in cgs)
-    plot.set_unit(("gas", "mass"), "Msun")
-    plot.save()
+    # plot = yt.PhasePlot(
+    #     galaxy,
+    #     ("gas", "density"),
+    #     ("ramses", "Metallicity"),
+    #     ("gas", "mass"),
+    #     weight_field=None,
+    # )
+    # # Set the units of mass to be in solar masses (not the default in cgs)
+    # plot.set_unit(("gas", "mass"), "Msun")
+    # plot.save()
 
     #%%
 
