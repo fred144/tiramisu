@@ -33,7 +33,7 @@ warnings.simplefilter(action="ignore", category=RuntimeWarning)
 processor_number = 0
 
 cell_fields, epf = ram_fields()
-#datadir = os.path.relpath("../../cosm_test_data/refine")
+# datadir = os.path.relpath("../../cosm_test_data/refine")
 datadir = os.path.relpath("../../sim_data/cluster_evolution/fs07_refine")
 
 
@@ -69,7 +69,7 @@ zsun = 0.02
 
 lims = {
     ("gas", "density"): ((5e-31, "g/cm**3"), (1e-18, "g/cm**3")),
-    ("ramses", "Metallicity"): (5e-7 * zsun, 10 * zsun),
+    ("ramses", "Metallicity"): (5e-8 * zsun, 10 * zsun),
     ("gas", "mass"): ((1e-6, "msun"), (1e6, "msun")),
 }
 

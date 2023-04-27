@@ -69,7 +69,7 @@ zsun = 0.02
 
 lims = {
     ("gas", "density"): ((5e-31, "g/cm**3"), (1e-18, "g/cm**3")),
-    ("ramses", "Metallicity"): (5e-7 * zsun, 10 * zsun),
+    ("ramses", "Metallicity"): (5e-8 * zsun, 10 * zsun),
     ("gas", "temperature"): ((1, "K"), (1e9, "K")),
 }
 
