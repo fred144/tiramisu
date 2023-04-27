@@ -33,7 +33,7 @@ warnings.simplefilter(action="ignore", category=RuntimeWarning)
 processor_number = 0
 
 cell_fields, epf = ram_fields()
-datadir = os.path.relpath("../../cosm_test_data/refine")
+# datadir = os.path.relpath("../../cosm_test_data/refine")
 datadir = os.path.relpath("../../sim_data/cluster_evolution/fs07_refine")
 
 
@@ -70,7 +70,7 @@ zsun = 0.02
 lims = {
     ("gas", "density"): ((5e-31, "g/cm**3"), (1e-18, "g/cm**3")),
     ("ramses", "Metallicity"): (2e-5 * zsun, 20 * zsun),
-    ("gas", "mass"): ((1e-6, "msun"), (1e10, "msun")),
+    ("gas", "temperature"): ((1, "K"), (1e9, "K")),
 }
 
 for i, sn in enumerate(snaps):
@@ -151,15 +151,13 @@ for i, sn in enumerate(snaps):
     profile2d = galaxy.profile(
         # the x bin field, the y bin field
         [("gas", "density"), ("ramses", "Metallicity")],
-        [("gas", "mass")],  # the profile field
-        weight_field=None,  # sums each quantity in each bin
+        [("gas", "temperature")],  # the profile field
+        weight_field=("gas", "mass"),  # sums each quantity in each bin
         n_bins=(125, 125),
         extrema=lims,
     )
-
     #%%
-
-    gas_mass = np.array(profile2d["gas", "mass"].to("msun")).T
+    gas_mass = np.array(profile2d["gas", "temperature"]).T
     # metal = np.array(profile2d.y)
     # dens = np.array(profile2d.x)  # / 1.6e-24
     fig, ax = plt.subplots(1, 1, figsize=(6, 7), dpi=300)
@@ -172,9 +170,9 @@ for i, sn in enumerate(snaps):
             np.log10(lims[("ramses", "Metallicity")][0] / zsun),
             np.log10(lims[("ramses", "Metallicity")][1] / zsun),
         ],
-        cmap="viridis_r",
-        vmin=np.log10(lims[("gas", "mass")][0][0]),
-        vmax=np.log10(1e6),
+        cmap="plasma",
+        vmin=np.log10(lims[("gas", "temperature")][0][0]),
+        vmax=np.log10(lims[("gas", "temperature")][1][0]),
         aspect=1.6,
     )
 
@@ -225,7 +223,7 @@ for i, sn in enumerate(snaps):
     cbar_ax = ax.inset_axes([0, 1.02, 1, 0.05])
     bar = fig.colorbar(nt_image, cax=cbar_ax, pad=0, orientation="horizontal")
     # bar .ax.xaxis.set_tick_params(pad=2)
-    bar.set_label(r"$\mathrm{\log_{10}\:Total\:Mass\:(M_{\odot}})$")
+    bar.set_label(r"$\mathrm{\log_{10}\:Mass-Weighted\:Temp\:(T)}$")
     bar.ax.xaxis.set_label_position("top")
     bar.ax.xaxis.set_ticks_position("top")
 

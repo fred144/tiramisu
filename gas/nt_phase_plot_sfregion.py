@@ -47,13 +47,12 @@ lims = {
     ("gas", "mass"): ((1e-6, "msun"), (1e10, "msun")),
 }
 m_h = 1.6735e-24  # grams
-sim_run = datadir.split("/")[-1]
-dm_container = os.path.join("../../container_ram-py", "dm_hop", sim_run)
+sim_run = datadir.replace("\\", "/").split("/")[-1]
+dm_container = os.path.join("..", "..", "container_ram-py", "dm_hop", sim_run)
 if not os.path.exists(dm_container):
     print("Creating ram-py container", dm_container)
     os.makedirs(dm_container)
-
-gas_container = os.path.join("../../container_ram-py", plot_name, sim_run)
+gas_container = os.path.join("..", "..", "container_ram-py/plots", plot_name, sim_run)
 if not os.path.exists(gas_container):
     print("Creating ram-py container", gas_container)
     os.makedirs(gas_container)
@@ -74,12 +73,10 @@ for i, sn in enumerate(snaps):
 
     ds = yt.load(infofile, fields=cell_fields, extra_particle_fields=epf)
     ad = ds.all_data()
-
-    hop_catalogue = "{}/info_{}/info_{}.{}.h5".format(
+    hop_catalogue = os.path.join(
         dm_container,
-        snap_strings[i],
-        snap_strings[i],
-        processor_number,
+        f"info_{snap_strings[i]}",
+        f"info_{snap_strings[i]}.{processor_number}.h5",
     )
 
     if os.path.isfile(hop_catalogue) is True:
