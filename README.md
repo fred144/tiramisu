@@ -1,4 +1,4 @@
-TIRAMISU 
+$TIRAMISU$
 
 **T**ool for **I**nvestigating **RAM**ses, making **I**t **S**imple for the **U**ser
 
