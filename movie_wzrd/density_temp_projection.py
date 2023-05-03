@@ -54,7 +54,7 @@ cell_fields, epf = ram_fields()
 datadir = os.path.relpath("../../sim_data/cluster_evolution/CC-radius1b")
 
 
-snaps, snap_strings = filter_snapshots(datadir, 1, 153, sampling=1, str_snaps=True)
+snaps, snap_strings = filter_snapshots(datadir, 146, 153, sampling=1, str_snaps=True)
 
 
 movie_name = "ProjDensTemp"
