@@ -37,7 +37,7 @@ plt.rcParams.update(
 )
 plt.style.use("dark_background")
 
-
+#%%
 cmap = cm.get_cmap("Set2")
 cmap = cmap(np.linspace(0, 1, 8))
 plt_wdth = 400
@@ -50,14 +50,14 @@ gas_alpha = 0.5
 lum_alpha = 1
 
 cell_fields, epf = ram_fields()
-datadir = os.path.relpath("../../cosm_test_data/refine")
-# datadir = os.path.relpath("../../sim_data/cluster_evolution/CC-radius1b")
+# datadir = os.path.relpath("../../cosm_test_data/refine")
+datadir = os.path.relpath("../../sim_data/cluster_evolution/CC-radius1")
 
 
-snaps, snap_strings = filter_snapshots(datadir, 500, 500, sampling=1, str_snaps=True)
+snaps, snap_strings = filter_snapshots(datadir, 100, 969, sampling=1, str_snaps=True)
 
 
-movie_name = "ProjDensTemp"
+movie_name = "ProjLum"
 sim_run = datadir.replace("\\", "/").split("/")[-1]
 
 container = os.path.join(
@@ -236,46 +236,46 @@ for i, sn in enumerate(snaps):
         vmax=np.log10(lum_range[1]),
         alpha=1,
     )
-    gas_image = ax.imshow(
-        gaussian_filter(
-            np.log10(
-                gas_array,
-                where=(gas_array != 0),
-                out=np.full_like(lums, np.log10(gas_range[0])),
-            ),
-            8,
-        ),
-        origin="lower",
-        extent=[
-            -plt_wdth / 2,
-            plt_wdth / 2,
-            -plt_wdth / 2,
-            plt_wdth / 2,
-        ],
-        vmin=np.log10(gas_range[0]),
-        vmax=np.log10(gas_range[1]),
-        cmap=gascmap,
-    )
-    temp_image = ax.imshow(
-        gaussian_filter(
-            np.log10(
-                temp_array,
-                where=(temp_array != 0),
-                out=np.full_like(temp_array, 0),
-            ),
-            8,
-        ),
-        origin="lower",
-        extent=[
-            -plt_wdth / 2,
-            plt_wdth / 2,
-            -plt_wdth / 2,
-            plt_wdth / 2,
-        ],
-        vmin=np.log10(temp_range[0]),
-        vmax=np.log10(temp_range[1]),
-        cmap=tempcmap,
-    )
+    # gas_image = ax.imshow(
+    #     gaussian_filter(
+    #         np.log10(
+    #             gas_array,
+    #             where=(gas_array != 0),
+    #             out=np.full_like(lums, np.log10(gas_range[0])),
+    #         ),
+    #         8,
+    #     ),
+    #     origin="lower",
+    #     extent=[
+    #         -plt_wdth / 2,
+    #         plt_wdth / 2,
+    #         -plt_wdth / 2,
+    #         plt_wdth / 2,
+    #     ],
+    #     vmin=np.log10(gas_range[0]),
+    #     vmax=np.log10(gas_range[1]),
+    #     cmap=gascmap,
+    # )
+    # temp_image = ax.imshow(
+    #     gaussian_filter(
+    #         np.log10(
+    #             temp_array,
+    #             where=(temp_array != 0),
+    #             out=np.full_like(temp_array, 0),
+    #         ),
+    #         8,
+    #     ),
+    #     origin="lower",
+    #     extent=[
+    #         -plt_wdth / 2,
+    #         plt_wdth / 2,
+    #         -plt_wdth / 2,
+    #         plt_wdth / 2,
+    #     ],
+    #     vmin=np.log10(temp_range[0]),
+    #     vmax=np.log10(temp_range[1]),
+    #     cmap=tempcmap,
+    # )
 
     lum_cbar_ax = ax.inset_axes([0.05, 0.05, 0.30, 0.028], alpha=0.8)
     lum_cbar = fig.colorbar(lum_image, cax=lum_cbar_ax, pad=0, orientation="horizontal")
