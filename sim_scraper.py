@@ -100,13 +100,13 @@ if __name__ == "__main__":
         print(sys.argv[0], "usage:")
         print("{} data_directory_to_scrape".format(sys.argv[0]))
         exit()
-    container = "../container_ram-py/sim_log_files"
-    newpath = os.path.join(container)
-    if not os.path.exists(newpath):
+    container = os.path.join("..", "container_tiramisu", "sim_log_files")
+
+    if not os.path.exists(container):
         print("====================================================")
-        print("Creating ram-py container", newpath)
+        print("Creating ram-py container", container)
         print("====================================================")
-        os.makedirs(newpath)
+        os.makedirs(container)
 
     # lustre = "/afs/shell.umd.edu/project/ricotti-prj/user/fgarcia4/dwarf/data/cluster_evolution/"
     run_directories = sys.argv[1]
@@ -115,7 +115,7 @@ if __name__ == "__main__":
     cleaned_run_directories = next(os.walk(run_directories))[1]
     sim_runs = [x for x in cleaned_run_directories if "old" or "." not in x]
     print("> found the following runs")
-    #print(sim_runs)
+    # print(sim_runs)
     for path, subdirs, files in os.walk(run_directories):
         # path is lustre simulation run names, and output directories
         for file_name in files:
@@ -143,7 +143,7 @@ if __name__ == "__main__":
         sim_folder = os.path.join(run_directories, simrun)
         output_folders = sorted(os.listdir(sim_folder))
         output_folders = [x for x in output_folders if "output_" in x]
-        #print(output_folders)
+        # print(output_folders)
         latest_snapshots_abs_dir = os.path.join(sim_folder, output_folders[-1])
         # get the run name
         run_name = os.path.split(os.path.split(latest_snapshots_abs_dir)[0])[1]

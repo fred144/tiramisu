@@ -60,10 +60,12 @@ snaps, snap_strings = filter_snapshots(datadir, 146, 153, sampling=1, str_snaps=
 movie_name = "ProjDensTemp"
 sim_run = datadir.replace("\\", "/").split("/")[-1]
 
-container = os.path.join("..", "..", "container_ram-py", "renders", movie_name, sim_run)
+container = os.path.join(
+    "..", "..", "container_tiramisu", "renders", movie_name, sim_run
+)
 
 if not os.path.exists(container):
-    print("Creating ram-py container", container)
+    print("Creating container", container)
     os.makedirs(container)
 else:
     pass

@@ -48,13 +48,13 @@ lims = {
 }
 m_h = 1.6735e-24  # grams
 sim_run = datadir.replace("\\", "/").split("/")[-1]
-dm_container = os.path.join("..", "..", "container_ram-py", "dm_hop", sim_run)
+dm_container = os.path.join("..", "..", "container_tiramisu", "dm_hop", sim_run)
 if not os.path.exists(dm_container):
-    print("Creating ram-py container", dm_container)
+    print("Creating container", dm_container)
     os.makedirs(dm_container)
-gas_container = os.path.join("..", "..", "container_ram-py/plots", plot_name, sim_run)
+gas_container = os.path.join("..", "..", "container_tiramisu/plots", plot_name, sim_run)
 if not os.path.exists(gas_container):
-    print("Creating ram-py container", gas_container)
+    print("Creating container", gas_container)
     os.makedirs(gas_container)
 
 #%%
