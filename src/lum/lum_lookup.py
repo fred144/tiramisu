@@ -37,11 +37,20 @@ def lum_look_up_table(stellar_ages, table_link, column_idx: int, log=True):
         look_up_lumi = 10 ** data[:, column_idx]
     else:
         look_up_lumi = data[:, column_idx]
+
+    # pythonized but need big memoery requirement for big array
     residuals = np.abs(look_up_times - stellar_ages[:, np.newaxis])
-
     closest_match_idxs = np.argmin(residuals, axis=1)
-
     luminosities = look_up_lumi[closest_match_idxs]
+
+    # loop, helps with memory allocation
+    ages_mask = np.ones(stellar_ages.size)
+    for i, a in enumerate(stellar_ages):
+        closest_age_idx = np.argmin(look_up_times - a)
+        ages_mask[i] = closest_age_idx
+
+    luminosities = ages_mask[closest_match_idxs]
+
     return luminosities
 
 

@@ -50,11 +50,11 @@ gas_alpha = 0.5
 lum_alpha = 1
 
 cell_fields, epf = ram_fields()
-# datadir = os.path.relpath("../../cosm_test_data/refine")
-datadir = os.path.relpath("../../sim_data/cluster_evolution/CC-radius1b")
+datadir = os.path.relpath("../../cosm_test_data/refine")
+# datadir = os.path.relpath("../../sim_data/cluster_evolution/CC-radius1b")
 
 
-snaps, snap_strings = filter_snapshots(datadir, 146, 153, sampling=1, str_snaps=True)
+snaps, snap_strings = filter_snapshots(datadir, 500, 500, sampling=1, str_snaps=True)
 
 
 movie_name = "ProjDensTemp"
@@ -256,26 +256,26 @@ for i, sn in enumerate(snaps):
         vmax=np.log10(gas_range[1]),
         cmap=gascmap,
     )
-    # temp_image = ax.imshow(
-    #     gaussian_filter(
-    #         np.log10(
-    #             temp_array,
-    #             where=(temp_array != 0),
-    #             out=np.full_like(temp_array, 0),
-    #         ),
-    #         8,
-    #     ),
-    #     origin="lower",
-    #     extent=[
-    #         -plt_wdth / 2,
-    #         plt_wdth / 2,
-    #         -plt_wdth / 2,
-    #         plt_wdth / 2,
-    #     ],
-    #     vmin=np.log10(temp_range[0]),
-    #     vmax=np.log10(temp_range[1]),
-    #     cmap=tempcmap,
-    # )
+    temp_image = ax.imshow(
+        gaussian_filter(
+            np.log10(
+                temp_array,
+                where=(temp_array != 0),
+                out=np.full_like(temp_array, 0),
+            ),
+            8,
+        ),
+        origin="lower",
+        extent=[
+            -plt_wdth / 2,
+            plt_wdth / 2,
+            -plt_wdth / 2,
+            plt_wdth / 2,
+        ],
+        vmin=np.log10(temp_range[0]),
+        vmax=np.log10(temp_range[1]),
+        cmap=tempcmap,
+    )
 
     lum_cbar_ax = ax.inset_axes([0.05, 0.05, 0.30, 0.028], alpha=0.8)
     lum_cbar = fig.colorbar(lum_image, cax=lum_cbar_ax, pad=0, orientation="horizontal")
@@ -300,18 +300,18 @@ for i, sn in enumerate(snaps):
         label=r"$\mathrm{\log\:Gas\:Density\:\left(g \: cm^{-2}\right)}$", labelpad=-15
     )
 
-    # temp_cbar_ax = ax.inset_axes([0.65, 0.05, 0.30, 0.028], alpha=0.8)
-    # temp_cbar = fig.colorbar(
-    #     cm.ScalarMappable(
-    #         norm=mpl.colors.Normalize(np.log10(temp_range[0]), np.log10(temp_range[1])),
-    #         cmap=tempcmap,
-    #     ),
-    #     cax=temp_cbar_ax,
-    #     orientation="horizontal",
-    #     pad=0,
-    # )
-    # temp_cbar.ax.xaxis.set_tick_params(pad=2)
-    # temp_cbar.set_label(label=r"$\mathrm{\log\:Gas\:Temperature\:(K)}$", labelpad=-15)
+    temp_cbar_ax = ax.inset_axes([0.65, 0.05, 0.30, 0.028], alpha=0.8)
+    temp_cbar = fig.colorbar(
+        cm.ScalarMappable(
+            norm=mpl.colors.Normalize(np.log10(temp_range[0]), np.log10(temp_range[1])),
+            cmap=tempcmap,
+        ),
+        cax=temp_cbar_ax,
+        orientation="horizontal",
+        pad=0,
+    )
+    temp_cbar.ax.xaxis.set_tick_params(pad=2)
+    temp_cbar.set_label(label=r"$\mathrm{\log\:Gas\:Temperature\:(K)}$", labelpad=-15)
 
     # clean up edges
     ax.set(
