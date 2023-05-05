@@ -54,7 +54,7 @@ cell_fields, epf = ram_fields()
 datadir = os.path.relpath("../../sim_data/cluster_evolution/CC-radius1")
 
 
-snaps, snap_strings = filter_snapshots(datadir, 300, 969, sampling=1, str_snaps=True)
+snaps, snap_strings = filter_snapshots(datadir, 700, 969, sampling=2, str_snaps=True)
 
 
 movie_name = "ProjLum"
@@ -72,7 +72,7 @@ else:
 sim_logfile = os.path.join(
     "..",
     "..",
-    "container_ram-py",
+    "container_tiramisu",
     "sim_log_files",
     "fs07_refine" if sim_run == "refine" else sim_run,
     "logSFC",
