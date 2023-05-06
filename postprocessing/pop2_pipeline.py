@@ -31,7 +31,11 @@ if __name__ == "__main__":
 
     sim_run = datadir.replace("\\", "/").split("/")[-1]
     snaps, snap_strings = filter_snapshots(
-        datadir, sys.argv[1], sys.argv[2], sampling=sys.argv[3], str_snaps=True
+        datadir,
+        int(sys.argv[2]),
+        int(sys.argv[3]),
+        sampling=int(sys.argv[4]),
+        str_snaps=True,
     )
     container = os.path.join(
         "..", "..", "container_tiramisu", "post_processed", "pop2", sim_run
