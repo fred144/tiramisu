@@ -8,8 +8,8 @@ import matplotlib.lines as mlines
 import os
 import matplotlib as mpl
 
+#!!! to do generalize so that you can plot multiple simulations by looping
 mpl.rcParams.update(mpl.rcParamsDefault)
-
 plt.rcParams.update(
     {
         "font.family": "serif",
@@ -43,7 +43,7 @@ def radius(n_H, tem, ra):
     return 2.0 * cs / np.sqrt(2.0 * np.pi * G * m_H * n_0) / 3.0e18
 
 
-def sfc_temperature(n_h, redshifts, ra):
+def sfc_temperature(n_h, redshifts, ra, ncut=10):
     """
     temperature of a cloud given its hydrogen density,
     redshift of formation, current temp
@@ -51,13 +51,18 @@ def sfc_temperature(n_h, redshifts, ra):
     """
     # x = 1.0 / ra
     # n_0=10.*n_H/(10.*x**3+3-3*x)
-    n_0 = 3.84 * n_h
-    return 100.0 * (n_0 / 5.0e4 / ((1.0 + redshifts) / 10.0) ** 2)
+    # !!! needs to depend on ncut
+    # n_h = 0.26 n_crit
+
+    # n_h = (3*ncut**0.5 - 2)*ncut**-1.5 * n_crit
+    n_crit = ((3 * ncut**0.5 - 2) * ncut**-1.5) ** -1 * n_h
+    # n_crit = 3.84 * n_h
+    return 100.0 * (n_crit / 5e4) * ((1.0 + redshifts) / 10.0) ** -2
 
 
 # log_sfc = np.loadtxt("../sim_log_files/fs07_refine/logSFC")
 
-run = "../../container_tiramisu/sim_log_files/CC-radius1b"
+run = "../../container_tiramisu/sim_log_files/CC-radius1"
 run_name = run.split("/")[-1]
 
 log_sfc = np.loadtxt(os.path.join(run, "logSFC"))
@@ -72,8 +77,6 @@ metal_zun_cloud = log_sfc[:, 9]  # metalicity is normalized to z_sun
 cmap = cm.get_cmap("Set2")
 cmap = cmap(np.linspace(0, 1, 8))
 hist_color = cmap[1]
-
-
 cmap = cm.get_cmap("Set3")
 cmap = cmap(np.linspace(0, 1, 11))
 cvals = [0.1, 3]
@@ -84,8 +87,8 @@ cmap = matplotlib.colors.LinearSegmentedColormap.from_list("", tuples)
 hist_num_bins = 25
 
 fig, ax = plt.subplots(1, 2, figsize=(10, 4.20), dpi=400)
-plt.subplots_adjust(wspace=0.5)
-temp = sfc_temperature(n_hydrogen, redshft, r_pc_cloud)
+plt.subplots_adjust(wspace=0.55)
+temp = sfc_temperature(n_hydrogen, redshft, r_pc_cloud, ncut=100)
 
 im_n = ax[0].scatter(
     metal_zun_cloud,
@@ -120,12 +123,11 @@ sfc = mlines.Line2D(
 )
 ax[0].legend(
     # title="$\mathrm{SFE} \: (f_{*})$",
-    loc="lower right",
+    loc="upper right",
     handles=[sfc],
 )
 
 hist_ax = ax[0].inset_axes([1.02, 0, 0.30, 1], sharey=ax[0])
-
 bins = np.geomspace(n_hydrogen.min() * 0.65, n_hydrogen.max() * 1.5, hist_num_bins)
 hist_ax.hist(
     n_hydrogen,
@@ -139,9 +141,8 @@ hist_ax.hist(
     density=True,
     orientation="horizontal",
 )
-hist_ax.set_xlabel(r"$\mathrm{PDF (\overline{n_\mathrm{H}})}$")
+hist_ax.set_xlabel(r"$\mathrm{PDF} (\overline{n_{\rm H}})$")
 hist_ax.tick_params(axis="both", labelleft=False, labelsize=6)
-
 
 im = ax[1].scatter(
     metal_zun_cloud,
@@ -154,7 +155,7 @@ im = ax[1].scatter(
     linewidth=0.5,
     s=40,
     alpha=0.8,
-    vmax=2.8,
+    # vmax=2.8,
 )
 
 cbar_ax = ax[1].inset_axes([0, 1.02, 1, 0.05])

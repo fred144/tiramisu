@@ -1,0 +1,203 @@
+import sys
+
+sys.path.append("..")  # makes sure that importing the modules work
+import numpy as np
+import os
+import glob
+from src.lum.lum_lookup import lum_look_up_table
+from scipy.ndimage import gaussian_filter
+
+from tools.cosmo import t_myr_from_z, code_age_to_myr
+from tools.ram_fields import ram_fields
+from tools.fscanner import filter_snapshots
+
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+import matplotlib.patches as patches
+import matplotlib as mpl
+from matplotlib.colors import LinearSegmentedColormap
+import yt
+
+#%%
+
+cell_fields, epf = ram_fields()
+datadir = os.path.relpath("../../cosm_test_data/refine")
+# datadir = os.path.relpath("../../sim_data/cluster_evolution/CC-radius1")
+
+sim_run = datadir.replace("\\", "/").split("/")[-1]
+snaps, snap_strings = filter_snapshots(datadir, 500, 500, sampling=2, str_snaps=True)
+container = os.path.join(
+    "..", "..", "container_tiramisu", "post_processed", "pop2", sim_run
+)
+
+
+if not os.path.exists(container):
+    print("Creating container", container)
+    os.makedirs(container)
+else:
+    pass
+sim_logfile = os.path.join(
+    "..",
+    "..",
+    "container_tiramisu",
+    "sim_log_files",
+    "fs07_refine" if sim_run == "refine" else sim_run,
+    "logSFC",
+)
+
+for i, sn in enumerate(snaps):
+    print("# ________________________________________________________________________")
+    infofile = os.path.abspath(os.path.join(sn, f"info_{snap_strings[i]}.txt"))
+
+    print("# reading in", infofile)
+
+    ds = yt.load(infofile, fields=cell_fields, extra_particle_fields=epf)
+    ad = ds.all_data()
+
+    # get time-dependent params.
+    redshft = ds.current_redshift
+    current_hubble = ds.hubble_constant
+    current_time = float(ds.current_time.in_units("Myr"))
+
+    # get SFC/PSC positions and other important fields,
+    # need to modify definitions to get these sinks
+    pos_sfcs = np.array(ad["SFC", "particle_position"])
+    pos_pscs = np.array(ad["PSC", "particle_position"])
+
+    # read POPII star info
+    star_id = np.array(ad["star", "particle_identity"])
+    x_pos = np.array(ad["star", "particle_position_x"])
+    y_pos = np.array(ad["star", "particle_position_y"])
+    z_pos = np.array(ad["star", "particle_position_z"])
+
+    # center based on star position distribution
+    x_center = np.mean(x_pos)
+    y_center = np.mean(y_pos)
+    z_center = np.mean(z_pos)
+
+    plt_ctr = np.array([x_center, y_center, z_center])
+    plt_ctr_in_pc = np.array(ds.arr(plt_ctr, "code_length").to("pc"))
+
+    # translate points to stellar CoM
+    x_pos = x_pos - plt_ctr[0]
+    y_pos = y_pos - plt_ctr[1]
+    z_pos = z_pos - plt_ctr[2]
+
+    # x_vel = ad["star", "particle_velocity_x"].to("km/s")
+    # y_vel = ad["star", "particle_velocity_y"].to("km/s")
+    # z_vel = ad["star", "particle_velocity_z"].to("km/s")
+
+    pos_sfcs_recentered = pos_sfcs - plt_ctr
+    pos_pscs_recentered = pos_pscs - plt_ctr
+
+    #  converts code age to relative ages
+    # calculate the age of the universe when the first star was born
+    # using the logSFC as a reference point for redshift when the first star
+    # was born. Every age is relative to this. Due to our mods of ramses.
+    #%%
+    first_form = np.loadtxt(sim_logfile, usecols=2).max()
+    birth_start = np.round_(float(ds.cosmology.t_from_z(first_form).in_units("Myr")), 0)
+
+    # all the birth epochs of the stars
+    converted_unfiltered = code_age_to_myr(
+        ad["star", "particle_birth_epoch"], current_hubble, unique_age=False
+    )
+
+    # ==========================luminosity mappping data extraction==============
+
+    birthtime = np.round(converted_unfiltered + birth_start, 3)  #!
+    current_ages = np.array(np.round(current_time, 3) - np.round(birthtime, 3))
+    # import time
+
+    # s = time.perf_counter()
+    pop2_lums = (
+        lum_look_up_table(
+            stellar_ages=current_ages * 1e6,
+            table_link=os.path.join("..", "starburst", "l1500_inst_e.txt"),
+            column_idx=1,
+            log=True,
+        )
+        - 5  # since we are using 10^6 M_sun for the starburst
+    )
+    # e = time.perf_counter()
+    # print(e - s)
+    snap_info = np.array(
+        [np.concatenate((np.array([current_time, redshft]), plt_ctr, plt_ctr_in_pc))]
+    )
+    snap_info.resize(np.size(current_ages))
+    star_info = np.array(
+        [
+            snap_info,
+            star_id,
+            current_ages,
+            pop2_lums,
+            ds.arr(x_pos, "code_length").to("pc"),
+            ds.arr(y_pos, "code_length").to("pc"),
+            ds.arr(z_pos, "code_length").to("pc"),
+            ad["star", "particle_velocity_x"].to("km/s"),
+            ad["star", "particle_velocity_y"].to("km/s"),
+            ad["star", "particle_velocity_z"].to("km/s"),
+            ds.arr(ad["star", "particle_mass"], "code_mass").to("msun"),
+        ]
+    ).T
+
+    # =========================star positions save=================================
+
+    save_time = "{:.2f}".format(current_time).replace(".", "_")
+    save_redshift = "{:.3f}".format(redshft).replace(".", "_")
+    save_name = os.path.join(
+        container,
+        "pop2-{}-{}-myr-z-{}.txt".format(snap_strings[i], save_time, save_redshift),
+    )
+
+    header = (
+        "|t_sim[Myr],z,ctr(code),ctr(pc)|"
+        "|ID"
+        "|CurrentAges[Myr]|"
+        " "
+        "|log10UV(150nm)Lum[erg/s]|"
+        " "
+        "|X[pc]"
+        "|Y[pc]|"
+        "|Z[pc]|"
+        " "
+        "|Vx[km/s]"
+        "|Vy[km/s]|"
+        "|Vz[km/s]|"
+        " "
+        "|mass[Msun]"
+    )
+    np.savetxt(save_name, X=star_info, header=header, fmt="%.6e")
+
+    print("# saved:", save_name)
+
+    # # =========================== psc sfc save==================================
+
+    # psc_kazu_radii = np.abs(
+    #     ds.arr(ad["PSC", "particle_metallicity"], "code_length").to("pc")
+    # )
+    # sfc_kazu_radii = np.abs(
+    #     ds.arr(ad["SFC", "particle_metallicity"], "code_length").to("pc")
+    # )
+    # pos_pscs = ds.arr(pos_pscs_recentered, "code_length").to("pc")
+    # pos_sfcs = ds.arr(pos_sfcs_recentered, "code_length").to("pc")
+
+    # # particle tags, see if unique
+    # psc_tag = np.array(ad["PSC", "particle_index"])
+    # sfc_tag = np.array(ad["SFC", "particle_index"])
+
+    # # save paths
+    # psc_path = "{}/psc_{:05d}_{}_myr.txt".format(psc_save, output_num, save_time)
+    # sfc_path = "{}/sfc_{:05d}_{}_myr.txt".format(sfc_save, output_num, save_time)
+    # # x(pc), y(pc), z(pc),radii at birth (pc), particle tag
+    # psc_save_data = np.concatenate(
+    #     (pos_pscs, psc_kazu_radii[:, None], psc_tag[:, None]), axis=1
+    # )
+    # sfc_save_data = np.concatenate(
+    #     (pos_sfcs, sfc_kazu_radii[:, None], sfc_tag[:, None]), axis=1
+    # )
+    # test_particale_header = "x(pc), y(pc), z(pc),radii at birth (pc), particle tag"
+    # print("# saved:", psc_path)
+    # print("# saved:", sfc_path)
+    # np.savetxt(psc_path, X=psc_save_data, header=test_particale_header)
+    # np.savetxt(sfc_path, X=sfc_save_data, header=test_particale_header)

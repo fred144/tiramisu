@@ -1,6 +1,6 @@
 import sys
 
-sys.path.insert(1, "/homes/fgarcia4/py-virtual-envs/master/lib/python3.7/site-packages")
+
 sys.path.append("..")  # makes sure that importing the modules work
 import numpy as np
 import os
@@ -50,11 +50,11 @@ gas_alpha = 0.5
 lum_alpha = 1
 
 cell_fields, epf = ram_fields()
-# datadir = os.path.relpath("../../cosm_test_data/refine")
-datadir = os.path.relpath("../../sim_data/cluster_evolution/CC-radius1")
+datadir = os.path.relpath("../../cosm_test_data/refine")
+# datadir = os.path.relpath("../../sim_data/cluster_evolution/CC-radius1")
 
 
-snaps, snap_strings = filter_snapshots(datadir, 700, 969, sampling=2, str_snaps=True)
+snaps, snap_strings = filter_snapshots(datadir, 500, 500, sampling=2, str_snaps=True)
 
 
 movie_name = "ProjLum"
@@ -141,7 +141,6 @@ for i, sn in enumerate(snaps):
                 stellar_ages=current_ages,
                 table_link=os.path.join("..", "starburst", "l1500_inst_e.txt"),
                 column_idx=1,
-                log=True,
             )
             * 1e-5
         )
@@ -152,7 +151,7 @@ for i, sn in enumerate(snaps):
             x,
             y,
             bins=star_bins,
-            weights=star_lums,
+            weights=np.log10(star_lums),
             normed=False,
             range=[
                 [-plt_wdth / 2, plt_wdth / 2],
@@ -160,6 +159,7 @@ for i, sn in enumerate(snaps):
             ],
         )
         lums = lums.T
+    #%%
     # f3_unique_birth_times = np.unique(f3_rounded_times)
     # f3_unique_birth_times = np.unique(f3_rounded_times)
     # get the projected densities
@@ -183,8 +183,7 @@ for i, sn in enumerate(snaps):
     temp_frb = t.data_source.to_frb((plt_wdth, "pc"), star_bins)
     temp_array = np.array(temp_frb["gas", "temperature"])
 
-    #%%
-    lum_range = (2e33, 3e36)  # (2e32, 5e35)
+    lum_range = (33.3, 36.477)  # (2e32, 5e35)
     gas_range = (0.008, 0.30)
     temp_range = (6e3, 3e5)
 
@@ -224,11 +223,7 @@ for i, sn in enumerate(snaps):
     )
 
     lum_image = ax.imshow(
-        np.log10(
-            lums / pxl_size,
-            where=(lums != 0),
-            out=np.full_like(lums, np.log10(lum_range[0])),
-        ),
+        lums,
         cmap="inferno",
         origin="lower",
         extent=[-plt_wdth / 2, plt_wdth / 2, -plt_wdth / 2, plt_wdth / 2],
