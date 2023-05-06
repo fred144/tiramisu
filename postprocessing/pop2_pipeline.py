@@ -20,7 +20,7 @@ import yt
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
+    if len(sys.argv) != 5:
         print(sys.argv[0], "usage:")
         print(
             "{} data_directory_to_postprocess start_snapshot end_snapshot step".format(
