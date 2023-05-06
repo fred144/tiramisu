@@ -85,32 +85,7 @@ if __name__ == "__main__":
         z_pos = np.array(ad["star", "particle_position_z"])
 
         if len(star_id) == 0:
-            save_time = "{:.2f}".format(current_time).replace(".", "_")
-            save_redshift = "{:.3f}".format(redshft).replace(".", "_")
-            save_name = os.path.join(
-                container,
-                "nopop2-{}-{}-myr-z-{}.txt".format(
-                    snap_strings[i], save_time, save_redshift
-                ),
-            )
-            star_info = np.zeros(9)
-            header = (
-                "|t_sim[Myr],z,ctr(code),ctr(pc)|"
-                "|ID"
-                "|CurrentAges[Myr]|"
-                " "
-                "|log10UV(150nm)Lum[erg/s]|"
-                " "
-                "|X[pc]"
-                "|Y[pc]|"
-                "|Z[pc]|"
-                " "
-                "|Vx[km/s]"
-                "|Vy[km/s]|"
-                "|Vz[km/s]|"
-                " "
-            )
-            np.savetxt(save_name, X=star_info, header=header, fmt="%.6e")
+
             continue
 
         # center based on star position distribution
