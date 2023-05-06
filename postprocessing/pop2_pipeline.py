@@ -3,19 +3,13 @@ import sys
 sys.path.append("..")  # makes sure that importing the modules work
 import numpy as np
 import os
-import glob
-from src.lum.lum_lookup import lum_look_up_table
-from scipy.ndimage import gaussian_filter
 
-from tools.cosmo import t_myr_from_z, code_age_to_myr
+from src.lum.lum_lookup import lum_look_up_table
+from tools.cosmo import code_age_to_myr
 from tools.ram_fields import ram_fields
 from tools.fscanner import filter_snapshots
 
-import matplotlib.pyplot as plt
-import matplotlib.cm as cm
-import matplotlib.patches as patches
-import matplotlib as mpl
-from matplotlib.colors import LinearSegmentedColormap
+
 import yt
 
 
@@ -31,7 +25,7 @@ if __name__ == "__main__":
 
     cell_fields, epf = ram_fields()
     # datadir = os.path.relpath("../../cosm_test_data/refine")
-    datadir = sys.argv[0]
+    datadir = sys.argv[1]
 
     # datadir = os.path.relpath("../../sim_data/cluster_evolution/CC-radius1")
 
