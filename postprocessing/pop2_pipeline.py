@@ -30,7 +30,7 @@ if __name__ == "__main__":
     # datadir = os.path.relpath("../../sim_data/cluster_evolution/CC-radius1")
 
     sim_run = datadir.replace("\\", "/").split("/")[-1]
-    print("sim run", sim_run)
+    print("- sim run", sim_run)
     snaps, snap_strings = filter_snapshots(
         datadir,
         int(sys.argv[2]),
@@ -38,13 +38,13 @@ if __name__ == "__main__":
         sampling=int(sys.argv[4]),
         str_snaps=True,
     )
-    container = os.path.join(
+    pop2_container = os.path.join(
         "..", "..", "container_tiramisu", "post_processed", "pop2", sim_run
     )
 
-    if not os.path.exists(container):
-        print("Creating container", container)
-        os.makedirs(container)
+    if not os.path.exists(pop2_container):
+        print("Creating container", pop2_container)
+        os.makedirs(pop2_container)
     else:
         pass
     sim_logfile = os.path.join(
@@ -86,7 +86,7 @@ if __name__ == "__main__":
         z_pos = np.array(ad["star", "particle_position_z"])
 
         if len(star_id) == 0:
-
+            print("- no particle data to extract")
             continue
 
         # center based on star position distribution
@@ -168,7 +168,7 @@ if __name__ == "__main__":
         save_time = "{:.2f}".format(current_time).replace(".", "_")
         save_redshift = "{:.3f}".format(redshft).replace(".", "_")
         save_name = os.path.join(
-            container,
+            pop2_container,
             "pop2-{}-{}-myr-z-{}.txt".format(snap_strings[i], save_time, save_redshift),
         )
 
