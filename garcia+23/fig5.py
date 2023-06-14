@@ -31,7 +31,7 @@ def star_formation_efficiency(n_h, mass, metallicity):
     return efficiency
 
 
-run = "../../container_tiramisu/sim_log_files/CC-radius1"
+run = "../../container_tiramisu/sim_log_files/cc-kazu-run"
 run_name = run.split("/")[-1]
 
 fs070_log_sfc = np.loadtxt(os.path.join(run, "logSFC"))
@@ -151,7 +151,7 @@ with plt.rc_context(
     #     fontsize=12,
     #     handles=[f35, f70],
     # )
-
+    plt.show()
     # plt.savefig(
     #     "../../g_drive/Research/AstrophysicsSimulation/sci_plots/final/lowres/sfc_mass_sfe.png",
     #     dpi=300,

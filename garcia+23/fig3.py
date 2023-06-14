@@ -62,7 +62,7 @@ def sfc_temperature(n_h, redshifts, ra, ncut=10):
 
 # log_sfc = np.loadtxt("../sim_log_files/fs07_refine/logSFC")
 
-run = "../../container_tiramisu/sim_log_files/CC-radius1b"
+run = "../../container_tiramisu/sim_log_files/cc-kazu-run"
 run_name = run.split("/")[-1]
 
 log_sfc = np.loadtxt(os.path.join(run, "logSFC"))
@@ -193,7 +193,7 @@ hist_ax.hist(
 hist_ax.set_xlabel(r"$\mathrm{PDF} (T_{\rm MC})$")
 hist_ax.tick_params(axis="both", labelleft=False, labelsize=6)
 
-
+plt.show()
 # plt.savefig(
 #     "../../g_drive/Research/AstrophysicsSimulation/sci_plots/final/lowres/sfc_metal_temp.png",
 #     dpi=300,

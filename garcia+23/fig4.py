@@ -28,7 +28,7 @@ star forming clouds.
 """
 latest_redshift = 8.0
 
-run = "../../container_tiramisu/sim_log_files/CC-radius1"
+run = "../../container_tiramisu/sim_log_files/cc-kazu-run"
 run_name = run.split("/")[-1]
 
 log_sfc = np.loadtxt(os.path.join(run, "logSFC"))
@@ -93,10 +93,10 @@ cmap = cmap(np.linspace(0, 1, 8))
 color = cmap[1]
 
 
-mass_xrange = (2e3, 4e5)
+mass_xrange = (5e2, 2e5)
 bns = 15
 metal_xrange = (1.5e-4, 1e-2)
-radius_xrange = np.arange(1, 14, 1)
+radius_xrange = np.arange(0.5, 4, 0.2)
 
 # mass function
 mass, counts = log_data_function(m_sun_cloud, bns, mass_xrange)
@@ -250,6 +250,7 @@ ax[2].legend()
 
 
 plt.subplots_adjust(hspace=0, wspace=0.32)
+plt.show()
 # plt.savefig(
 #     "../../g_drive/Research/AstrophysicsSimulation/sci_plots/final/lowres/sfc_mfunc.png",
 #     dpi=300,
