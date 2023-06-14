@@ -31,7 +31,7 @@ def star_formation_efficiency(n_h, mass, metallicity):
     return efficiency
 
 
-run = "../../container_tiramisu/sim_log_files/CC-radius1b"
+run = "../../container_tiramisu/sim_log_files/CC-radius1"
 run_name = run.split("/")[-1]
 
 fs070_log_sfc = np.loadtxt(os.path.join(run, "logSFC"))
@@ -64,11 +64,11 @@ with plt.rc_context(
 
     im2 = ax.scatter(
         m_sun_cloud_fs070,
-        # star_formation_efficiency(
-        #     n_hydrogen_fs070, m_sun_cloud_fs070, metal_zun_cloud_fs070
-        # )
-        # * 100
-        (mstar_cloud / m_sun_cloud_fs070) * 100,
+        star_formation_efficiency(
+            n_hydrogen_fs070, m_sun_cloud_fs070, metal_zun_cloud_fs070
+        )
+        * 100,
+        # (mstar_cloud / m_sun_cloud_fs070) * 100,
         c=np.log10(n_hydrogen_fs070),
         label=r"$f_{*} = 0.70 $",
         cmap=cmap,

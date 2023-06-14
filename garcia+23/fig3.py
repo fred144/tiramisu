@@ -62,7 +62,7 @@ def sfc_temperature(n_h, redshifts, ra, ncut=10):
 
 # log_sfc = np.loadtxt("../sim_log_files/fs07_refine/logSFC")
 
-run = "../../container_tiramisu/sim_log_files/CC-radius1"
+run = "../../container_tiramisu/sim_log_files/CC-radius1b"
 run_name = run.split("/")[-1]
 
 log_sfc = np.loadtxt(os.path.join(run, "logSFC"))
