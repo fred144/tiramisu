@@ -30,6 +30,7 @@ if __name__ == "__main__":
     # datadir = os.path.relpath("../../sim_data/cluster_evolution/CC-radius1")
 
     sim_run = datadir.replace("\\", "/").split("/")[-1]
+    print("sim run", sim_run)
     snaps, snap_strings = filter_snapshots(
         datadir,
         int(sys.argv[2]),
