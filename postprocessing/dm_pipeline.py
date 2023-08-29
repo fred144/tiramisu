@@ -35,7 +35,8 @@ if __name__ == "__main__":
     # end_snapshot = 500
     # step = 1
 
-    sim_run = datadir.replace("\\", "/").split("/")[-1]
+    # sim_run = datadir.replace("\\", "/").split("/")[-1]
+    sim_run = os.path.basename(os.path.normpath(datadir))
     snaps, snap_strings = filter_snapshots(
         datadir,
         start_snapshot,
