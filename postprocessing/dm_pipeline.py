@@ -14,14 +14,14 @@ import yt
 from yt.extensions.astro_analysis.halo_analysis import HaloCatalog
 
 if __name__ == "__main__":
-    # if len(sys.argv) != 5:
-    #     print(sys.argv[0], "usage:")
-    #     print(
-    #         "{} data_directory_to_postprocess start_snapshot end_snapshot step".format(
-    #             sys.argv[0]
-    #         )
-    #     )
-    #     exit()
+    if len(sys.argv) != 5:
+        print(sys.argv[0], "usage:")
+        print(
+            "{} data_directory_to_postprocess start_snapshot end_snapshot step".format(
+                sys.argv[0]
+            )
+        )
+        exit()
 
     datadir = sys.argv[1]
     start_snapshot = int(sys.argv[2])
