@@ -22,22 +22,25 @@ if __name__ == "__main__":
     #         )
     #     )
     #     exit()
-    processor_number = 0
-    cell_fields, epf = ram_fields()
+
     # # datadir = os.path.relpath("../../cosm_test_data/refine")
     # datadir = sys.argv[1]
 
+    # local path for test
     # datadir = os.path.relpath("../../sim_data/cluster_evolution/CC-radius1")
-    datadir = os.path.relpath("../../cosm_test_data/refine")
-
+    datadir = os.path.relpath("../../garcia23_testdata/fs07_refine")
+    start_snapshot = 500
+    end_snapshot = 500
+    step = 1
     sim_run = datadir.replace("\\", "/").split("/")[-1]
     snaps, snap_strings = filter_snapshots(
         datadir,
-        int(sys.argv[2]),
-        int(sys.argv[3]),
-        sampling=int(sys.argv[4]),
+        start_snapshot,
+        end_snapshot,
+        sampling=step,
         str_snaps=True,
     )
+
     bsc_container = os.path.join(
         "..", "..", "container_tiramisu", "post_processed", "bsc", sim_run
     )
@@ -47,6 +50,9 @@ if __name__ == "__main__":
         os.makedirs(bsc_container)
     else:
         pass
+
+    processor_number = 0
+    cell_fields, epf = ram_fields()
 
     tot_m_bsc = []
 
@@ -161,7 +167,6 @@ if __name__ == "__main__":
 
         cata_h5.close()
         for i, (new_h, h_id) in enumerate(zip(start_of_new_halo, halo_id), start=1):
-
             if i == np.size(
                 start_of_new_halo
             ):  # cheeky over ride once it reaches end of list

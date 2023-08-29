@@ -1,3 +1,6 @@
+"""
+cosmology calculators
+"""
 import sys
 
 sys.path.append("../..")
@@ -15,7 +18,9 @@ mylog.setLevel(40)
 warnings.simplefilter(action="ignore", category=RuntimeWarning)
 
 
-def code_age_to_myr(all_star_ages, hubble_const, unique_age=True, true_age=False):
+def code_age_to_myr(
+    all_star_ages, hubble_const, unique_age=True, true_age=False
+):
     r"""
     Returns an array with unique birth epochs in Myr given
     raw_birth_epochs = ad['star', 'particle_birth_epoch']
@@ -28,13 +33,19 @@ def code_age_to_myr(all_star_ages, hubble_const, unique_age=True, true_age=False
     cgs_yr = 3.1556926e7  # 1yr (in s)
     cgs_pc = 3.08567758e18  # pc (in cm)
     h_0 = hubble_const * 100  # hubble parameter (km/s/Mpc)
-    h_0_invsec = h_0 * 1e5 / (1e6 * cgs_pc)  # hubble constant h [km/s Mpc-1]->[1/sec]
+    h_0_invsec = (
+        h_0 * 1e5 / (1e6 * cgs_pc)
+    )  # hubble constant h [km/s Mpc-1]->[1/sec]
     h_0inv_yr = 1 / h_0_invsec / cgs_yr  # 1/h_0 [yr]
 
     if unique_age is True:
         # process to unique birth epochs only as well as sort them
-        be_star_processed = np.array(sorted(list(set(all_star_ages.to_ndarray()))))
-        star_age_myr = (be_star_processed * h_0inv_yr) / 1e6  # t=0 is the present
+        be_star_processed = np.array(
+            sorted(list(set(all_star_ages.to_ndarray())))
+        )
+        star_age_myr = (
+            be_star_processed * h_0inv_yr
+        ) / 1e6  # t=0 is the present
         relative_ages = star_age_myr - star_age_myr.min()
     else:
         all_stars = all_star_ages

@@ -60,7 +60,9 @@ if __name__ == "__main__":
         print(
             "# ________________________________________________________________________"
         )
-        infofile = os.path.abspath(os.path.join(sn, f"info_{snap_strings[i]}.txt"))
+        infofile = os.path.abspath(
+            os.path.join(sn, f"info_{snap_strings[i]}.txt")
+        )
 
         print("# reading in", infofile)
 
@@ -118,13 +120,17 @@ if __name__ == "__main__":
 
         # all the birth epochs of the stars
         converted_unfiltered = code_age_to_myr(
-            ad["star", "particle_birth_epoch"], current_hubble, unique_age=False
+            ad["star", "particle_birth_epoch"],
+            current_hubble,
+            unique_age=False,
         )
 
         # ==========================luminosity mappping data extraction==============
 
         birthtime = np.round(converted_unfiltered + birth_start, 3)  #!
-        current_ages = np.array(np.round(current_time, 3) - np.round(birthtime, 3))
+        current_ages = np.array(
+            np.round(current_time, 3) - np.round(birthtime, 3)
+        )
         # import time
 
         # s = time.perf_counter()
@@ -169,7 +175,9 @@ if __name__ == "__main__":
         save_redshift = "{:.3f}".format(redshft).replace(".", "_")
         save_name = os.path.join(
             pop2_container,
-            "pop2-{}-{}-myr-z-{}.txt".format(snap_strings[i], save_time, save_redshift),
+            "pop2-{}-{}-myr-z-{}.txt".format(
+                snap_strings[i], save_time, save_redshift
+            ),
         )
 
         header = (
