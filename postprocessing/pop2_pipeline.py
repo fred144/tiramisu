@@ -58,9 +58,7 @@ if __name__ == "__main__":
     )
 
     for i, sn in enumerate(snaps):
-        print(
-            "# ________________________________________________________________________"
-        )
+        print("# ____________________________________________________________________")
         infofile = os.path.abspath(os.path.join(sn, f"info_{snap_strings[i]}.txt"))
 
         print("# reading in", infofile)
