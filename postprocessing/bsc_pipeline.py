@@ -268,8 +268,8 @@ if __name__ == "__main__":
 
         print("# reading in", infofile)
 
-        # ds = yt.load(infofile, fields=cell_fields, extra_particle_fields=epf)
-        # ad = ds.all_data()
+        ds = yt.load(infofile, fields=cell_fields, extra_particle_fields=epf)
+        ad = ds.all_data()
 
         clump_cata_yt = f"{bsc_container}/info_{snap_strings[i]}/info_{snap_strings[i]}.{processor_number}.h5"
         snapshot_container = os.path.join(bsc_container, f"info_{snap_strings[i]}")
@@ -298,7 +298,7 @@ if __name__ == "__main__":
         halo_cat_plotting = HaloCatalog(halos_ds=cata_yt)
         halo_cat_plotting.load()
         cata_yt = cata_yt.all_data()
-
+        # %%
         # post processed pop2
         header = (
             "ID"
