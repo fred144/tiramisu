@@ -141,7 +141,7 @@ def projected_surf_densities(
         # r_inner = np.geomspace(0, radius, num=num_bins, endpoint=False)
     else:
         r = np.arange(0, radius + dr, dr)
-
+    #print(r)
     distances = np.sqrt(np.sum(np.square(all_positions), axis=1))
 
     mass_per_bin, bin_edges = np.histogram(distances, bins=r, weights=masses)
@@ -409,21 +409,6 @@ if __name__ == "__main__":
             clump_y = pop2_y[clump_mask] - clump_ctr_y
             clump_z = pop2_z[clump_mask] - clump_ctr_z
 
-            (
-                log_bin_ctrs,
-                surf_density,
-                surf_density_err,
-                r_half,
-                r_half_light,
-                m_clump,
-                lum_clump,
-            ) = projected_surf_densities(
-                x_coord=clump_x,
-                y_coord=clump_y,
-                lums=10 ** pop2_lums[clump_mask],
-                masses=pop2_masses[clump_mask],
-                radius=rad,
-            )
             # plt.figure()
             # plt.plot(log_bin_ctrs, surf_density)
             # plt.xscale("log")
@@ -433,6 +418,22 @@ if __name__ == "__main__":
             disrupted_ids = []
             profiled_ids = []
             try:  # it can be fitted, otherwise no
+                (
+                    log_bin_ctrs,
+                    surf_density,
+                    surf_density_err,
+                    r_half,
+                    r_half_light,
+                    m_clump,
+                    lum_clump,
+                ) = projected_surf_densities(
+                    x_coord=clump_x,
+                    y_coord=clump_y,
+                    lums=10 ** pop2_lums[clump_mask],
+                    masses=pop2_masses[clump_mask],
+                    radius=rad,
+                )
+
                 fit_params, pcov = curve_fit(
                     f=modified_king_model,
                     xdata=log_bin_ctrs,
