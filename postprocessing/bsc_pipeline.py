@@ -246,13 +246,13 @@ if __name__ == "__main__":
     bsc_cat_container = os.path.join(
         "..",
         "..",
-        "container_tiramisu_old",
+        "container_tiramisu",
         "post_processed",
         "bsc_catalogues",
         sim_run,
     )
     pop2_container = os.path.join(
-        "..", "..", "container_tiramisu_old", "post_processed", "pop2", sim_run
+        "..", "..", "container_tiramisu", "post_processed", "pop2", sim_run
     )
 
     check_path(bsc_cat_container)
