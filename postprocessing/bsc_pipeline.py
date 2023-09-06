@@ -81,48 +81,55 @@ def trunc_radius(sigma_0: float, r_c: float, alpha: float, sigma_bg: float):
 
 
 def projected_surf_densities(
-    x_coord,
-    y_coord,
-    lums,
-    masses,
-    radius,
+    x_coord: float,
+    y_coord: float,
+    lums: float,
+    masses: float,
+    radius: float,
     num_bins: int = 25,
     log_bins=True,
     calc_half_r=True,
     dr=None,
 ):
-    r"""
-    Gets projected density profiles Σ
+    """
+    Gets projected density profiles surf_density
     Log bins by default.
     Assumes that the cluster fed to this has already been translated to (0,0)
 
     Parameters
     ----------
-    x_coord : TYPE
-        DESCRIPTION.
-    y_coord : TYPE
-        DESCRIPTION.
-    lums : TYPE
-        DESCRIPTION.
-    masses : TYPE
-        DESCRIPTION.
-    radius : TYPE
-        DESCRIPTION.
+    x_coord : float
+        x coordinate of the stars in the projected coords .
+    y_coord : float
+        y coordinate of the stars in the projected coords .
+    lums : float
+        unloged luminosities of the stars.
+    masses : float
+        masses of the stars.
+    radius : float
+        boundary radius as determined by the clump/halo finder.
     num_bins : int, optional
-        DESCRIPTION. The default is 25.
+        number of bins in the profile. The default is 25.
     log_bins : TYPE, optional
-        DESCRIPTION. The default is True.
+        log-space bin or not. The default is True.
     calc_half_r : TYPE, optional
-        DESCRIPTION. The default is True.
+        calculate half mass and half light radius. The default is True.
     dr : TYPE, optional
-        DESCRIPTION. The default is None.
+        for linear space, spacing. The default is None.
 
     Returns
     -------
     list
-        DESCRIPTION.
+        bin_ctrs,
+        surf_mass_density,
+        err_surf_mass_density,
+        half_mass_r,
+        half_light_r,
+        total_clust_m,
+        total_clust_lum,
 
     """
+
     # TODO: calculate half mass
     starting_point = 0.01  # pc might have to tweak this.
 
@@ -201,32 +208,31 @@ def projected_surf_densities(
 
 
 if __name__ == "__main__":
-    # if len(sys.argv) != 5:
-    #     print(sys.argv[0], "usage:")
-    #     print(
-    #         "{} data_directory_to_postprocess start_snapshot end_snapshot step".format(
-    #             sys.argv[0]
-    #         )
-    #     )
-    #     exit()
-    # else:
-    #     print("# ____________________________________________________________________")
-    #     print("# running BSC finder / star clump finder")
-    #     print("# ____________________________________________________________________")
+    if len(sys.argv) != 5:
+        print(sys.argv[0], "usage:")
+        print(
+            "{} data_directory_to_postprocess start_snapshot end_snapshot step".format(
+                sys.argv[0]
+            )
+        )
+        exit()
+    else:
+        print("# ____________________________________________________________________")
+        print("# running BSC finder / star clump finder")
+        print("# ____________________________________________________________________")
 
-    # datadir = sys.argv[1]
-    # start_snapshot = int(sys.argv[2])
-    # end_snapshot = int(sys.argv[3])
-    # step = int(sys.argv[4])
+    datadir = sys.argv[1]
+    start_snapshot = int(sys.argv[2])
+    end_snapshot = int(sys.argv[3])
+    step = int(sys.argv[4])
 
     # local path for test
     # datadir = os.path.relpath("../../sim_data/cluster_evolution/CC-radius1")
-    datadir = os.path.relpath("../../garcia23_testdata/fs07_refine")
-    start_snapshot = 500
-    end_snapshot = 500
-    step = 1
+    # datadir = os.path.relpath("../../garcia23_testdata/fs07_refine")
+    # start_snapshot = 500
+    # end_snapshot = 500
+    # step = 1
 
-    # sim_run = datadir.replace("\\", "/").split("/")[-1]
     sim_run = os.path.basename(os.path.normpath(datadir))
 
     snaps, snap_strings = filter_snapshots(
@@ -237,7 +243,7 @@ if __name__ == "__main__":
         str_snaps=True,
     )
 
-    bsc_container = os.path.join(
+    bsc_cat_container = os.path.join(
         "..",
         "..",
         "container_tiramisu_old",
@@ -249,19 +255,21 @@ if __name__ == "__main__":
         "..", "..", "container_tiramisu_old", "post_processed", "pop2", sim_run
     )
 
-    check_path(bsc_container)
+    check_path(bsc_cat_container)
 
     processor_number = 0
     cell_fields, epf = ram_fields()
 
-    # save simulation wide data;e.g. for bound/unbound over time
-    tot_m_bsc = []  # mass in BSC, which is clumps that can be profiled
-    tot_m_bound = []  # clump finder mass, regardless if can be profiled
-    tot_m_field = []  # mass in stars in the field component
-    time_myr = []
-    redshift = []
-    snap_num = []
-    # %%
+    tseries_header = (
+        "snapshot time[myr] redshift clumped_mass[msun] "
+        "bsc_mass[msun] disrupted_mass[msun] unbound_mass[msun] "
+        "clumped_lum UV (150nm) [erg/s]"
+        "total_lum UV (150nm) [erg/s] "
+        "disrupted_lum UV (150nm) [erg/s] "
+        "unbound_lum UV (150nm) [erg/s] "
+    )
+    time_series_data = []
+
     for i, sn in enumerate(snaps):
         print("# ____________________________________________________________________")
         infofile = os.path.abspath(os.path.join(sn, f"info_{snap_strings[i]}.txt"))
@@ -271,8 +279,8 @@ if __name__ == "__main__":
         ds = yt.load(infofile, fields=cell_fields, extra_particle_fields=epf)
         ad = ds.all_data()
 
-        clump_cata_yt = f"{bsc_container}/info_{snap_strings[i]}/info_{snap_strings[i]}.{processor_number}.h5"
-        snapshot_container = os.path.join(bsc_container, f"info_{snap_strings[i]}")
+        clump_cata_yt = f"{bsc_cat_container}/info_{snap_strings[i]}/info_{snap_strings[i]}.{processor_number}.h5"
+        snapshot_container = os.path.join(bsc_cat_container, f"info_{snap_strings[i]}")
         if os.path.isfile(clump_cata_yt) is True:
             print("# file already exists")
             print("# reading in", clump_cata_yt)
@@ -288,7 +296,7 @@ if __name__ == "__main__":
                     "link": 0.00001,  # "best"
                     "dm_only": False,
                 },
-                output_dir=bsc_container,
+                output_dir=bsc_cat_container,
             )
             hc.create()
 
@@ -298,9 +306,9 @@ if __name__ == "__main__":
         halo_cat_plotting = HaloCatalog(halos_ds=cata_yt)
         halo_cat_plotting.load()
         cata_yt = cata_yt.all_data()
-        # %%
+
         # post processed pop2
-        header = (
+        pop2_header = (
             "ID"
             "|CurrentAges[Myr]|"
             " "
@@ -347,27 +355,8 @@ if __name__ == "__main__":
 
         # get clump stats
         clump_rad = np.array(ds.arr(cata_yt["all", "virial_radius"], "cm").to("pc"))
-        # clump_oldest_star = np.max(pop2_ages)
-        # clump_youngest_star = np.min(pop2_ages)
-        # clump_common_star = st.mode(pop2_ages)
-        # mean_vx = np.mean(pop2_vx)
-        # mean_vy = np.mean(pop2_vy)
-        # mean_vz = np.mean(pop2_vz)
-        # std_vx = np.std(pop2_vx)
-        # std_vy = np.std(pop2_vy)
-        # std_vz = np.std(pop2_vz)
 
-        # fmt: off
-        # cat_pc = np.vstack(
-        #     (
-        #         clump_id, x, y, z, clump_rad, clump_oldest_star, clump_youngest_star,
-        #         clump_common_star,
-        #     )
-        # )
-
-        # fmt: on
-
-        # np.savetxt(bsc_container, X=cat_pc.T, header=header)
+        # np.savetxt(bsc_cat_container, X=cat_pc.T, header=header)
 
         # get particles belonging to each halo
         num_stars_in_clump = np.array(cata_h5["particle_number"])
@@ -403,10 +392,12 @@ if __name__ == "__main__":
             clump_ctr_y = y[c - 1]
             clump_ctr_z = z[c - 1]
             rad = clump_rad[c - 1]
+            # ages in Myr
             age = float(st.mode(pop2_ages[clump_mask], keepdims=True)[0])
             oldest_star = np.max(pop2_ages[clump_mask])
             youngest_star = np.min(pop2_ages[clump_mask])
             clump_mass = np.sum(pop2_masses[clump_mask])
+
             # clump_integrated_light = np.sum(10 ** pop2_lums[clump_mask])
             # 1d velovity dispersions
             std_vx = np.std(pop2_vx[clump_mask])
@@ -420,8 +411,8 @@ if __name__ == "__main__":
 
             (
                 log_bin_ctrs,
-                Σ,
-                Σ_err,
+                surf_density,
+                surf_density_err,
                 r_half,
                 r_half_light,
                 m_clump,
@@ -434,17 +425,19 @@ if __name__ == "__main__":
                 radius=rad,
             )
             # plt.figure()
-            # plt.plot(log_bin_ctrs, Σ)
+            # plt.plot(log_bin_ctrs, surf_density)
             # plt.xscale("log")
             # plt.yscale("log")
 
             # the profiler can decide if it's a bsc or not
-            try:
+            disrupted_ids = []
+            profiled_ids = []
+            try:  # it can be fitted, otherwise no
                 fit_params, pcov = curve_fit(
                     f=modified_king_model,
                     xdata=log_bin_ctrs,
-                    ydata=Σ,
-                    sigma=Σ_err,
+                    ydata=surf_density,
+                    sigma=surf_density_err,
                     absolute_sigma=True,
                     p0=[1e4, 0.2, 2, 10],
                     bounds=([0, 0, 0, 0], [np.inf, np.inf, 100, np.inf]),
@@ -464,8 +457,9 @@ if __name__ == "__main__":
                     )
                     print("> Saving as {}".format(savename))
                     np.savetxt(
-                        savename, X=disrupted_clump_data, header=header, fmt="%.6e"
+                        savename, X=disrupted_clump_data, header=pop2_header, fmt="%.6e"
                     )
+                    disrupted_ids.append(star_ids_inside)
 
                 else:
                     print("> Clump {} is a BSC".format(clump_idnum))
@@ -494,40 +488,47 @@ if __name__ == "__main__":
                         truncation_radius,
                     ]
                     reprocessed_clump_cata.append(catalogue_to_save)
-                    bsc_profile_dat = np.vstack([log_bin_ctrs, Σ, Σ_err]).T
-                    savename = os.path.join(
-                        snapshot_container,
-                        "bsc_profile_{}.txt".format(str(int(clump_idnum)).zfill(4)),
-                    )
+                    bsc_profile_dat = np.vstack(
+                        [log_bin_ctrs, surf_density, surf_density_err]
+                    ).T
+
                     np.savetxt(
-                        savename,
+                        os.path.join(
+                            snapshot_container,
+                            "bsc_profile_{}.txt".format(str(int(clump_idnum)).zfill(4)),
+                        ),
                         X=bsc_profile_dat,
                         header=r"radial_distnace [pc], sigma [msun/pc^2], err",
                         fmt="%.6e",
                     )
 
                     bsc_clump_dat = pop2_data[:, 1:][clump_mask]
-                    savename = os.path.join(
-                        snapshot_container,
-                        "bsc_{}.txt".format(str(int(clump_idnum)).zfill(4)),
+                    np.savetxt(
+                        os.path.join(
+                            snapshot_container,
+                            "bsc_{}.txt".format(str(int(clump_idnum)).zfill(4)),
+                        ),
+                        X=bsc_clump_dat,
+                        header=pop2_header,
+                        fmt="%.6e",
                     )
-                    np.savetxt(savename, X=bsc_clump_dat, header=header, fmt="%.6e")
+                    profiled_ids.append(star_ids_inside)
             except:
                 pass
                 print(" ")
                 print("> Clump {} is not a bound star cluster".format(clump_idnum))
                 print(" ")
-            #!!! aggregate bound mass and unbound mass/ via profiler
+
             # segregate field stars and bound stars
         reprocessed_clump_cata = np.array(reprocessed_clump_cata)
         reprocessed_clump_header = (
-            "clump_id \t x[pc] \t y[pc] \tz[pc] \t rad[pc] \t"
-            "age [myr] \t oldest [myr] \t youngest [myr] \t mass [masun]"
-            "std_vx [km/s] \t std_vy [km/s] \t std_vz [km/s]"
-            "core_radius [pc] \t err "
-            "alpha \t alpha_err"
-            "central_dens [msun/pc^2] \t err"
-            "bg_dens [msun/pc^2] \t err"
+            "clump_id \t x[pc] \t y[pc] \t z[pc] \t rad[pc] \t"
+            "age [myr] \t oldest [myr] \t youngest [myr] \t mass [msun] \t "
+            "std_vx [km/s] \t std_vy [km/s] \t std_vz [km/s] \t "
+            "core_radius [pc] \t err \t "
+            "alpha \t err \t "
+            "central_dens [msun/pc^2] \t err \t "
+            "bg_dens [msun/pc^2] \t err \t "
             "trunc rad [msun/pc^2]"
         )
 
@@ -535,43 +536,89 @@ if __name__ == "__main__":
         redshft = ds.current_redshift
         save_time = "{:.2f}".format(current_time).replace(".", "_")
         save_redshift = "{:.3f}".format(redshft).replace(".", "_")
-        savename = os.path.join(
-            snapshot_container,
-            "catalogue-{}-{}-myr-z-{}.txt".format(
-                snap_strings[i], save_time, save_redshift
-            ),
-        )
+
         np.savetxt(
-            savename,
+            os.path.join(
+                snapshot_container,
+                "profiled_catalogue-{}-{}-myr-z-{}.txt".format(
+                    snap_strings[i], save_time, save_redshift
+                ),
+            ),
             X=reprocessed_clump_cata,
             header=reprocessed_clump_header,
             fmt="%.6e",
         )
 
-        #!!! mean_vx, mean_vy, mean_vz, std_vx, std_vy, std_vz,
-        #!!! two catalogues
-        #!!! master catalogue and a break down of each
-        #!!! todo  make lum bound and unbound time series
+        clumped_mask = np.isin(star_ids, bound_star_ids)
+        all_clumped_stars = pop2_data[:, 1:][clumped_mask]
+        all_field_stars = pop2_data[:, 1:][~clumped_mask]
+        all_profiled_stars = pop2_data[:, 1:][np.isin(star_ids, profiled_ids)]
+        all_disrupted_stars = pop2_data[:, 1:][np.isin(star_ids, disrupted_ids)]
 
-        # %%
-        # take the x,y,z of individual clusters and subtract center of halo cluster
-        # # this makes them all centered at the origin (0,0,0)
-        # gc_stars = np.vstack((gc_x, gc_y, gc_z)).T - cat_pc[:, 1:-1][i - 1]
-        # gc_stars = np.column_stack((star_ids_inside, gc_stars))
-        # header = "star id \t star_x_coords [pc] \t star_y_coords [pc] \t star_z_coords [pc] "
+        np.savetxt(
+            os.path.join(
+                snapshot_container,
+                "clumped_stars-{}-{}-myr-z-{}.txt".format(
+                    snap_strings[i], save_time, save_redshift
+                ),
+            ),
+            X=all_clumped_stars,
+            header=pop2_header,
+            fmt="%.6e",
+        )
 
-        # save_name = "../halo_data/{}/{}/info_{}/gc_vir_{}.txt".format(
-        #     simulation_run,
-        #     finder_profiler_run,
-        #     snapshot_num_string,
-        #     str(int(h_id)).zfill(3),
-        # )
-        # np.savetxt(save_name, X=gc_stars, header=header)
-        # cata_yt = cata_yt.all_data()
-        # dm_halo_m = np.max(np.array(ds.arr(cata_yt["all", "particle_mass"]).to("Msun")))
-        # haloidx = np.argmax(
-        #     np.array(ds.arr(cata_yt["all", "particle_mass"]).to("Msun"))
-        # )
-        # vir_rad = np.array(ds.arr(cata_yt["all", "virial_radius"]).to("pc"))[haloidx]
-        # m_vir.append(dm_halo_m)
-        # r_vir.append(vir_rad)
+        np.savetxt(
+            os.path.join(
+                snapshot_container,
+                "field_stars-{}-{}-myr-z-{}.txt".format(
+                    snap_strings[i], save_time, save_redshift
+                ),
+            ),
+            X=all_field_stars,
+            header=pop2_header,
+            fmt="%.6e",
+        )
+
+        # clump finder mass, regardless if can be profiled
+        tot_m_clumped = np.sum(all_clumped_stars[:, 9])
+        # mass in BSC, which is clumps that can be profiled
+        tot_m_bsc = np.sum(all_profiled_stars[:, 9])
+        tot_m_disrupted = np.sum(all_disrupted_stars[:, 9])
+        # mass in stars in the field component
+        unbound_mass = np.sum(all_field_stars[:, 9])
+
+        tot_lum_clumped = np.sum(all_clumped_stars[:, 2] ** 2)
+        tot_lum_bsc = np.sum(all_profiled_stars[:, 2] ** 2)
+        tot_lum_disrupted = np.sum(all_disrupted_stars[:, 2] ** 2)
+        unbound_lum = np.sum(all_field_stars[:, 2] ** 2)
+        # save simulation wide data;e.g. for bound/unbound over time
+
+        save_per_snap = [
+            float(snap_strings[i]),
+            current_time,
+            redshft,
+            tot_m_clumped,
+            tot_m_bsc,
+            tot_m_disrupted,
+            unbound_mass,
+            tot_lum_clumped,
+            tot_lum_bsc,
+            tot_lum_disrupted,
+            unbound_lum,
+        ]
+
+        time_series_data.append(save_per_snap)
+
+        np.savetxt(
+            os.path.join(
+                bsc_cat_container,
+                "{}_timeseries-{}-{}.txt".format(
+                    sim_run, snap_strings[0], snap_strings[-1]
+                ),
+            ),
+            X=np.array(time_series_data),
+            header=tseries_header,
+            fmt="%.6e",
+        )
+
+        print("> updated table with snapshot_{} data", snap_strings[i])
