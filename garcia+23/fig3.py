@@ -1,50 +1,38 @@
+import sys
+
+sys.path.append("..")
+
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib
 import matplotlib.lines as mlines
 import os
 import matplotlib as mpl
-
-#!!! to do generalize so that you can plot multiple simulations by looping
-mpl.rcParams.update(mpl.rcParamsDefault)
-plt.rcParams.update(
-    {
-        "font.family": "serif",
-        "mathtext.fontset": "cm",
-        "xtick.labelsize": 10,
-        "ytick.labelsize": 10,
-        "font.size": 12,
-        "xtick.direction": "in",
-        "ytick.direction": "in",
-        "ytick.right": True,
-        "xtick.top": True,
-    }
-)
+from tools import plotstyle
 
 
-def n_crit(tem, z):
-    return 5.0e4 * ((1.0 + z) / 10.0) ** 2 * (tem / 100.0)
+def n_crit(temp, z):
+    return 5.0e4 * ((1.0 + z) / 10.0) ** 2 * (temp / 100.0)
 
 
-def fac(tem, z, n_H):
-    return n_H / (5.0e3 * ((1.0 + z) / 10.0) ** 2 * (tem / 100.0))
+def fac(temp, z, number_dens_hydrogen):
+    return number_dens_hydrogen / (5.0e3 * ((1.0 + z) / 10.0) ** 2 * (temp / 100.0))
 
 
-def radius(n_H, tem, ra):
-    m_H = 1.6e-24
+def radius(number_dens_hydrogen, tem, ra):
+    m_hydrogen = 1.6e-24
     G = 6.7e-8
     cs = 1.0e6 * np.sqrt(tem / 1.0e4)
     # x=1.0/ra
     x = 1.0
-    n_0 = n_H / (10.0 * x**3 + 3.0 - 3 * x)
-    return 2.0 * cs / np.sqrt(2.0 * np.pi * G * m_H * n_0) / 3.0e18
+    n_0 = number_dens_hydrogen / (10.0 * x**3 + 3.0 - 3 * x)
+    return 2.0 * cs / np.sqrt(2.0 * np.pi * G * m_hydrogen * n_0) / 3.0e18
 
 
-def sfc_temperature(n_h, redshifts, ra, ncut=10):
+def sfc_temperature(n_h: float, redshifts: float, ra, ncut=10):
     """
     temperature of a cloud given its hydrogen density,
     redshift of formation, current temp
-
     """
     # x = 1.0 / ra
     # n_0=10.*n_H/(10.*x**3+3-3*x)
@@ -58,6 +46,12 @@ def sfc_temperature(n_h, redshifts, ra, ncut=10):
 
 
 def plotting_interface(run_logpath, simulation_name, marker, hist_color):
+    # plot settings
+    xlims = (1e-4, 9e-3)  # zsun
+    nh_lims = (2e3, 8e4)  # mean hydrogen number density
+    temp_lims = (1.5e2, 3e3)  # Kelvin
+    hist_num_bins = 25
+
     # create a custom color map
     cvals = [0.1, 3]
     colors = ["orangered", "cyan"]
@@ -75,10 +69,6 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color):
     hist_ax_right.set_xlabel(r"$\mathrm{PDF} (T_{\rm MC})$")
     hist_ax_right.tick_params(axis="both", labelleft=False, labelsize=6)
 
-    xlims = [1e-4, 9e-3]  # zsun
-    nh_lims = [2e3, 8e4]  # mean hydrogen number density
-    temp_lims = [1.5e2, 3e3]  # Kelvin
-    hist_num_bins = 25
     temp_bins = np.geomspace(temp_lims[0], temp_lims[1], hist_num_bins)
     nh_bins = bins = np.geomspace(nh_lims[0], nh_lims[1], hist_num_bins)
 
@@ -119,6 +109,7 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color):
 
     for i, r in enumerate(run_logpath):
         run_name = os.path.basename(os.path.normpath(r))
+        print(os.path.join(r, "logSFC"))
         log_sfc = np.loadtxt(os.path.join(r, "logSFC"))
         redshft = log_sfc[:, 2]
         r_pc_cloud = log_sfc[:, 4]
@@ -200,14 +191,13 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color):
 
 
 if __name__ == "__main__":
-    # log_sfc = np.loadtxt("../sim_log_files/fs07_refine/logSFC")
     cmap = matplotlib.colormaps["Set2"]
     cmap = cmap(np.linspace(0, 1, 8))
 
     runs = [
         "../../container_tiramisu/sim_log_files/fs07_refine",
         # "../../container_tiramisu/sim_log_files/fs035_ms10",
-        "../../container_tiramisu/sim_log_files/CC-fiducial",
+        "../../container_tiramisu/sim_log_files/CC-Fiducial",
     ]
     names = [
         "$f_* = 0.70$",
