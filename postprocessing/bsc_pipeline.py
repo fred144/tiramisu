@@ -141,7 +141,7 @@ def projected_surf_densities(
         # r_inner = np.geomspace(0, radius, num=num_bins, endpoint=False)
     else:
         r = np.arange(0, radius + dr, dr)
-    #print(r)
+    # print(r)
     distances = np.sqrt(np.sum(np.square(all_positions), axis=1))
 
     mass_per_bin, bin_edges = np.histogram(distances, bins=r, weights=masses)
@@ -217,9 +217,9 @@ if __name__ == "__main__":
         )
         exit()
     else:
-        print("# ____________________________________________________________________")
-        print("# running BSC finder / star clump finder")
-        print("# ____________________________________________________________________")
+        print("********************************************************************")
+        print(" running BSC finder / star clump finder")
+        print("********************************************************************")
 
     datadir = sys.argv[1]
     start_snapshot = int(sys.argv[2])
@@ -614,7 +614,7 @@ if __name__ == "__main__":
             os.path.join(
                 bsc_cat_container,
                 "{}_timeseries-{}-{}.txt".format(
-                    sim_run, snap_strings[0], snap_strings[-1]
+                    sim_run, snap_strings[0], snap_strings[[-1]]
                 ),
             ),
             X=np.array(time_series_data),
@@ -622,4 +622,4 @@ if __name__ == "__main__":
             fmt="%.6e",
         )
 
-        print("> updated table with snapshot_{} data", snap_strings[i])
+        print(f"> updated table with snapshot_{snap_strings[i]} data")

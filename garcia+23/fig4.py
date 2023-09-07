@@ -28,7 +28,7 @@ star forming clouds.
 """
 latest_redshift = 8.0
 
-run = "../../container_tiramisu/sim_log_files/cc-kazu-run"
+run = "../../container_tiramisu/sim_log_files/CC-Fiducial"
 run_name = run.split("/")[-1]
 
 log_sfc = np.loadtxt(os.path.join(run, "logSFC"))
@@ -173,7 +173,7 @@ ax[0].legend(
     title=r"$\log_{{10}}\:(\mu,\:\Sigma)$",
     loc="upper left",
 )
-#%%metalicitty function
+# %%metalicitty function
 z, z_counts = log_data_function(metal_zsun_cloud, bns, metal_xrange)
 ax[1].plot(
     z,
@@ -211,7 +211,7 @@ ax[1].set_ylim(1, 4e4)
 ax[1].set_xscale("log")
 ax[1].set_yscale("log")
 
-#%% cloud radius mass functions.
+# %% cloud radius mass functions.
 count, bin_edges = np.histogram(r_pc_cloud, bins=radius_xrange, density=True)
 right_edges = bin_edges[1:]
 left_edges = bin_edges[:-1]
