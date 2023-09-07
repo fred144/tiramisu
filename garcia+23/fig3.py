@@ -1,9 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from mpl_toolkits.axes_grid1.axes_divider import make_axes_locatable
-from matplotlib import cm
 import matplotlib
-from matplotlib.ticker import MaxNLocator
 import matplotlib.lines as mlines
 import os
 import matplotlib as mpl
@@ -236,15 +233,10 @@ if __name__ == "__main__":
     )
 
     plt.show()
+
 # plt.savefig(
-#     "../../g_drive/Research/AstrophysicsSimulation/sci_plots/final/lowres/sfc_metal_temp.png",
+#     "../../",
 #     dpi=300,
-#     bbox_inches="tight",
-#     pad_inches=0.05,
-# )
-# plt.savefig(
-#     "../../g_drive/Research/AstrophysicsSimulation/sci_plots/final/sfc_metal_temp.png",
-#     dpi=400,
 #     bbox_inches="tight",
 #     pad_inches=0.05,
 # )

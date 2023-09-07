@@ -2,8 +2,11 @@ import numpy as np
 import pandas as pd
 
 
-def lum_look_up_table(stellar_ages, table_link, column_idx: int, log=False):
+def lum_look_up_table(
+    stellar_ages: float, table_link: str, column_idx: int = 1, log=False
+):
     """
+
     given stsci link and ages, returns likely (log) luminosities
     does this via residuals
     Here are some tables.
@@ -25,7 +28,26 @@ def lum_look_up_table(stellar_ages, table_link, column_idx: int, log=False):
 
     Short-dashed line:
     alpha = 2.35, Mup = 30 M
+
+
+    Parameters
+    ----------
+    stellar_ages : float
+        ages fo the stars in years
+    table_link : str
+        link, either URL or filepath to the table
+    column_idx : int
+        column index to use for the tables
+    log : TYPE, optional
+        are the table value logged? The default is False.
+
+    Returns
+    -------
+    luminosities : array
+        returns the luminosity of the galaxy, default UV luminosity
+
     """
+
     if "www" in table_link:
         df = pd.read_csv(table_link, delim_whitespace=True, header=None)
         data = df.to_numpy().astype(float)

@@ -614,7 +614,7 @@ if __name__ == "__main__":
             os.path.join(
                 bsc_cat_container,
                 "{}_timeseries-{}-{}.txt".format(
-                    sim_run, snap_strings[0], snap_strings[[-1]]
+                    sim_run, snap_strings[0], snap_strings[-1]
                 ),
             ),
             X=np.array(time_series_data),

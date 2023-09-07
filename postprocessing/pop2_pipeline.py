@@ -136,7 +136,7 @@ if __name__ == "__main__":
                 column_idx=1,
                 log=True,
             )
-            - 5  # since we are using 10^6 M_sun for the starburst
+            - 5  # since we are using 10^6 M_sun for the starburst and stars are 10 msun
         )
         # e = time.perf_counter()
         # print(e - s)
