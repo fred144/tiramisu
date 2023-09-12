@@ -11,33 +11,6 @@ import os
 from tools import plotstyle
 from labellines import labelLines
 
-"""
-initial mass functions and metaliccity function for the molecular clouds or
-star forming clouds.
-"""
-
-
-# fs070_log_sfc = np.loadtxt("../../container_tiramisu/sim_log_files/fs07_refine/logSFC")
-# redshft = fs070_log_sfc[:, 2]
-# mask = redshft > latest_redshift
-# redshft = redshft[mask]
-# r_pc_cloud = fs070_log_sfc[:, 4][mask]
-# m_sun_cloud = fs070_log_sfc[:, 5][mask]
-# n_hydrogen = fs070_log_sfc[:, 8][mask]
-# metal_cloud = fs070_log_sfc[:, 9][mask]
-
-# fs035_log_sfc = np.loadtxt("../sim_log_files/fs035_ms10/logSFC")
-# redshft_fs035 = fs035_log_sfc[:, 2]
-# mask = redshft_fs035 > latest_redshift
-# redshft_fs035 = redshft_fs035[mask]
-# r_pc_cloud_fs035 = fs035_log_sfc[:, 4][mask]
-# m_sun_cloud_fs035 = fs035_log_sfc[:, 5][mask]
-# n_hydrogen_fs035 = fs035_log_sfc[:, 8][mask]
-# metal_cloud_fs035 = fs035_log_sfc[:, 9][mask]
-
-# print("Total mass in MCs for 70%", np.sum(m_sun_cloud))
-# print("Total mass in MCs for 35%", np.sum(m_sun_cloud_fs035))
-
 
 def gauss(x, amp, mean, sigma):
     return amp * np.exp(-0.5 * ((x - mean) / sigma) ** 2)
@@ -86,25 +59,11 @@ def log_data_function(data: float, num_bins: int, bin_range: tuple):
     return 10**bin_ctrs, counts_per_log_bin
 
 
-# run = "../../container_tiramisu/sim_log_files/CC-Fiducial"
-# run_name = run.split("/")[-1]
-
-# log_sfc = np.loadtxt(os.path.join(run, "logSFC"))
-
-# redshft = log_sfc[:, 2]
-# mask = redshft > latest_redshift
-# redshft = redshft[mask]
-# r_pc_cloud = log_sfc[:, 4][mask]
-# m_sun_cloud = log_sfc[:, 5][mask]
-# n_hydrogen = log_sfc[:, 8][mask]
-# metal_zsun_cloud = log_sfc[:, 9][mask]  # metalicity is normalized to z_sun
-
-
 def plotting_interface(run_logpath, simulation_name, hist_color):
-    bns = 20
+    bns = 15
     mass_xrange = (2e2, 2e5)
-    metal_xrange = (1.5e-4, 0.01)
-    radius_xrange = np.arange(0.6, 4, 0.2)
+    metal_xrange = (1.5e-4, 0.015)
+    radius_xrange = np.arange(0.6, 4, 0.3)
     latest_redshift = 5
     youngest_cloud_redshift = []
 

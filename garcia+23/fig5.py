@@ -11,11 +11,6 @@ import os
 from tools import plotstyle
 from labellines import labelLines
 
-"""
-Graph for plotting the star formation efficeicney as a function of molecular 
-cloud mass for a given mean number density of hydrogen
-"""
-
 
 def star_formation_efficiency(n_h: float, mass: float, metallicity: float):
     """

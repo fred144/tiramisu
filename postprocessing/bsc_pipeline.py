@@ -588,12 +588,19 @@ if __name__ == "__main__":
         # mass in stars in the field component
         unbound_mass = np.sum(all_field_stars[:, 9])
 
-        tot_lum_clumped = np.sum(all_clumped_stars[:, 2] ** 2)
-        tot_lum_bsc = np.sum(all_profiled_stars[:, 2] ** 2)
-        tot_lum_disrupted = np.sum(all_disrupted_stars[:, 2] ** 2)
-        unbound_lum = np.sum(all_field_stars[:, 2] ** 2)
+        tot_lum_clumped = np.sum(10 ** all_clumped_stars[:, 2])
+        tot_lum_bsc = np.sum(10 ** all_profiled_stars[:, 2])
+        tot_lum_disrupted = np.sum(10 ** all_disrupted_stars[:, 2])
+        unbound_lum = np.sum(10 ** all_field_stars[:, 2])
         # save simulation wide data;e.g. for bound/unbound over time
-
+        tseries_header = (
+            "snapshot time[myr] redshift clumped_mass[msun] "
+            "bsc_mass[msun] disrupted_mass[msun] unbound_mass[msun] "
+            "clumped_lum UV (150nm) [erg/s]"
+            "total_lum UV (150nm) [erg/s] "
+            "disrupted_lum UV (150nm) [erg/s] "
+            "unbound_lum UV (150nm) [erg/s] "
+        )
         save_per_snap = [
             float(snap_strings[i]),
             current_time,

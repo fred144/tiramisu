@@ -47,9 +47,9 @@ def sfc_temperature(n_h: float, redshifts: float, ra, ncut=10):
 
 def plotting_interface(run_logpath, simulation_name, marker, hist_color):
     # plot settings
-    xlims = (1e-4, 9e-3)  # zsun
-    nh_lims = (2e3, 8e4)  # mean hydrogen number density
-    temp_lims = (1.5e2, 3e3)  # Kelvin
+    xlims = (1e-4, 8e-3)  # zsun
+    nh_lims = (2e3, 6e4)  # mean hydrogen number density
+    temp_lims = (1.5e2, 2.5e3)  # Kelvin
     hist_num_bins = 25
 
     # create a custom color map
@@ -186,6 +186,9 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color):
     radius_bar.ax.xaxis.set_label_position("top")
     radius_bar.ax.xaxis.set_ticks_position("top")
     radius_bar.ax.locator_params(nbins=6)
+
+    # ax[0].grid(ls="--", which="both")
+    # ax[1].grid(ls="--", which="both")
 
     hist_ax_left.legend(fontsize=7, loc="upper center")
 
