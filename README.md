@@ -1,4 +1,6 @@
-TIRAMISU - **T**ool for **I**nvestigating **RAM**ses s**I**mulation**S** of the early **U**niverse 
+## TIRAMISU 
+
+**T**ool for **I**nvestigating **RAM**ses s**I**mulation**S** of the early **U**niverse 
 
 Used to do analysis, postprocessing, and visualization for [arXiv:2212.13946](https://ui.adsabs.harvard.edu/abs/2022arXiv221213946G/abstract) \
 This is a lightweight version of https://github.com/fred144/globclustevo, which has grown to ~90G with the full repo history being ~160G. Shameful. 
