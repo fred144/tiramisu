@@ -8,7 +8,7 @@ def filter_snapshots(
     end_snap: int,
     sampling=1,
     str_snaps=False,
-    snapshots=True,
+    snapshot_type="ramses_snapshot",
 ):
     r"""Given a directory of outputs, return a list of relative file
     paths given a range of snapshot values.
@@ -18,13 +18,15 @@ def filter_snapshots(
     """
 
     files = sorted(os.listdir(folder_path))
-    if snapshots == True:
+    if snapshot_type == "ramses_snapshot":
         files = [x for x in files if "output_" in x]
-    sn_nums = np.array([int(i.split("_")[-1]) for i in files])
-    print("> filter_snapshots")
+        sn_nums = np.array([int(i.split("_")[-1]) for i in files])
+    elif snapshot_type == "pop2_processed":
+        sn_nums = np.array([int(i.split("-")[1]) for i in files])
+    print("> running filter_snapshots")
+    print("> processing {}".format(snapshot_type))
     print("> found", len(files), "snapshots")
     if np.isin(start_snap, sn_nums) and np.isin(end_snap, sn_nums):
-
         strt_string = str(start_snap).zfill(5)
         end_string = str(end_snap).zfill(5)
 
@@ -46,7 +48,7 @@ def filter_snapshots(
     rel_paths = [os.path.join(folder_path, file) for file in filtered_files]
 
     print("> returning", len(filtered_files))
-    print("> ")
+    print("*** done ")
     if str_snaps == False:
         return rel_paths
     else:

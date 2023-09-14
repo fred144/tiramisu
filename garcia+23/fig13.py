@@ -36,10 +36,10 @@ def plotting_interface(run_path, simulation_name, color):
         disrupted_mass = data[:, 5]
         unbound_mass = data[:, 6]
 
-        clumped_lum = 10 ** np.sqrt(data[:, 7])
-        total_lum = 10 ** np.sqrt(data[:, 8])
-        disrupted_lum = 10 ** np.sqrt(data[:, 9])
-        unbound_lum = 10 ** np.sqrt(data[:, 10])
+        clumped_lum = data[:, 7]
+        total_lum = data[:, 8]
+        disrupted_lum = data[:, 9]
+        unbound_lum = data[:, 10]
 
         earliest_times.append(t_myr.min())
         latest_times.append(t_myr.max())
@@ -49,7 +49,7 @@ def plotting_interface(run_path, simulation_name, color):
             clumped_lum + unbound_lum,
             color=color[i],
             linewidth=2,
-            alpha=0.8,
+            alpha=0.5,
             label=simulation_name[i],
         )
         ax[0].plot(
@@ -58,7 +58,7 @@ def plotting_interface(run_path, simulation_name, color):
             color=color[i],
             ls="--",
             linewidth=2,
-            alpha=0.8,
+            alpha=1,
         )
 
         ax[1].plot(
@@ -85,10 +85,15 @@ def plotting_interface(run_path, simulation_name, color):
         yscale="log",
         ylabel=r"$\mathrm{M_{*} \; M_{halo}^{-1}}$   ",
         xlim=(np.min(earliest_times), np.max(latest_times)),
+        ylim=(2e35, 2e39),
     )
     ax[0].legend()
-    ax[0].set_ylabel(r"$\mathrm{M}_{\rm Pop II} \: (\mathrm{M}_{\odot})$", labelpad=10)
-    ax[1].set_ylabel(r"$\mathrm{M_{clumped}} / \mathrm{M_{Total}}$", labelpad=5)
+    ax[0].set_ylabel(
+        r"$L_{\rm \lambda = 1500 \: \mathrm{\AA}} \:$"
+        r"$(\mathrm{erg} \:\mathrm{s}^{-1} \:\mathrm{\AA}^{-1})$",
+        labelpad=10,
+    )
+    ax[1].set_ylabel(r"${L_{\rm clumped}} / L_{\rm total}$", labelpad=5)
     ax[1].set_xlabel("$\mathrm{t } \:(\mathrm{Myr})$")
 
     redshft_ax.set(xlim=(np.min(earliest_times), np.max(latest_times)), xlabel="$z$")

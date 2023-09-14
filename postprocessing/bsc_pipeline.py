@@ -422,7 +422,7 @@ if __name__ == "__main__":
                     log_bin_ctrs,
                     surf_density,
                     surf_density_err,
-                    r_half,
+                    r_mhalf,
                     r_half_light,
                     m_clump,
                     lum_clump,
@@ -474,7 +474,6 @@ if __name__ == "__main__":
                         oldest_star,
                         youngest_star,
                         clump_mass,
-                        # np.log10(clump_integrated_light),
                         std_vx,
                         std_vy,
                         std_vz,
@@ -487,6 +486,8 @@ if __name__ == "__main__":
                         bg_dens,
                         bgdens_err,
                         truncation_radius,
+                        r_mhalf,
+                        r_half_light,
                     ]
                     reprocessed_clump_cata.append(catalogue_to_save)
                     bsc_profile_dat = np.vstack(
@@ -531,6 +532,8 @@ if __name__ == "__main__":
             "central_dens [msun/pc^2] \t err \t "
             "bg_dens [msun/pc^2] \t err \t "
             "trunc rad [msun/pc^2]"
+            "half mass rad [pc]"
+            "half light rad [pc]"
         )
 
         current_time = float(ds.current_time.in_units("Myr"))

@@ -47,9 +47,9 @@ def sfc_temperature(n_h: float, redshifts: float, ra, ncut=10):
 
 def plotting_interface(run_logpath, simulation_name, marker, hist_color):
     # plot settings
-    xlims = (1e-4, 8e-3)  # zsun
-    nh_lims = (2e3, 6e4)  # mean hydrogen number density
-    temp_lims = (1.5e2, 2.5e3)  # Kelvin
+    xlims = (1e-4, 9e-3)  # zsun
+    nh_lims = (2.5e3, 6e4)  # mean hydrogen number density
+    temp_lims = (2e2, 2.5e3)  # Kelvin
     hist_num_bins = 25
 
     # create a custom color map
@@ -196,6 +196,11 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color):
 if __name__ == "__main__":
     cmap = matplotlib.colormaps["Set2"]
     cmap = cmap(np.linspace(0, 1, 8))
+    colors = [
+        cmap[0],
+        # cmap[1],
+        cmap[2],
+    ]
 
     runs = [
         "../../container_tiramisu/sim_log_files/fs07_refine",
@@ -211,11 +216,6 @@ if __name__ == "__main__":
         "o",
         # "P",
         "v",
-    ]
-    colors = [
-        cmap[0],
-        # cmap[1],
-        cmap[2],
     ]
 
     plotting_interface(

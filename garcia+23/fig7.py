@@ -86,9 +86,9 @@ def plotting_interface(run_path, simulation_name, color):
         xlim=(np.min(earliest_times), np.max(latest_times)),
     )
     ax[0].legend()
-    ax[0].set_ylabel(r"$\mathrm{M}_{\rm Pop II} \: (\mathrm{M}_{\odot})$", labelpad=10)
-    ax[1].set_ylabel(r"$\mathrm{M_{clumped}} / \mathrm{M_{Total}}$", labelpad=5)
-    ax[1].set_xlabel("$\mathrm{t } \:(\mathrm{Myr})$")
+    ax[0].set_ylabel(r"$M_{\rm Pop II} \: ({\rm M_{\odot}})$", labelpad=10)
+    ax[1].set_ylabel(r"$M_{\rm clumped} / M_{\rm total}$", labelpad=5)
+    ax[1].set_xlabel("$t  \:(\mathrm{Myr})$")
 
     redshft_ax.set(xlim=(np.min(earliest_times), np.max(latest_times)), xlabel="$z$")
     redshft_ax.set_xticklabels(

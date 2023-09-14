@@ -48,30 +48,17 @@ def star_formation_efficiency(n_h: float, mass: float, metallicity: float):
     return efficiency
 
 
-# run = "../../container_tiramisu/sim_log_files/cc-kazu-run"
-# run_name = run.split("/")[-1]
-
-# fs070_log_sfc = np.loadtxt(os.path.join(run, "logSFC"))
-
-# # fs070_log_sfc = np.loadtxt("../sim_log_files/fs07_refine/logSFC")
-# redshft_fs070 = fs070_log_sfc[:, 2]
-# r_pc_cloud_fs070 = fs070_log_sfc[:, 4]
-# m_sun_cloud_fs070 = fs070_log_sfc[:, 5]
-# n_hydrogen_fs070 = fs070_log_sfc[:, 8]
-# metal_zun_cloud_fs070 = fs070_log_sfc[:, 9]
-# mstar_cloud = fs070_log_sfc[:, 7]
-# fs035_log_sfc = np.loadtxt("../sim_log_files/fs035_ms10/logSFC")
-# redshft_fs035 = fs035_log_sfc[:, 2]
-# r_pc_cloud_fs035 = fs035_log_sfc[:, 4]
-# m_sun_cloud_fs035 = fs035_log_sfc[:, 5]
-# n_hydrogen_fs035 = fs035_log_sfc[:, 8]
-# metal_zun_cloud_fs035 = fs035_log_sfc[:, 9]
-
-
-def plotting_interface(run_logpath, simulation_name, marker, sfe: str):
+def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: str):
     fig, ax = plt.subplots(1, 1, figsize=(4.8, 4.25), dpi=400)
-    latest_redshift = 5
 
+    hist_ax_right = ax.inset_axes([1.02, 0, 0.30, 1], sharey=ax)
+    hist_ax_right.set_xlabel(r"$\mathrm{PDF (SFE)}$")
+    hist_ax_right.tick_params(axis="both", labelleft=False, labelsize=6)
+
+    latest_redshift = 5
+    hatches = ["\\\\\\\\\\", "/////"]
+
+    sfe_bins = np.geomspace(3, 100, 25)
     for i, r in enumerate(run_logpath):
         run_name = os.path.basename(os.path.normpath(r))
         print(os.path.join(r, "logSFC"))
@@ -110,27 +97,21 @@ def plotting_interface(run_logpath, simulation_name, marker, sfe: str):
             alpha=0.8,
         )
 
-    # ax.scatter(
-    #     m_sun_cloud_fs035,
-    #     star_formation_efficiency(
-    #         n_hydrogen_fs035, m_sun_cloud_fs035, metal_zun_cloud_fs035
-    #     )
-    #     * 100,
-    #     c=np.log10(n_hydrogen_fs035),
-    #     label=r"$f_{*} = 0.35 $",
-    #     cmap=cmap,
-    #     marker="P",
-    #     edgecolors="black",
-    #     linewidth=0.5,
-    #     s=40,
-    #     alpha=0.8,
-    # )
-    # cbar = plt.colorbar(pad=0, orientation = 'horizontal')
-    # cbar.set_label(
-    #     label=(r"$\log_{10}\:\overline{n_\mathrm{H}}\:\left(\mathrm{cm}^{-3} \right)$"),
-    #     fontsize=14,
-    # )
+        hist_ax_right.hist(
+            sfe_val,
+            bins=sfe_bins,
+            color=hist_color[i],
+            edgecolor=hist_color[i],
+            histtype="step",
+            hatch=hatches[i % 2],
+            alpha=0.9,
+            linewidth=1.25,
+            density=True,
+            orientation="horizontal",
+            label=simulation_name[i],
+        )
 
+    hist_ax_right.legend(fontsize=8, loc="upper center")
     cbar_ax = ax.inset_axes([0, 1.02, 1, 0.05])
     dens_bar = fig.colorbar(sfe_scatter, cax=cbar_ax, pad=0, orientation="horizontal")
 
@@ -166,28 +147,21 @@ def plotting_interface(run_logpath, simulation_name, marker, sfe: str):
 
     ax.set_ylim(top=120)
     xmin, _ = ax.get_xlim()
-    ax.axhline(y=90, color="grey", ls="--", zorder=1)
+    ax.axhline(y=90, color="grey", ls="--", zorder=-1)
     ax.annotate("$90 \%$", (xmin * 1.2, 75), color="grey")
 
-    ax.axhline(y=10, color="grey", ls="--", zorder=1)
+    ax.axhline(y=10, color="grey", ls="--", zorder=-1)
     ax.annotate("$10 \%$", (xmin * 1.2, 8), color="grey")
-
-    # ax.tick_params(axis="y", direction="in", which="both")
-    # ax.tick_params(axis="x", direction="in", which="both")
-    # # manual legend, want to customize colors
-    # f70 = mlines.Line2D([], [], color="k", marker="o", ls="", label=r"$f_{*} = 0.70 $")
-    # f35 = mlines.Line2D([], [], color="k", marker="P", ls="", label=r"$f_{*} = 0.35 $")
-    # ax.legend(
-    #     loc="lower right",
-    #     title_fontsize=12,
-    #     fontsize=12,
-    #     handles=[f35, f70],
-    # )
 
 
 if __name__ == "__main__":
-    # cmap = matplotlib.colormaps["Set2"]
-    # cmap = cmap(np.linspace(0, 1, 8))
+    cmap = matplotlib.colormaps["Set2"]
+    cmap = cmap(np.linspace(0, 1, 8))
+    colors = [
+        cmap[0],
+        # cmap[1],
+        cmap[2],
+    ]
 
     runs = [
         "../../container_tiramisu/sim_log_files/fs07_refine",
@@ -211,7 +185,11 @@ if __name__ == "__main__":
     ]
 
     plotting_interface(
-        run_logpath=runs, simulation_name=names, marker=markers, sfe=calc_type
+        run_logpath=runs,
+        simulation_name=names,
+        hist_color=colors,
+        marker=markers,
+        sfe=calc_type,
     )
 
     plt.show()

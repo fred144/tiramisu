@@ -84,15 +84,15 @@ def plotting_interface(run_logpath, simulation_name, hist_color):
         youngest_cloud_redshift.append(youngest_cloud)
 
         #                           cloud mass function
-        mass, m_counts = log_data_function(m_sun_cloud, bns, mass_xrange)
+        mass, dn_dlogm = log_data_function(m_sun_cloud, bns, mass_xrange)
         #                           fit with a log normal
         params, _ = curve_fit(
-            f=gauss, xdata=np.nan_to_num(np.log10(mass), neginf=0), ydata=m_counts
+            f=gauss, xdata=np.nan_to_num(np.log10(mass), neginf=0), ydata=dn_dlogm
         )
         mass_xfit = np.log10(np.geomspace(mass.min(), mass.max(), 100))
         mass_yfit = gauss(mass_xfit, *params)
         #                           cloud metallicity function
-        metal, metal_counts = log_data_function(metal_zsun_cloud, bns, metal_xrange)
+        metal, dn_dlogmetal = log_data_function(metal_zsun_cloud, bns, metal_xrange)
         #                           cloud radius counts
         count, bin_edges = np.histogram(r_pc_cloud, bins=radius_xrange, density=True)
         right_edges = bin_edges[1:]
@@ -101,13 +101,13 @@ def plotting_interface(run_logpath, simulation_name, hist_color):
 
         ax[0].plot(
             mass,
-            m_counts,
+            dn_dlogm,
             drawstyle="steps-mid",
             linewidth=2.5,
             alpha=0.8,
             color=hist_color[i],
         )
-        ax[0].fill_between(mass, m_counts, step="mid", alpha=0.4, color=hist_color[i])
+        ax[0].fill_between(mass, dn_dlogm, step="mid", alpha=0.4, color=hist_color[i])
         # plot the fits
         ax[0].plot(
             10**mass_xfit,
@@ -123,7 +123,7 @@ def plotting_interface(run_logpath, simulation_name, hist_color):
 
         ax[1].plot(
             metal,
-            metal_counts,
+            dn_dlogmetal,
             drawstyle="steps-mid",
             linewidth=2.5,
             alpha=0.8,
@@ -132,7 +132,7 @@ def plotting_interface(run_logpath, simulation_name, hist_color):
         )
         ax[1].fill_between(
             metal,
-            metal_counts,
+            dn_dlogmetal,
             step="mid",
             alpha=0.4,
             color=hist_color[i],
@@ -159,7 +159,7 @@ def plotting_interface(run_logpath, simulation_name, hist_color):
         ylabel=r"$\mathrm{dN / d\log} \:\:\left(\mathrm{M_{MC}}/\mathrm{M}_{\odot}\right)$",
         xscale="log",
         yscale="log",
-        ylim=(5, np.max(m_counts) * 8),
+        ylim=(5, np.max(dn_dlogmetal) * 8),
     )
     ax[0].set_xlabel(
         xlabel=r"$  \mathrm{M_{MC}}\:\:\left( \mathrm{M}_{\odot} \right) $", labelpad=2
@@ -175,7 +175,7 @@ def plotting_interface(run_logpath, simulation_name, hist_color):
         ylabel=r"$\mathrm{dN / d\log} \:\: \left(\mathrm{Z_{MC}}/\mathrm{Z}_{\odot}\right )$",
         xscale="log",
         yscale="log",
-        ylim=(5, np.max(metal_counts) * 10),
+        ylim=(5, np.max(dn_dlogmetal) * 10),
     )
 
     ax[1].set_xlabel(
