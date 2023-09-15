@@ -121,14 +121,11 @@ def take_snapshot(directory, to_take):
 
 def plotting_interface(bsc_dirs, pop2_dirs, times, log_sfc, simulation_name, color):
     minimum_bsc_mass = 250  # minimum solar mass
-    x_range = (60, 5e5)
     bns = 14
-    max_alpha = 10
-    fig, ax = plt.subplots(
-        nrows=2, ncols=2, sharex=True, sharey=True, figsize=(6, 5), dpi=300
-    )
+    max_alpha = 5
+    fig, ax = plt.subplots(nrows=2, ncols=2, figsize=(5, 5.3), dpi=300)
+    plt.subplots_adjust(wspace=0.25, hspace=0.35)
     ax = ax.ravel()
-    plt.subplots_adjust(hspace=0, wspace=0)
 
     hatches = ["\\\\\\\\", "////"]
 
@@ -137,126 +134,71 @@ def plotting_interface(bsc_dirs, pop2_dirs, times, log_sfc, simulation_name, col
         snap_nums, _ = snapshot_from_time(pop2_dirs[n], times)
         catalog_dirs = take_snapshot(directory=bsc_dirs[n], to_take=snap_nums)
         # print(catalog_dirs)
+
         logsfc_data = np.loadtxt(os.path.join(log_sfc[n], "logSFC"))
+
         logsfc_ftime = t_myr_from_z(logsfc_data[:, 2])
         logsfc_formation_mass = logsfc_data[:, 7]
 
-        for i, cat in enumerate(catalog_dirs):
-            cat_file = glob.glob(os.path.join(cat, "profiled_*"))[0]
-            catalogue = np.loadtxt(cat_file)
-            clump_masses = catalogue[:, 8]  # msun
-            clump_corerad = catalogue[:, 12]
-            clump_alphas = catalogue[:, 14]
-            clump_sigma0 = catalogue[:, 16]
+        cat_file = glob.glob(os.path.join(catalog_dirs[0], "profiled_catalogue-*"))[0]
+        z = os.path.basename(os.path.normpath(cat_file)).split("-")[-1].split(".")[0]
 
-            mask = (clump_masses > minimum_bsc_mass) & (clump_alphas < max_alpha)
-            clump_masses = clump_masses[mask]
+        catalogue = np.loadtxt(cat_file)
+        clump_masses = catalogue[:, 8]  # msun
+        clump_alphas = catalogue[:, 14]
+        mask = (clump_masses > minimum_bsc_mass) & (clump_alphas < max_alpha)
+        clump_masses = clump_masses[mask]
+        clump_alphas = clump_alphas[mask]
+        clump_corerad = catalogue[:, 12][mask]
+        clump_sigma0 = catalogue[:, 16][mask]
 
+        hist_val = [clump_corerad, clump_sigma0, clump_alphas]
+        if n == 0:
+            hist_bin_ranges = [
+                np.geomspace(0.1, clump_corerad.max(), bns),
+                np.geomspace(10, clump_sigma0.max(), bns),
+                np.linspace(clump_alphas.min(), clump_alphas.max(), bns),
+            ]
+        xlabels = [
+            r"$r_\mathrm{{core}}\:\mathrm{(pc)}$",
+            r"$\Sigma_0\:\mathrm{\left(M_{\odot}\:pc^{-2}\right)}$",
+            r"$\alpha$",
+            r"$m\mathrm{_{BSC}}  \:/ \:  m_{\mathrm{SC}}$",
+        ]
+
+        for i, r in enumerate(hist_bin_ranges):
             # bsc mass function
-            mass_bins, dn_dlogm = log_data_function(
-                clump_masses, bns, x_range, func_type="counts"
-            )
-
-            ax[i].plot(
-                imf_bins,
-                imf_counts,
-                drawstyle="steps-mid",
-                ls="-",
-                alpha=0.8,
-                lw=2,
+            ax[i].hist(
+                hist_val[i],
+                bins=r,
                 color=color[n],
-            )
-            ax[i].plot(
-                imf_bins_theory,
-                imf_theory,
-                ls=":",
-                alpha=0.8,
-                lw=2,
-                color=color[n],
-                label=r"$ \mu = {:.2f}$, $\Sigma = {:.2f}$".format(
-                    lognrml_parms[1], np.abs(lognrml_parms[2])
-                ),
-            )
-
-            ax[i].plot(
-                mass_bins,
-                dn_dlogm,
-                drawstyle="steps-mid",
-                linewidth=2,
-                alpha=0.8,
-                color=color[n],
-            )
-            ax[i].fill_between(
-                mass_bins,
-                dn_dlogm,
-                step="mid",
-                facecolor="none",
-                edgecolor=color[n],
+                histtype="step",
                 hatch=hatches[n % 2],
-                label=simulation_name[n],
+                alpha=1,
+                linewidth=1,
+                # label=r"$f_{{*}} = 0.35$",
             )
-            ax[i].plot(
-                mass_bins_theory,
-                dn_dlogm_theory,
-                color=color[n],
-                ls="--",
-                label=r"${{\Gamma = {:.2f}}}$".format(pwr_law_params[0]),
-            )
+            if i != 2:
+                ax[i].set(xlabel=xlabels[i], xscale="log")
+            else:
+                ax[i].set(xlabel=xlabels[i])
 
-            ax[i].text(
-                0.95,
-                0.95,
-                r"${{\rm t = {:.0f}\:{{\rm Myr }}}}$".format(times[i]),
-                transform=ax[i].transAxes,
-                fontsize=10,
-                verticalalignment="top",
-                horizontalalignment="right",
-                clip_on=False,
-            )
+        fig.text(0.03, 0.5, r"$\mathrm{Counts}$", va="center", rotation="vertical")
 
-        for t, _ in enumerate(times):
-            labelLines(
-                ax[t].get_lines(),
-                fontsize=8,
-                color="k",
-                backgroundcolor="none",
-                ha="right",
-                va="bottom",
-                align=False,
-                xvals=(1e3, 1e4),
-            )
+    ax[3].axis("off")
+    ax[2].locator_params(nbins=6)
+    sim_handls = []
+    for s, name in enumerate(simulation_name):
+        sim_legend = mlines.Line2D([], [], color=color[s], ls="-", label=name)
+        sim_handls.append(sim_legend)
 
-    # ax[0].set(xscale="log", yscale="log", xlim=x_range, ylim=(6e-1, 500))
-    # sim_handls = []
-    # for s, name in enumerate(simulation_name):
-    #     sim_legend = mlines.Line2D([], [], color=color[s], ls="-", label=name)
-    #     sim_handls.append(sim_legend)
-
-    # ax[0].legend(
-    #     bbox_to_anchor=(0.0, 1),
-    #     loc="upper left",
-    #     handles=sim_handls,
-    #     fontsize=10,
-    #     frameon=True,
-    # )
-
-    # cmf = mlines.Line2D([], [], color="k", ls="--", label=r"${\rm CMF}$")
-    # icmf = mlines.Line2D([], [], color="k", ls=":", label=r"${\rm ICMF}$")
-
-    # ax[1].legend(
-    #     bbox_to_anchor=(0.0, 1),
-    #     loc="upper left",
-    #     handles=[cmf, icmf],
-    #     fontsize=10,
-    #     frameon=False,
-    #     ncols=1,
-    # )
-
-    # fig.text(
-    #     0.5, 0.05, r"$M_{\rm BSC}\:\left( \mathrm{M}_{\odot} \right) $", ha="center"
-    # )
-
-    # fig.text(0.05, 0.5, r"$N_{\rm BSC}$", va="center", rotation="vertical")
+    ax[3].legend(
+        loc="upper left",
+        handles=sim_handls,
+        fontsize=12,
+        frameon=False,
+        title=r"$z = {:.2f}$".format(float(z.replace("_", "."))),
+    )
 
 
 if __name__ == "__main__":
@@ -264,31 +206,30 @@ if __name__ == "__main__":
     cmap = cmap(np.linspace(0, 1, 8))
     colors = [
         cmap[0],
-        # cmap[1],
         cmap[2],
     ]
     pop2_dirs = [
-        # "../../container_tiramisu/post_processed/pop2/fs07_refine",
         "../../container_tiramisu/post_processed/pop2/CC-Fiducial",
+        "../../container_tiramisu/post_processed/pop2/fs07_refine",
     ]
     bsc_dirs = [
-        # "../../container_tiramisu/post_processed/bsc_catalogues/fs07_refine",
         "../../container_tiramisu/post_processed/bsc_catalogues/CC-Fiducial",
+        "../../container_tiramisu/post_processed/bsc_catalogues/fs07_refine",
     ]
     logs = [
-        # "../../container_tiramisu/sim_log_files/fs07_refine",
         "../../container_tiramisu/sim_log_files/CC-Fiducial",
+        "../../container_tiramisu/sim_log_files/fs07_refine",
     ]
     names = [
-        # "$f_* = 0.70$",
         r"${\rm He+19}$",
+        "$f_* = 0.70$",
     ]
     pop2_files = [
-        # filter_snapshots(pop2_dirs[0], 113, 1570, 1, snapshot_type="pop2_processed"),
         filter_snapshots(pop2_dirs[0], 304, 405, 1, snapshot_type="pop2_processed"),
+        filter_snapshots(pop2_dirs[1], 113, 1570, 1, snapshot_type="pop2_processed"),
     ]
 
-    wanted_times = [480, 525, 588, 596]  # myr
+    wanted_times = [596]  # myr
 
     plotting_interface(
         bsc_dirs=bsc_dirs,
@@ -299,16 +240,10 @@ if __name__ == "__main__":
         color=colors,
     )
 
+    plt.savefig(
+        "../../gdrive_columbia/research/massimo/fig10.png",
+        dpi=300,
+        bbox_inches="tight",
+        pad_inches=0.05,
+    )
     plt.show()
-
-    # plt.savefig(
-    #     os.path.expanduser(
-    #         (
-    #             "../../g_drive/Research/AstrophysicsSimulation/sci_plots/final/"
-    #             "cmf_overtime_pwrlw.png"
-    #         )
-    #     ),
-    #     dpi=500,
-    #     bbox_inches="tight",
-    #     pad_inches=0.08,
-    # )

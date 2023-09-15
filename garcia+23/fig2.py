@@ -159,4 +159,10 @@ if __name__ == "__main__":
         color=colors,
     )
 
+    plt.savefig(
+        "../../gdrive_columbia/research/massimo/fig2.png",
+        dpi=300,
+        bbox_inches="tight",
+        pad_inches=0.05,
+    )
     plt.show()

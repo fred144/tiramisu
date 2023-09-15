@@ -332,16 +332,10 @@ if __name__ == "__main__":
         color=colors,
     )
 
+    plt.savefig(
+        "../../gdrive_columbia/research/massimo/fig8.png",
+        dpi=300,
+        bbox_inches="tight",
+        pad_inches=0.05,
+    )
     plt.show()
-
-    # plt.savefig(
-    #     os.path.expanduser(
-    #         (
-    #             "../../g_drive/Research/AstrophysicsSimulation/sci_plots/final/"
-    #             "cmf_overtime_pwrlw.png"
-    #         )
-    #     ),
-    #     dpi=500,
-    #     bbox_inches="tight",
-    #     pad_inches=0.08,
-    # )

@@ -219,11 +219,10 @@ if __name__ == "__main__":
         hist_color=colors,
     )
 
+    plt.savefig(
+        "../../gdrive_columbia/research/massimo/fig4.png",
+        dpi=300,
+        bbox_inches="tight",
+        pad_inches=0.05,
+    )
     plt.show()
-
-    # plt.savefig(
-    #     "../../g_drive/Research/AstrophysicsSimulation/sci_plots/final/lowres/sfc_mfunc.png",
-    #     dpi=300,
-    #     bbox_inches="tight",
-    #     pad_inches=0.05,
-    # )
