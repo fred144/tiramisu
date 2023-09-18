@@ -134,7 +134,7 @@ if __name__ == "__main__":
     start_snapshot = int(sys.argv[2])
     end_snapshot = int(sys.argv[3])
     step = int(sys.argv[4])
-    render_nickname = int(sys.argv[5])
+    render_nickname = sys.argv[5]
 
     ## local path for test
     # datadir = os.path.relpath("../../sim_data/cluster_evolution/CC-radius1")
