@@ -48,7 +48,7 @@ def filter_snapshots(
     rel_paths = [os.path.join(folder_path, file) for file in filtered_files]
 
     print("> returning", len(filtered_files))
-    print("*** done ")
+    print(">>> done ")
     if str_snaps == False:
         return rel_paths
     else:

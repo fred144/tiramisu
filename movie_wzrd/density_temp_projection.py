@@ -19,7 +19,7 @@ import matplotlib as mpl
 from matplotlib.colors import LinearSegmentedColormap
 import yt
 
-#%%
+# %%
 yt.enable_parallelism()
 plt.rcParams.update(
     {
@@ -37,7 +37,7 @@ plt.rcParams.update(
 )
 plt.style.use("dark_background")
 
-#%%
+# %%
 cmap = cm.get_cmap("Set2")
 cmap = cmap(np.linspace(0, 1, 8))
 plt_wdth = 400
@@ -50,14 +50,14 @@ gas_alpha = 0.5
 lum_alpha = 1
 
 cell_fields, epf = ram_fields()
-datadir = os.path.relpath("../../cosm_test_data/refine")
-# datadir = os.path.relpath("../../sim_data/cluster_evolution/CC-radius1")
+# datadir = os.path.relpath("../../garcia23_testdata/fs07_refine")
+datadir = os.path.relpath("../../sim_data/cluster_evolution/CC-radius1")
 
 
 snaps, snap_strings = filter_snapshots(datadir, 500, 500, sampling=2, str_snaps=True)
 
 
-movie_name = "ProjLum"
+movie_name = "testing"
 sim_run = datadir.replace("\\", "/").split("/")[-1]
 
 container = os.path.join(
@@ -134,7 +134,6 @@ for i, sn in enumerate(snaps):
         abs_birth_epochs = np.round(converted_unfiltered + birth_start, 3)  #!
         current_ages = np.round(tmyr, 3) - np.round(abs_birth_epochs, 3)
 
-        #%%
         print("Looking Up Lums")
         star_lums = (
             lum_look_up_table(
@@ -151,15 +150,15 @@ for i, sn in enumerate(snaps):
             x,
             y,
             bins=star_bins,
-            weights=np.log10(star_lums),
-            normed=False,
+            weights=star_lums,
+            # normed=False,
             range=[
                 [-plt_wdth / 2, plt_wdth / 2],
                 [-plt_wdth / 2, plt_wdth / 2],
             ],
         )
         lums = lums.T
-    #%%
+
     # f3_unique_birth_times = np.unique(f3_rounded_times)
     # f3_unique_birth_times = np.unique(f3_rounded_times)
     # get the projected densities
@@ -182,8 +181,8 @@ for i, sn in enumerate(snaps):
     )
     temp_frb = t.data_source.to_frb((plt_wdth, "pc"), star_bins)
     temp_array = np.array(temp_frb["gas", "temperature"])
-
-    lum_range = (33.3, 36.477)  # (2e32, 5e35)
+    # %%
+    lum_range = (2e32, 5e35)  # (33.3, 36.477)  #
     gas_range = (0.008, 0.30)
     temp_range = (6e3, 3e5)
 
@@ -227,8 +226,8 @@ for i, sn in enumerate(snaps):
         cmap="inferno",
         origin="lower",
         extent=[-plt_wdth / 2, plt_wdth / 2, -plt_wdth / 2, plt_wdth / 2],
-        vmin=np.log10(lum_range[0]),
-        vmax=np.log10(lum_range[1]),
+        vmin=lum_range[0],
+        vmax=lum_range[1],
         alpha=1,
     )
     # gas_image = ax.imshow(
@@ -280,33 +279,33 @@ for i, sn in enumerate(snaps):
         labelpad=-15,
     )
 
-    # gas_cbar_ax = ax.inset_axes([0.35, 0.05, 0.30, 0.028], alpha=0.8)
-    # gas_cbar = fig.colorbar(
-    #     cm.ScalarMappable(
-    #         norm=mpl.colors.Normalize(np.log10(gas_range[0]), np.log10(gas_range[1])),
-    #         cmap=gascmap,
-    #     ),
-    #     cax=gas_cbar_ax,
-    #     orientation="horizontal",
-    #     pad=0,
-    # )
-    # gas_cbar.ax.xaxis.set_tick_params(pad=2)
-    # gas_cbar.set_label(
-    #     label=r"$\mathrm{\log\:Gas\:Density\:\left(g \: cm^{-2}\right)}$", labelpad=-15
-    # )
+    gas_cbar_ax = ax.inset_axes([0.35, 0.05, 0.30, 0.028], alpha=0.8)
+    gas_cbar = fig.colorbar(
+        cm.ScalarMappable(
+            norm=mpl.colors.Normalize(np.log10(gas_range[0]), np.log10(gas_range[1])),
+            cmap=gascmap,
+        ),
+        cax=gas_cbar_ax,
+        orientation="horizontal",
+        pad=0,
+    )
+    gas_cbar.ax.xaxis.set_tick_params(pad=2)
+    gas_cbar.set_label(
+        label=r"$\mathrm{\log\:Gas\:Density\:\left(g \: cm^{-2}\right)}$", labelpad=-15
+    )
 
-    # temp_cbar_ax = ax.inset_axes([0.65, 0.05, 0.30, 0.028], alpha=0.8)
-    # temp_cbar = fig.colorbar(
-    #     cm.ScalarMappable(
-    #         norm=mpl.colors.Normalize(np.log10(temp_range[0]), np.log10(temp_range[1])),
-    #         cmap=tempcmap,
-    #     ),
-    #     cax=temp_cbar_ax,
-    #     orientation="horizontal",
-    #     pad=0,
-    # )
-    # temp_cbar.ax.xaxis.set_tick_params(pad=2)
-    # temp_cbar.set_label(label=r"$\mathrm{\log\:Gas\:Temperature\:(K)}$", labelpad=-15)
+    temp_cbar_ax = ax.inset_axes([0.65, 0.05, 0.30, 0.028], alpha=0.8)
+    temp_cbar = fig.colorbar(
+        cm.ScalarMappable(
+            norm=mpl.colors.Normalize(np.log10(temp_range[0]), np.log10(temp_range[1])),
+            cmap=tempcmap,
+        ),
+        cax=temp_cbar_ax,
+        orientation="horizontal",
+        pad=0,
+    )
+    temp_cbar.ax.xaxis.set_tick_params(pad=2)
+    temp_cbar.set_label(label=r"$\mathrm{\log\:Gas\:Temperature\:(K)}$", labelpad=-15)
 
     # clean up edges
     ax.set(

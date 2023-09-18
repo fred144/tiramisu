@@ -4,24 +4,15 @@ sys.path.append("..")  # makes sure that importing the modules work
 import numpy as np
 import os
 import h5py as h5
-from src.lum.lum_lookup import lum_look_up_table
 from tools.cosmo import code_age_to_myr
 from tools.ram_fields import ram_fields
 from tools.fscanner import filter_snapshots
+from tools.check_path import check_path
 import glob
 from scipy import stats as st
 from scipy.optimize import curve_fit
-import matplotlib.pyplot as plt
 import yt
 from yt.extensions.astro_analysis.halo_analysis import HaloCatalog
-
-
-def check_path(path):
-    if not os.path.exists(path):
-        print("Creating container", path)
-        os.makedirs(path)
-    else:
-        pass
 
 
 def modified_king_model(

@@ -8,8 +8,6 @@ from src.lum.lum_lookup import lum_look_up_table
 from tools.cosmo import code_age_to_myr
 from tools.ram_fields import ram_fields
 from tools.fscanner import filter_snapshots
-
-
 import yt
 
 
