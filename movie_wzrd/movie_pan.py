@@ -90,7 +90,8 @@ def draw_frame(
     lum_cbar_ax.set_ylabel(r"${\rm erg\:\:s^{-1}\:\AA^{-1}\:pc^{-2}}$", fontsize=10)
     # add the gas color bar
     gas_cbar_ax = ax.inset_axes([0.08, 0.03, 0.010, 0.18])
-    gas_cbar = fig.colorbar(gas, cax=gas_cbar_ax, pad=0, location="left")
+    gas_cbar = fig.colorbar(gas, cax=gas_cbar_ax, pad=0)
+    gas_cbar_ax.yaxis.set_ticks_position("left")
 
     gas_cbar_ax.set_ylabel(r"$\mathrm{ g \: cm^{-2}}$", fontsize=10)
 
