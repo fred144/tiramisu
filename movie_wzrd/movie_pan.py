@@ -179,7 +179,7 @@ if __name__ == "__main__":
             np.linspace(zoom_plt_wdth, static_plt_wdth, int(pan_frames / 4)),
         ]
     )
-    pause_and_rotate = [304, 390]
+    pause_and_rotate = [304, 405]
 
     for i, sn in enumerate(snaps):
         print("# ____________________________________________________________________")
@@ -209,7 +209,7 @@ if __name__ == "__main__":
             # reset the star positions every loop
             print(">>> Rotating View")
 
-            rr = 238  # rotation sequence restart from
+            rr = 0  # rotation sequence restart from
 
             for rot_i, (rotation_angle, plt_wdth) in enumerate(
                 zip(rotation_interval[rr:], zoom_interval[rr:]), start=rr
