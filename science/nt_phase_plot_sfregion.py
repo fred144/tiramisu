@@ -1,7 +1,6 @@
 import sys
 
-sys.path.insert(1, "/homes/fgarcia4/py-virtual-envs/master/lib/python3.7/site-packages")
-sys.path.append("..")  # makes sure that importing the modules work
+sys.path.append("../")
 
 import yt
 import numpy as np
@@ -14,32 +13,37 @@ from yt.extensions.astro_analysis.halo_analysis import HaloCatalog
 import warnings
 import matplotlib.pyplot as plt
 
-plt.rcParams.update(
-    {
-        "font.family": "serif",
-        "mathtext.fontset": "cm",
-        "xtick.labelsize": 8,
-        "ytick.labelsize": 8,
-        "font.size": 10,
-        "xtick.direction": "in",
-        "ytick.direction": "in",
-        "ytick.right": True,
-        "xtick.top": True,
-    }
-)
+import matplotlib.patheffects as patheffects
+from scipy.spatial.transform import Rotation as R
+from yt.visualization.volume_rendering.api import Scene
+from scipy.ndimage import gaussian_filter
+from tools.check_path import check_path
+from tools import plotstyle
+from tools.fscanner import filter_snapshots
+from tools.ram_fields import ram_fields
 
 mylog.setLevel(40)
 warnings.simplefilter(action="ignore", category=RuntimeWarning)
 processor_number = 0
 
+
+# datadir = os.path.relpath("../../sim_data/cluster_evolution/CC-radius1")
+# datadir = os.path.relpath("../../garcia23_testdata/fs07_refine")
+# start_snapshot = 500
+# end_snapshot = 500
+# step = 1
+
 cell_fields, epf = ram_fields()
 # datadir = os.path.relpath("../../cosm_test_data/refine")
-datadir = os.path.relpath("../../sim_data/cluster_evolution/fs035_ms10")
+
+datadir = os.path.relpath("../../sim_data/cluster_evolution/CC-Fiducial")
+
+# datadir = os.path.relpath("../../garcia23_testdata/fs07_refine")
 
 
-snaps, snap_strings = filter_snapshots(datadir, 150, 1450, sampling=25, str_snaps=True)
+snaps, snap_strings = filter_snapshots(datadir, 304, 433, sampling=1, str_snaps=True)
 # simulation_run = datadir
-plot_name = "nT_mass_phase_sfregion"
+plot_name = "nvsT_massbin_phasplot_sfregion"
 
 lims = {
     ("gas", "density"): ((5e-31, "g/cm**3"), (1e-18, "g/cm**3")),
@@ -52,12 +56,14 @@ dm_container = os.path.join("..", "..", "container_tiramisu", "dm_hop", sim_run)
 if not os.path.exists(dm_container):
     print("Creating container", dm_container)
     os.makedirs(dm_container)
-gas_container = os.path.join("..", "..", "container_tiramisu/plots", plot_name, sim_run)
+gas_container = os.path.join(
+    "..", "..", "container_tiramisu", "plots", plot_name, sim_run
+)
 if not os.path.exists(gas_container):
     print("Creating container", gas_container)
     os.makedirs(gas_container)
 
-#%%
+# %%
 
 m_vir = []
 r_vir = []
@@ -138,7 +144,7 @@ for i, sn in enumerate(snaps):
     # plot.set_unit(("gas", "mass"), "Msun")
     # plot.save()
 
-    #%%
+    # %%
 
     profile2d = galaxy.profile(
         # the x bin field, the y bin field
@@ -149,7 +155,7 @@ for i, sn in enumerate(snaps):
         extrema=lims,
     )
 
-    #%%
+    # %%
 
     gas_mass = np.array(profile2d["gas", "mass"].to("msun")).T
     temp = np.array(profile2d.y)

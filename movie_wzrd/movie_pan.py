@@ -10,9 +10,8 @@ from matplotlib.colors import LogNorm
 import matplotlib.cm as cm
 import matplotlib.patches as patches
 from matplotlib import colors
-
+from yt.funcs import mylog
 import yt
-
 import matplotlib
 import matplotlib.patheffects as patheffects
 from scipy.spatial.transform import Rotation as R
@@ -22,6 +21,11 @@ from tools.check_path import check_path
 from tools import plotstyle
 from tools.fscanner import filter_snapshots
 from tools.ram_fields import ram_fields
+import warnings
+
+mylog.setLevel(40)
+warnings.simplefilter(action="ignore", category=RuntimeWarning)
+processor_number = 0
 
 
 def draw_frame(
