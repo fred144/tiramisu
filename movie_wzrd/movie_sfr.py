@@ -149,7 +149,7 @@ def draw_frame(
     gas_cbar = fig.colorbar(gas, cax=gas_cbar_ax, pad=0)
     gas_cbar_ax.yaxis.set_ticks_position("left")
     gas_cbar_ax.set_ylabel(
-        r"$\Sigma_\mathrm{gas}\:\mathrm{ M_\odot\:pc^{-2}}$", fontsize=14, labelpad=-45
+        r"$\Sigma_\mathrm{gas}\:\mathrm{(M_\odot\:pc^{-2})}$", fontsize=14, labelpad=-45
     )
 
     # add time and redshift
@@ -222,10 +222,10 @@ def draw_frame(
     cmap = matplotlib.colormaps["magma"]
     cmap = cmap(np.linspace(0, 1, 100))
 
-    sfr_ax.plot(t[tmask], sfr[tmask], lw=3, alpha=0.8, color=cmap[75])
+    sfr_ax.plot(t[tmask], sfr[tmask], lw=3, alpha=0.8, color="orchid")
     sfr_ax.plot(t[~tmask], sfr[~tmask], lw=3, alpha=0.5, color="grey")
 
-    sfh_ax.plot(t[tmask], sfh[tmask], lw=3, alpha=0.8, color=cmap[65])
+    sfh_ax.plot(t[tmask], sfh[tmask], lw=3, alpha=0.8, color="crimson")
     sfh_ax.plot(t[~tmask], sfh[~tmask], lw=3, alpha=0.5, color="grey")
 
     sfr_ax.set(

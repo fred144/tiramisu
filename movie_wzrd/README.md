@@ -1,6 +1,8 @@
 # Rendering
 
-point it to a rendering_dir, and name it movie_name.mp4. 
+needs sim_scraper.py to be ran to get the logSFCs.
+
+point it to a rendering_dir, and name it movie_name.mp4
 
 And change the framerate N, usually around 20 - 30 fps. 
 
