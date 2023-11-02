@@ -1,9 +1,15 @@
 import numpy as np
 import pandas as pd
+import os
 
 
 def lum_look_up_table(
-    stellar_ages: float, table_link: str, column_idx: int = 1, log=False
+    stellar_ages: float,
+    stellar_masses=10,
+    table_link: str = os.path.join("..", "starburst", "l1500_inst_e.txt"),
+    column_idx: int = 1,
+    log=False,
+    m_gal=1e6,
 ):
     """
 
@@ -40,11 +46,13 @@ def lum_look_up_table(
         column index to use for the tables
     log : TYPE, optional
         are the table value logged? The default is False.
+    m_gal : TYPE, optional
+        mass of the galaxy [Msun] from the starburst model. Default is 10^6 Msun
 
     Returns
     -------
     luminosities : array
-        returns the luminosity of the galaxy, default UV luminosity
+        returns the luminosity of the individual stars, default UV luminosity
 
     """
 
@@ -59,8 +67,8 @@ def lum_look_up_table(
         look_up_lumi = data[:, column_idx]
     else:
         look_up_lumi = 10 ** data[:, column_idx]
-    # pythonized but need big memoery requirement for big array
 
+    # vectorized but need big memoery requirement for big array
     # residuals = np.abs(look_up_times - stellar_ages[:, np.newaxis])
     # closest_match_idxs = np.argmin(residuals, axis=1)
     # luminosities = look_up_lumi[closest_match_idxs]
@@ -72,7 +80,9 @@ def lum_look_up_table(
         ages_mask[i] = closest_age_idx
     luminosities = look_up_lumi[np.array(ages_mask, dtype="int")]
 
-    return luminosities
+    lum_scaled = luminosities * (stellar_masses / m_gal)
+
+    return lum_scaled
 
 
 def unpack_pop_ii_data(

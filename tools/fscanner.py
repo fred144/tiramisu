@@ -18,11 +18,17 @@ def filter_snapshots(
     """
 
     files = sorted(os.listdir(folder_path))
+
     if snapshot_type == "ramses_snapshot":
         files = [x for x in files if "output_" in x]
         sn_nums = np.array([int(i.split("_")[-1]) for i in files])
     elif snapshot_type == "pop2_processed":
         sn_nums = np.array([int(i.split("-")[1]) for i in files])
+    elif snapshot_type == "bsc_processed":
+        files = [x for x in files if "info_" in x]
+        # print(files)
+        sn_nums = np.array([int(i.split("_")[-1]) for i in files])
+
     print("> running filter_snapshots")
     print("> processing {}".format(snapshot_type))
     print("> found", len(files), "snapshots")

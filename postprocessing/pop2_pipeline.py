@@ -127,15 +127,14 @@ if __name__ == "__main__":
         # import time
 
         # s = time.perf_counter()
-        pop2_lums = (
-            lum_look_up_table(
-                stellar_ages=current_ages * 1e6,
-                table_link=os.path.join("..", "starburst", "l1500_inst_e.txt"),
-                column_idx=1,
-                log=True,
-            )
-            - 5  # since we are using 10^6 M_sun for the starburst and stars are 10 msun
+        pop2_lums = lum_look_up_table(
+            stellar_ages=current_ages * 1e6,
+            stellar_masses=np.ones_like(current_ages) * 10,
+            table_link=os.path.join("..", "starburst", "l1500_inst_e.txt"),
+            column_idx=1,
+            log=True,
         )
+
         # e = time.perf_counter()
         # print(e - s)
         snap_info = np.array(
