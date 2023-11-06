@@ -22,7 +22,7 @@ cell_fields, epf = ram_fields()
 
 plt.rcParams.update(
     {
-        # "text.usetex": True,
+        "text.usetex": True,
         # "font.family": "Helvetica",
         "font.family": "serif",
         "mathtext.fontset": "cm",
