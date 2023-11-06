@@ -22,6 +22,7 @@ from tools import plotstyle
 from tools.fscanner import filter_snapshots
 from tools.ram_fields import ram_fields
 
+
 mylog.setLevel(40)
 warnings.simplefilter(action="ignore", category=RuntimeWarning)
 processor_number = 0
