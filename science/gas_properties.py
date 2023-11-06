@@ -41,6 +41,47 @@ plt.rcParams.update(
 )
 plt.style.use("dark_background")
 
+
+def _my_radial_velocity(field, data):
+    if data.has_field_parameter("bulk_velocity"):
+        bv = data.get_field_parameter("bulk_velocity").in_units("km/s")
+    else:
+        bv = data.ds.arr(np.zeros(3), "km/s")
+
+    # x_pos = np.array(data["star", "particle_position_x"])
+    # y_pos = np.array(data["star", "particle_position_y"])
+    # z_pos = np.array(data["star", "particle_position_z"])
+
+    # ctr_at_code = np.array([np.mean(x_pos), np.mean(y_pos), np.mean(z_pos)])
+
+    # sfregion = data.sphere(ctr_at_code, (r_sf, "pc"))
+    # bulk_vel = sfregion.quantities.bulk_velocity()
+    # # sfregion.set_field_parameter("bulk_velocity", bulk_vel)
+    # bv = bulk_vel.in_units("km/s")
+
+    xv = data["gas", "velocity_x"] - bv[0]
+    yv = data["gas", "velocity_y"] - bv[1]
+    zv = data["gas", "velocity_z"] - bv[2]
+    center = data.get_field_parameter("center")
+    x_hat = data["gas", "x"] - center[0]
+    y_hat = data["gas", "y"] - center[1]
+    z_hat = data["gas", "z"] - center[2]
+    r = np.sqrt(x_hat * x_hat + y_hat * y_hat + z_hat * z_hat)
+    x_hat /= r
+    y_hat /= r
+    z_hat /= r
+    return xv * x_hat + yv * y_hat + zv * z_hat
+
+
+yt.add_field(
+    ("gas", "my_radial_velocity"),
+    function=_my_radial_velocity,
+    sampling_type="cell",
+    units="km/s",
+    take_log=False,
+    validators=[ValidateParameter(["center", "bulk_velocity"])],
+)
+
 if __name__ == "__main__":
     if len(sys.argv) != 7:
         print(sys.argv[0], "usage:")
@@ -62,17 +103,6 @@ if __name__ == "__main__":
     step = int(sys.argv[5])
     render_nickname = sys.argv[6]
 
-    # logsfc = os.path.expanduser("~/container_tiramisu/sim_log_files/CC-Fiducial/logSFC")
-    # fpaths, snums = filter_snapshots(
-    #     os.path.expanduser("~/test_data/fid-broken-feedback/"),
-    #     304,
-    #     390,
-    #     sampling=1,
-    #     str_snaps=True,
-    #     snapshot_type="ramses_snapshot",
-    # )
-    # render_nickname  = "CC-Fid"
-
     sim_run = os.path.basename(os.path.normpath(datadir))
     fpaths, snums = filter_snapshots(
         datadir,
@@ -82,6 +112,19 @@ if __name__ == "__main__":
         str_snaps=True,
         snapshot_type="ramses_snapshot",
     )
+    # datadir = os.path.expanduser("~/test_data/fid-broken-feedback/")
+    # logsfc_path = os.path.expanduser(
+    #     "~/container_tiramisu/sim_log_files/CC-Fiducial/logSFC"
+    # )
+    # fpaths, snums = filter_snapshots(
+    #     datadir,
+    #     304,
+    #     390,
+    #     sampling=1,
+    #     str_snaps=True,
+    #     snapshot_type="ramses_snapshot",
+    # )
+    # render_nickname = "CC-Fid"
 
     # =============================================================================
     #                         timelapse paramaters
@@ -101,6 +144,7 @@ if __name__ == "__main__":
     img_extent = [-pw / 2, pw / 2, -pw / 2, pw / 2]
 
     # run save
+    sim_run = os.path.basename(os.path.normpath(datadir))
     render_container = os.path.join(
         "..",
         "..",
@@ -117,6 +161,7 @@ if __name__ == "__main__":
         print(infofile)
         ds = yt.load(infofile, fields=cell_fields, extra_particle_fields=epf)
         ad = ds.all_data()
+
         t_myr = float(ds.current_time.in_units("Myr"))
         redshift = ds.current_redshift
 
@@ -150,34 +195,6 @@ if __name__ == "__main__":
         sfregion = ds.sphere(ctr_at_code, (r_sf, "pc"))
         bulk_vel = sfregion.quantities.bulk_velocity()
         sfregion.set_field_parameter("bulk_velocity", bulk_vel)
-
-        def _my_radial_velocity(field, data):
-            if data.has_field_parameter("bulk_velocity"):
-                bv = data.get_field_parameter("bulk_velocity").in_units("km/s")
-            else:
-                bv = data.ds.arr(np.zeros(3), "km/s")
-            bv = bulk_vel.in_units("km/s")
-            xv = data["gas", "velocity_x"] - bv[0]
-            yv = data["gas", "velocity_y"] - bv[1]
-            zv = data["gas", "velocity_z"] - bv[2]
-            center = data.get_field_parameter("center")
-            x_hat = data["gas", "x"] - center[0]
-            y_hat = data["gas", "y"] - center[1]
-            z_hat = data["gas", "z"] - center[2]
-            r = np.sqrt(x_hat * x_hat + y_hat * y_hat + z_hat * z_hat)
-            x_hat /= r
-            y_hat /= r
-            z_hat /= r
-            return xv * x_hat + yv * y_hat + zv * z_hat
-
-        yt.add_field(
-            ("gas", "my_radial_velocity"),
-            function=_my_radial_velocity,
-            sampling_type="cell",
-            units="km/s",
-            take_log=False,
-            validators=[ValidateParameter(["center", "bulk_velocity"])],
-        )
 
         data_fields = [
             ("gas", "density"),
