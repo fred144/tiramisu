@@ -36,12 +36,12 @@ processor_number = 0
 cell_fields, epf = ram_fields()
 # datadir = os.path.relpath("../../cosm_test_data/refine")
 
-datadir = os.path.relpath("../../sim_data/cluster_evolution/CC-Fiducial")
+# datadir = os.path.relpath("../../sim_data/cluster_evolution/CC-Fiducial")
 
-# datadir = os.path.relpath("../../garcia23_testdata/fs07_refine")
+datadir = os.path.expanduser("~/test_data/fid-broken-feedback/")
 
 
-snaps, snap_strings = filter_snapshots(datadir, 304, 433, sampling=1, str_snaps=True)
+snaps, snap_strings = filter_snapshots(datadir, 370, 390, sampling=1, str_snaps=True)
 # simulation_run = datadir
 plot_name = "nvsT_massbin_phasplot_sfregion"
 

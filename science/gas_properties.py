@@ -152,10 +152,10 @@ if __name__ == "__main__":
         sfregion.set_field_parameter("bulk_velocity", bulk_vel)
 
         def _my_radial_velocity(field, data):
-            # if data.has_field_parameter("bulk_velocity"):
-            #     bv = data.get_field_parameter("bulk_velocity").in_units("km/s")
-            # else:
-            #     bv = data.ds.arr(np.zeros(3), "km/s")
+            if data.has_field_parameter("bulk_velocity"):
+                bv = data.get_field_parameter("bulk_velocity").in_units("km/s")
+            else:
+                bv = data.ds.arr(np.zeros(3), "km/s")
             bv = bulk_vel.in_units("km/s")
             xv = data["gas", "velocity_x"] - bv[0]
             yv = data["gas", "velocity_y"] - bv[1]
