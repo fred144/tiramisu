@@ -42,7 +42,7 @@ plt.rcParams.update(
 plt.style.use("dark_background")
 
 if __name__ == "__main__":
-    if len(sys.argv) != 6:
+    if len(sys.argv) != 7:
         print(sys.argv[0], "usage:")
         print(
             "{} snapshot_dir logSFC start_snap end_snap step render_nickname".format(
