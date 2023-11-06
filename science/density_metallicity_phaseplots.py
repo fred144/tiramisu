@@ -44,49 +44,49 @@ if __name__ == "__main__":
         ("gas", "mass"): ((1e-2, "msun"), (1e6, "msun")),
     }
 
-    # if len(sys.argv) != 7:
-    #     print(sys.argv[0], "usage:")
-    #     print(
-    #         "{} snapshot_dir logSFC start_snap end_snap step render_nickname".format(
-    #             sys.argv[0]
-    #         )
-    #     )
-    #     exit()
-    # else:
-    #     print("********************************************************************")
-    #     print(" rendering movie ")
-    #     print("********************************************************************")
+    if len(sys.argv) != 7:
+        print(sys.argv[0], "usage:")
+        print(
+            "{} snapshot_dir logSFC start_snap end_snap step render_nickname".format(
+                sys.argv[0]
+            )
+        )
+        exit()
+    else:
+        print("********************************************************************")
+        print(" rendering movie ")
+        print("********************************************************************")
 
-    # datadir = sys.argv[1]
-    # logsfc_path = sys.argv[2]
-    # start_snapshot = int(sys.argv[3])
-    # end_snapshot = int(sys.argv[4])
-    # step = int(sys.argv[5])
-    # render_nickname = sys.argv[6]
+    datadir = sys.argv[1]
+    logsfc_path = sys.argv[2]
+    start_snapshot = int(sys.argv[3])
+    end_snapshot = int(sys.argv[4])
+    step = int(sys.argv[5])
+    render_nickname = sys.argv[6]
 
-    # sim_run = os.path.basename(os.path.normpath(datadir))
-    # fpaths, snums = filter_snapshots(
-    #     datadir,
-    #     start_snapshot,
-    #     end_snapshot,
-    #     sampling=step,
-    #     str_snaps=True,
-    # )
-
-    # =============================================================================
-    datadir = os.path.expanduser("~/test_data/fid-broken-feedback/")
-    logsfc_path = os.path.expanduser(
-        "~/container_tiramisu/sim_log_files/CC-Fiducial/logSFC"
-    )
+    sim_run = os.path.basename(os.path.normpath(datadir))
     fpaths, snums = filter_snapshots(
         datadir,
-        304,
-        390,
-        sampling=1,
+        start_snapshot,
+        end_snapshot,
+        sampling=step,
         str_snaps=True,
-        snapshot_type="ramses_snapshot",
     )
-    render_nickname = "gas_metallicity"
+
+    # =============================================================================
+    # datadir = os.path.expanduser("~/test_data/fid-broken-feedback/")
+    # logsfc_path = os.path.expanduser(
+    #     "~/container_tiramisu/sim_log_files/CC-Fiducial/logSFC"
+    # )
+    # fpaths, snums = filter_snapshots(
+    #     datadir,
+    #     304,
+    #     390,
+    #     sampling=1,
+    #     str_snaps=True,
+    #     snapshot_type="ramses_snapshot",
+    # )
+    # render_nickname = "gas_metallicity"
 
     # =============================================================================
 
