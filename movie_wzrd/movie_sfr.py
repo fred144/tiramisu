@@ -197,8 +197,8 @@ def draw_frame(
     )
 
     zoom.set(
-        xlim=(-wdth * z_mult, wdth * z_mult),
-        ylim=(-wdth * z_mult * r, wdth * z_mult * r),
+        xlim=(-wdth / 2 * z_mult, wdth / 2 * z_mult),
+        ylim=(-wdth / 2 * z_mult * r, wdth / 2 * z_mult * r),
         # xticklabels=[],
         yticklabels=[],
         xlabel="parsec",
@@ -312,7 +312,7 @@ if __name__ == "__main__":
     sf_data = (t_interp_points, total_mass, sfr)
 
     # =============================================================================
-    #                         timelapse paramaters
+    #                         timelapse parameters
     # =============================================================================
     static_plt_wdth = 400
     zoom_plt_wdth = 120
@@ -476,7 +476,6 @@ if __name__ == "__main__":
             # zoom_gas_frb = zoom_gas.data_source.to_frb((plt_wdth, "pc"), star_bins)
             # zoom_gas_array = np.array(zoom_gas_frb["gas", "density"])
 
-            # %%
             fig, ax = plt.subplots(figsize=(13, 13), dpi=400, facecolor=cm.Greys_r(0))
             draw_frame(
                 gas_array,
