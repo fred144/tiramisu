@@ -80,7 +80,10 @@ def lum_look_up_table(
         ages_mask[i] = closest_age_idx
     luminosities = look_up_lumi[np.array(ages_mask, dtype="int")]
 
-    lum_scaled = luminosities * (stellar_masses / m_gal)
+    if log is True:
+        lum_scaled = luminosities + np.log10(stellar_masses / m_gal)
+    else:
+        lum_scaled = luminosities * (stellar_masses / m_gal)
 
     return lum_scaled
 
