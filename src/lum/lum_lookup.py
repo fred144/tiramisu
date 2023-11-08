@@ -45,7 +45,7 @@ def lum_look_up_table(
     column_idx : int
         column index to use for the tables
     log : TYPE, optional
-        are the table value logged? The default is False.
+        return log10 luminosities? The default is False.
     m_gal : TYPE, optional
         mass of the galaxy [Msun] from the starburst model. Default is 10^6 Msun
 
