@@ -153,7 +153,7 @@ if __name__ == "__main__":
                 [("gas", "density"), ("ramses", "Metallicity")],
                 [("gas", "mass")],  # the profile field
                 weight_field=None,  # sums each quantity in each bin
-                n_bins=(150, 150),
+                n_bins=(250, 250),
                 extrema=lims,
             )
 
