@@ -34,13 +34,18 @@ if __name__ == "__main__":
     r_sf = 500  # radii for sf in pc
     zsun = 0.02
     n_crit = 5e4
-    mc_t = (1, 90)
-    wnm_t = (101, 9e5)
-    ion_t = (1e6, 1e8)
-    temp_cuts = [mc_t, wnm_t, ion_t]
+    cold_phase_t = (0, 300)
+    warm_phase_t = (300, 2e5)
+    hot_phase = (2.0001e5, 1e9)
+    temp_cuts = [cold_phase_t, warm_phase_t, hot_phase]
+    tlabels = [
+        r"Cold ($T < 300$ K)",
+        r"Warm  ($ 300 < T < 2 \times 10^5$ K)",
+        r"Hot ($T > 2 \times 10^5$ K)",
+    ]
     lims = {
         ("gas", "density"): ((5e-31, "g/cm**3"), (1e-18, "g/cm**3")),
-        ("ramses", "Metallicity"): (5e-8 * zsun, 10 * zsun),
+        ("ramses", "Metallicity"): (1e-6 * zsun, 10 * zsun),
         ("gas", "mass"): ((1e-2, "msun"), (1e6, "msun")),
     }
 
@@ -73,6 +78,7 @@ if __name__ == "__main__":
         str_snaps=True,
     )
 
+    # note second starburst in 555 - 590 Myr [365, 400]
     # =============================================================================
     # datadir = os.path.expanduser("~/test_data/fid-broken-feedback/")
     # logsfc_path = os.path.expanduser(
@@ -86,7 +92,7 @@ if __name__ == "__main__":
     #     str_snaps=True,
     #     snapshot_type="ramses_snapshot",
     # )
-    # render_nickname = "gas_metallicity"
+    # render_nickname = "test"
 
     # =============================================================================
 
@@ -102,12 +108,9 @@ if __name__ == "__main__":
     )
     check_path(render_container)
 
-    m_vir = []
-    r_vir = []
-    tot_m_star = []
-    t = []
-    z = []
-    snap = []
+    cold = []
+    warm = []
+    hot = []
 
     for i, sn in enumerate(fpaths):
         print(
@@ -132,20 +135,7 @@ if __name__ == "__main__":
         ctr_at_code = np.array([x_center, y_center, z_center])
 
         mstar = np.sum(np.array(ad["star", "particle_mass"].to("Msun")))
-        # tot_m_star.append(mstar)
 
-        # ad_filt = ad.include_inside(
-
-        # plot = yt.PhasePlot(
-        #     galaxy,
-        #     ("gas", "density"),
-        #     ("gas", "temperature"),
-        #     ("gas", "mass"),
-        #     weight_field=None,
-        # )
-        # Set the units of mass to be in solar masses (not the default in cgs)
-        # plot.set_unit(("gas", "mass"), "Msun")
-        # plot.save()
         fig, ax = plt.subplots(1, 3, figsize=(13, 5), dpi=300, sharex=True, sharey=True)
         plt.subplots_adjust(hspace=0, wspace=0)
 
@@ -163,95 +153,106 @@ if __name__ == "__main__":
                 [("gas", "density"), ("ramses", "Metallicity")],
                 [("gas", "mass")],  # the profile field
                 weight_field=None,  # sums each quantity in each bin
-                n_bins=(125, 125),
+                n_bins=(150, 150),
                 extrema=lims,
             )
 
             gas_mass = np.array(profile2d["gas", "mass"].to("msun")).T
+            print(gas_mass.shape)
+            if a == 0:
+                cold.append(gas_mass)
+            elif a == 1:
+                warm.append(gas_mass)
+            else:
+                hot.append(gas_mass)
+
             # metal = np.array(profile2d.y)
             # dens = np.array(profile2d.x)  # / 1.6e-24
-
-            nt_image = axis.imshow(
-                np.log10(gas_mass),
-                origin="lower",
-                extent=[
-                    np.log10(lims[("gas", "density")][0][0] / m_h),
-                    np.log10(lims[("gas", "density")][1][0] / m_h),
-                    np.log10(lims[("ramses", "Metallicity")][0] / zsun),
-                    np.log10(lims[("ramses", "Metallicity")][1] / zsun),
-                ],
-                cmap="rainbow",
-                vmin=np.log10(lims[("gas", "mass")][0][0]),
-                vmax=np.log10(1e6),
-                aspect=1.6,
-            )
-            axis.set(xlabel=r"$\log_{10}\:n_{\rm H} \:{\rm (cm^{-3}})$")
-
-            axis.text(
-                0.97,
-                0.08,
-                r"$n_{ \rm crit}$",
-                ha="right",
-                va="bottom",
-                color="white",
-                rotation=90,
-                transform=axis.transAxes,
-            )
-            axis.axvspan(np.log10(n_crit), np.log10(1e6), color="grey")
-
-            axis.text(
-                0.03,
-                0.08,
-                r"$ {:.0e} K < T < {:.0e} K $".format(temp_cuts[a][0], temp_cuts[a][1]),
-                ha="left",
-                va="bottom",
-                transform=axis.transAxes,
-            )
-
-        ax[0].set(
-            ylabel=r"$\log_{10}\:{\rm Metallicity\:(Z_{\odot})}$",
-            xlabel=r"$\log_{10}\:n_{\rm H} \:{\rm (cm^{-3}})$",
-            xlim=(
+    print("averaging over snapshot range")
+    time_avg_vals = [np.mean(cold, axis=0), np.mean(warm, axis=0), np.mean(hot, axis=0)]
+    for a, axis in enumerate(axes):
+        nt_image = axis.imshow(
+            np.log10(time_avg_vals[a]),
+            origin="lower",
+            extent=[
                 np.log10(lims[("gas", "density")][0][0] / m_h),
                 np.log10(lims[("gas", "density")][1][0] / m_h),
-            ),
-            ylim=(
                 np.log10(lims[("ramses", "Metallicity")][0] / zsun),
                 np.log10(lims[("ramses", "Metallicity")][1] / zsun),
-            ),
+            ],
+            cmap="rainbow",
+            vmin=np.log10(lims[("gas", "mass")][0][0]),
+            vmax=np.log10(1e6),
+            aspect=1.6,
         )
-        ax[0].text(
-            0.01,
-            1.1,
-            ("{}" "\:" r"t = {:.2f} Myr" "\:" r"z = {:.2f} ").format(
-                render_nickname,
-                t_myr,
-                redshift,
-            ),
+        axis.set(xlabel=r"$\log_{10}\:n_{\rm H} \:{\rm (cm^{-3}})$")
+
+        axis.text(
+            0.97,
+            0.08,
+            r"$n_{ \rm crit}$",
+            ha="right",
+            va="bottom",
+            color="white",
+            rotation=90,
+            transform=axis.transAxes,
+        )
+        axis.axvspan(np.log10(n_crit), np.log10(1e6), color="grey")
+
+        axis.text(
+            0.03,
+            0.08,
+            tlabels[a],
             ha="left",
-            va="top",
-            color="black",
-            transform=ax[0].transAxes,
+            va="bottom",
+            transform=axis.transAxes,
         )
 
-        ax[0].xaxis.set_major_locator(plt.MaxNLocator(12))
+    ax[0].set(
+        ylabel=r"$\log_{10}\:{\rm Metallicity\:(Z_{\odot})}$",
+        xlabel=r"$\log_{10}\:n_{\rm H} \:{\rm (cm^{-3}})$",
+        xlim=(
+            np.log10(lims[("gas", "density")][0][0] / m_h),
+            np.log10(lims[("gas", "density")][1][0] / m_h),
+        ),
+        ylim=(
+            np.log10(lims[("ramses", "Metallicity")][0] / zsun),
+            np.log10(lims[("ramses", "Metallicity")][1] / zsun),
+        ),
+    )
+    ax[0].text(
+        0.01,
+        1.1,
+        # ("{}" "\:" r"t = {:.2f} Myr" "\:" r"z = {:.2f} ").format(
+        #     render_nickname,
+        #     t_myr,
+        #     redshift,
+        # ),
+        "{}".format(render_nickname),
+        ha="left",
+        va="top",
+        color="black",
+        transform=ax[0].transAxes,
+    )
 
-        cbar_ax = ax[0].inset_axes([1, 1.02, 2, 0.05])
-        bar = fig.colorbar(nt_image, cax=cbar_ax, pad=0, orientation="horizontal")
-        # bar .ax.xaxis.set_tick_params(pad=2)
-        bar.set_label(r"$\mathrm{\log_{10}\:Total\:Mass\:(M_{\odot}})$")
-        bar.ax.xaxis.set_label_position("top")
-        bar.ax.xaxis.set_ticks_position("top")
+    ax[0].xaxis.set_major_locator(plt.MaxNLocator(12))
 
-        output_path = os.path.join(
-            render_container, "{}-{}.png".format(render_nickname, snums[i])
-        )
+    cbar_ax = ax[0].inset_axes([1, 1.02, 2, 0.05])
+    bar = fig.colorbar(nt_image, cax=cbar_ax, pad=0, orientation="horizontal")
+    # bar .ax.xaxis.set_tick_params(pad=2)
+    bar.set_label(r"$\mathrm{\log_{10}\:Total\:Mass\:(M_{\odot}})$")
+    bar.ax.xaxis.set_label_position("top")
+    bar.ax.xaxis.set_ticks_position("top")
 
-        print("Saved", output_path)
-        plt.savefig(
-            output_path,
-            dpi=400,
-            bbox_inches="tight",
-            # pad_inches=0.00,
-        )
-        plt.close()
+    output_path = os.path.join(
+        render_container, "{}-{}.png".format(render_nickname, snums[i])
+    )
+
+    print("Saved", output_path)
+    plt.savefig(
+        output_path,
+        dpi=400,
+        bbox_inches="tight",
+        # pad_inches=0.00,
+    )
+    plt.close()
