@@ -145,9 +145,9 @@ if __name__ == "__main__":
     x, y = (5, 10)
     xy_r = x / y
     img_extent = [-pw / 2, pw / 2, -pw / 2, pw / 2]
-    dens_cmap = mpl.colormaps["cubehelix"]
+    dens_cmap = "cubehelix"
     vrad_cmap = cmr.pride_r
-    temp_cmap = mpl.colormaps["inferno"]
+    temp_cmap = "inferno"
     metal_cmap = cmr.torch
 
     # run save
