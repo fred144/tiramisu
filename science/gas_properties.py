@@ -17,6 +17,7 @@ from matplotlib.colors import LogNorm
 import matplotlib.colors as colors
 import matplotlib.patches as patches
 from tools.check_path import check_path
+import cmasher as cmr
 
 yt.enable_parallelism()
 cell_fields, epf = ram_fields()
@@ -120,7 +121,7 @@ if __name__ == "__main__":
     # )
     # fpaths, snums = filter_snapshots(
     #     datadir,
-    #     304,
+    #     390,
     #     390,
     #     sampling=1,
     #     str_snaps=True,
@@ -144,6 +145,10 @@ if __name__ == "__main__":
     x, y = (5, 10)
     xy_r = x / y
     img_extent = [-pw / 2, pw / 2, -pw / 2, pw / 2]
+    dens_cmap = mpl.colormaps["cubehelix"]
+    vrad_cmap = cmr.pride_r
+    temp_cmap = mpl.colormaps["inferno"]
+    metal_cmap = cmr.torch
 
     # run save
     sim_run = os.path.basename(os.path.normpath(datadir))
@@ -245,7 +250,7 @@ if __name__ == "__main__":
 
         dens = ax.imshow(
             prjctns[0],
-            cmap="cubehelix",
+            cmap=dens_cmap,
             interpolation="gaussian",
             origin="lower",
             extent=img_extent,
@@ -253,7 +258,7 @@ if __name__ == "__main__":
         )
         vrad = vax.imshow(
             prjctns[1],
-            cmap="RdBu",
+            cmap=vrad_cmap,
             interpolation="gaussian",
             origin="lower",
             extent=img_extent,
@@ -262,7 +267,7 @@ if __name__ == "__main__":
         vax.scatter(0, 0, marker="x", color="white", s=30)
         temp = tax.imshow(
             prjctns[2],
-            cmap="inferno",
+            cmap=temp_cmap,
             interpolation="gaussian",
             origin="lower",
             extent=img_extent,
@@ -270,7 +275,7 @@ if __name__ == "__main__":
         )
         metal = mex.imshow(
             prjctns[3] / zsun,
-            cmap="viridis",
+            cmap=metal_cmap,
             interpolation="gaussian",
             origin="lower",
             extent=img_extent,
