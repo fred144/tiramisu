@@ -171,18 +171,21 @@ if __name__ == "__main__":
 
         t_myr = float(ds.current_time.in_units("Myr"))
         redshift = ds.current_redshift
-
-        x_pos = np.array(ad["star", "particle_position_x"])
-        y_pos = np.array(ad["star", "particle_position_y"])
-        z_pos = np.array(ad["star", "particle_position_z"])
-        x_center = np.mean(x_pos)
-        y_center = np.mean(y_pos)
-        z_center = np.mean(z_pos)
-        x_pos = x_pos - x_center
-        y_pos = y_pos - y_center
-        z_pos = z_pos - z_center
-
-        ctr_at_code = np.array([x_center, y_center, z_center])
+        
+        if len(np.array(ad["star", "particle_position_x"])) > 0:
+            x_pos = np.array(ad["star", "particle_position_x"])
+            y_pos = np.array(ad["star", "particle_position_y"])
+            z_pos = np.array(ad["star", "particle_position_z"])
+            x_center = np.mean(x_pos)
+            y_center = np.mean(y_pos)
+            z_center = np.mean(z_pos)
+            x_pos = x_pos - x_center
+            y_pos = y_pos - y_center
+            z_pos = z_pos - z_center
+            
+            ctr_at_code = np.array([x_center, y_center, z_center])
+        else:
+            _, ctr_at_code = ds.find_max(("gas", "density"))
 
         star_mass = np.ones_like(x_pos) * 10
 
