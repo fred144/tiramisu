@@ -88,7 +88,7 @@ if __name__ == "__main__":
     if len(sys.argv) != 7:
         print(sys.argv[0], "usage:")
         print(
-            "{} snapshot_dir logSFC start_snap end_snap step render_nickname".format(
+            "{} snapshot_dir start_snap end_snap step render_nickname".format(
                 sys.argv[0]
             )
         )
@@ -99,11 +99,11 @@ if __name__ == "__main__":
         print("********************************************************************")
 
     datadir = sys.argv[1]
-    logsfc_path = sys.argv[2]
-    start_snapshot = int(sys.argv[3])
-    end_snapshot = int(sys.argv[4])
-    step = int(sys.argv[5])
-    render_nickname = sys.argv[6]
+    # logsfc_path = sys.argv[2]
+    start_snapshot = int(sys.argv[2])
+    end_snapshot = int(sys.argv[3])
+    step = int(sys.argv[4])
+    render_nickname = sys.argv[5]
 
     sim_run = os.path.basename(os.path.normpath(datadir))
     fpaths, snums = filter_snapshots(
@@ -190,14 +190,14 @@ if __name__ == "__main__":
             ds.arr(np.vstack([x_pos, y_pos, z_pos]), "code_length").to("pc")
         ).T
 
-        current_ages = get_star_ages(ram_ds=ds, ram_ad=ad, logsfc=logsfc_path)
-        pop2_lums = lum_look_up_table(
-            stellar_ages=current_ages * 1e6,  # in myr
-            stellar_masses=star_mass,
-            table_link=os.path.join("..", "starburst", "l1500_inst_e.txt"),
-            column_idx=1,
-            log=False,
-        )
+        # current_ages = get_star_ages(ram_ds=ds, ram_ad=ad, logsfc=logsfc_path)
+        # pop2_lums = lum_look_up_table(
+        #     stellar_ages=current_ages * 1e6,  # in myr
+        #     stellar_masses=star_mass,
+        #     table_link=os.path.join("..", "starburst", "l1500_inst_e.txt"),
+        #     column_idx=1,
+        #     log=False,
+        # )
         # to define the radial velocity, we define a region around the origin (star CoM)
         sfregion = ds.sphere(ctr_at_code, (r_sf, "pc"))
         bulk_vel = sfregion.quantities.bulk_velocity()
