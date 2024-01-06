@@ -85,7 +85,7 @@ yt.add_field(
 )
 
 if __name__ == "__main__":
-    if len(sys.argv) != 7:
+    if len(sys.argv) != 6:
         print(sys.argv[0], "usage:")
         print(
             "{} snapshot_dir start_snap end_snap step render_nickname".format(
