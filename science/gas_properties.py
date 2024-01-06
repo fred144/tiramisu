@@ -18,6 +18,7 @@ import matplotlib.colors as colors
 import matplotlib.patches as patches
 from tools.check_path import check_path
 
+yt.enable_parallelism()
 cell_fields, epf = ram_fields()
 
 plt.rcParams.update(
@@ -93,7 +94,7 @@ if __name__ == "__main__":
         exit()
     else:
         print("********************************************************************")
-        print(" rendering movie ")
+        print(" rendering gas properties movie ")
         print("********************************************************************")
 
     datadir = sys.argv[1]
@@ -112,6 +113,7 @@ if __name__ == "__main__":
         str_snaps=True,
         snapshot_type="ramses_snapshot",
     )
+
     # datadir = os.path.expanduser("~/test_data/fid-broken-feedback/")
     # logsfc_path = os.path.expanduser(
     #     "~/container_tiramisu/sim_log_files/CC-Fiducial/logSFC"
