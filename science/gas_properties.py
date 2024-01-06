@@ -187,7 +187,7 @@ if __name__ == "__main__":
         else:
             _, ctr_at_code = ds.find_max(("gas", "density"))
 
-        star_mass = np.ones_like(x_pos) * 10
+        # star_mass = np.ones_like(x_pos) * 10
 
         # pop2_xyz = np.array(
         #     ds.arr(np.vstack([x_pos, y_pos, z_pos]), "code_length").to("pc")
@@ -201,7 +201,7 @@ if __name__ == "__main__":
         #     log=False,
         # )
         # to define the radial velocity, we define a region around the origin (star CoM)
-        
+
         sfregion = ds.sphere(ctr_at_code, (r_sf, "pc"))
         bulk_vel = sfregion.quantities.bulk_velocity()
         sfregion.set_field_parameter("bulk_velocity", bulk_vel)
