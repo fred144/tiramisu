@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH -J gas_renderer
-#SBATCH --ntasks=4
+#SBATCH -J gasProperties
+#SBATCH --ntasks=1
 #SBATCH --mem-per-cpu=3999
 #SBATCH -t 24:00:00
 
@@ -16,10 +16,10 @@ module load openmpi
 # activate py environment
 source ~/scratch/master/bin/activate
  
-SCRIPT="/scratch/zt1/project/ricotti-prj/user/fgarcia4/tiramisu/movie_wzrd/density_temp_projection.py"
-DIR="/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024"
+SCRIPT="/scratch/zt1/project/ricotti-prj/user/fgarcia4/tiramisu/movie_wzrd/gas_properties.py"
+DIR="/scratch/zt1/project/ricotti-prj/user/ricotti/CosmicGems/CC_0.5x_Salp"
 # also tried
 # cd /scratch/zt1/project/ricotti-prj/user/fgarcia4/globclustevo/visuals/
 # SCRIPT = "./low-sfe.py"
 # number of cores specified above
-mpirun python3 $SCRIPT $DIR 64 220 1 LfidSF 2>&1 
+mpirun python3 $SCRIPT $DIR 0 84 1 LfidGasProperties 2>&1 
