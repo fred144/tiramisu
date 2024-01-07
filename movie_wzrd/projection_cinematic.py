@@ -62,9 +62,10 @@ def draw_frame(
     redshift,
     label,
     star_bins=2000,
+    gauss_sig=9,
 ):
-    lum_range = (1e32, 1e36)
-    gas_range = (0.002, 0.32)
+    lum_range = (2e32, 1e36)
+    gas_range = (0.005, 0.32)
     temp_range = (1e4, 1e5)
 
     pxl_size = (wdth / star_bins) ** 2
@@ -72,10 +73,7 @@ def draw_frame(
 
     surface_brightness = luminosity / pxl_size
     # clean up edges
-    ax.set_xticklabels([])
-    ax.xaxis.set_ticks_position("none")
-    ax.set_yticklabels([])
-    ax.yaxis.set_ticks_position("none")
+
     ax.axis("off")
 
     # dictate alphas manually
@@ -85,28 +83,7 @@ def draw_frame(
     gascmap = linear_cmap(0, 0.50, "cmr", "cmr.cosmic")
     tempcmap = linear_cmap(0.15, 0.7, "cmr", "cmr.ember")
     lumcmap = "cmr.amethyst"
-    gauss_sig = 10
-    # gas_cmap_arr[:150, -1] = np.linspace(
-    #     0.0, final_trans_gas, gas_cmap_arr[:150, -1].size
-    # )
-    # gas_cmap_arr[150:, -1] = np.ones(gas_cmap_arr[150:, -1].size) * final_trans_gas
-    # gascmap = LinearSegmentedColormap.from_list(
-    #     name="cubehelix_alpha", colors=gas_cmap_arr
-    # )
 
-    # final_trans_tem = 0.65
-    # temp_cmap_arr = plt.get_cmap("gnuplot2")(range(ncolors))
-    # temp_cmap_arr[:200, -1] = np.linspace(
-    #     0.0, final_trans_tem, temp_cmap_arr[:200, -1].size
-    # )
-    # temp_cmap_arr[200:, -1] = np.ones(temp_cmap_arr[200:, -1].size) * final_trans_tem
-    # tempcmap = LinearSegmentedColormap.from_list(
-    #     name="dusk_alpha", colors=temp_cmap_arr
-    # )
-
-    # luminosity
-
-    # three panels gas density
     lum = ax.imshow(
         surface_brightness,
         cmap=lumcmap,
@@ -221,8 +198,9 @@ if __name__ == "__main__":
         snapshot_type="ramses_snapshot",
     )
 
-    # datadir = os.path.expanduser("~/test_data/fs035_ms10/")
+    ## local test
 
+    # datadir = os.path.expanduser("~/test_data/fs035_ms10/")
     # fpaths, snums = filter_snapshots(
     #     datadir,
     #     567,
@@ -318,7 +296,7 @@ if __name__ == "__main__":
             # reset the star positions every loop
             print(">>> Rotating View")
 
-            rr = 132  # rotation sequence restart from
+            rr = 0  # rotation sequence restart from
 
             for rot_i, (rotation_angle, plt_wdth) in enumerate(
                 zip(rotation_interval[rr:], zoom_interval[rr:]), start=rr
@@ -365,8 +343,8 @@ if __name__ == "__main__":
                     weight_field=("gas", "density"),
                     # resolution=2000,
                 )
-                temp_frb = gas.to_fits_data()
-                temp_array = np.array(gas_frb[0].data)  # .T
+                temp_frb = temp.to_fits_data()
+                temp_array = np.array(temp_frb[0].data)  # .T
 
                 fig, ax = plt.subplots(
                     figsize=(13, 13),
@@ -383,6 +361,7 @@ if __name__ == "__main__":
                     t_myr,
                     redshift,
                     label=sim_run,
+                    gauss_sig=5,
                 )
                 output_path = os.path.join(
                     render_container,
@@ -435,10 +414,12 @@ if __name__ == "__main__":
                 t_myr,
                 redshift,
                 label=sim_run,
+                gauss_sig=9,
             )
             output_path = os.path.join(
                 render_container, "{}-{}.png".format(render_nickname, snums[i])
             )
+
             # plt.show()
             plt.savefig(
                 os.path.expanduser(output_path),
