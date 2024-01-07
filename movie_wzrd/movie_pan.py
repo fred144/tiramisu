@@ -121,32 +121,33 @@ if __name__ == "__main__":
     # yt.enable_parallelism()
     plt.style.use("dark_background")
 
-    if len(sys.argv) != 6:
-        print(sys.argv[0], "usage:")
-        print(
-            "{} snapshot_dir start_snap end_snap step render_nickname".format(
-                sys.argv[0]
-            )
-        )
-        exit()
-    else:
-        print("********************************************************************")
-        print(" rendering movie ")
-        print("********************************************************************")
+    # if len(sys.argv) != 6:
+    #     print(sys.argv[0], "usage:")
+    #     print(
+    #         "{} snapshot_dir start_snap end_snap step render_nickname".format(
+    #             sys.argv[0]
+    #         )
+    #     )
+    #     exit()
+    # else:
+    #     print("********************************************************************")
+    #     print(" rendering movie ")
+    #     print("********************************************************************")
 
-    datadir = sys.argv[1]
-    start_snapshot = int(sys.argv[2])
-    end_snapshot = int(sys.argv[3])
-    step = int(sys.argv[4])
-    render_nickname = sys.argv[5]
+    # datadir = sys.argv[1]
+    # start_snapshot = int(sys.argv[2])
+    # end_snapshot = int(sys.argv[3])
+    # step = int(sys.argv[4])
+    # render_nickname = sys.argv[5]
 
     ## local path for test
     # datadir = os.path.relpath("../../sim_data/cluster_evolution/CC-radius1")
     # datadir = os.path.relpath("../../garcia23_testdata/fs07_refine")
-    # start_snapshot = 500
-    # end_snapshot = 500
-    # step = 1
-    # render_nickname = "gas_and_lum"
+    datadir = os.path.expanduser("~/test_data/fs035_ms10/")
+    start_snapshot = 567
+    end_snapshot = 567
+    step = 1
+    render_nickname = "test"
 
     snaps, snap_strings = filter_snapshots(
         datadir, start_snapshot, end_snapshot, sampling=step, str_snaps=True
@@ -287,7 +288,7 @@ if __name__ == "__main__":
             )
             gas_frb = gas.data_source.to_frb((plt_wdth, "pc"), star_bins)
             gas_array = np.array(gas_frb["gas", "density"])
-            # %%
+
             fig, ax = plt.subplots(figsize=(13, 13), dpi=400, facecolor=cm.Greys_r(0))
             draw_frame(
                 gas_array, lums, ax, fig, plt_wdth, t_myr, redshift, label=sim_run

@@ -40,6 +40,8 @@ def lum_look_up_table(
     ----------
     stellar_ages : float
         ages fo the stars in years
+    stellar_masses : float
+        masses of the individual stars
     table_link : str
         link, either URL or filepath to the table
     column_idx : int
