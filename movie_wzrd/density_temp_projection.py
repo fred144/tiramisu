@@ -326,7 +326,7 @@ if __name__ == "__main__":
             print("no stars")
             _, ctr_at_code = ds.find_max(("gas", "density"))
             pop2_lums = np.zeros(100)
-            pop2_xyz = np.zeros((3, 100))
+            pop2_xyz = np.zeros((100, 3))
 
         if int(snums[i]) in pause_and_rotate:
             # reset the star positions every loop
