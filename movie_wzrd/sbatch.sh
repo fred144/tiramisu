@@ -22,4 +22,4 @@ DIR="/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses/galaxies/data/cluster
 # cd /scratch/zt1/project/ricotti-prj/user/fgarcia4/globclustevo/visuals/
 # SCRIPT = "./low-sfe.py"
 # number of cores specified above
-mpirun python3 $SCRIPT $DIR 64 220 1 LfidSF 2>&1 
+mpirun python3 $SCRIPT $DIR 64 224 1 LfidSF 2>&1 

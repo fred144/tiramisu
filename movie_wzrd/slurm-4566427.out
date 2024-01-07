@@ -1,0 +1,180 @@
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+Loading python/zen2/3.8.12
+  Loading requirement: matplotlib/3.4.3/zen2
+--------------------------------------------------------------------------
+The library attempted to open the following supporting CUDA libraries,
+but each of them failed.  CUDA-aware support is disabled.
+libcuda.so.1: cannot open shared object file: No such file or directory
+libcuda.dylib: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.so.1: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.dylib: cannot open shared object file: No such file or directory
+If you are not interested in CUDA-aware support, then run with
+--mca opal_warn_on_missing_libcuda 0 to suppress this message.  If you are interested
+in CUDA-aware support, then try setting LD_LIBRARY_PATH to the location
+of libcuda.so.1 to get passed this issue.
+--------------------------------------------------------------------------
+[1704665149.852369] [compute-b7-30:684084:0]          parser.c:2037 UCX  WARN  unused environment variable: UCX_IB_RCACHE_MAX_REGIONS (maybe: UCX_RCACHE_MAX_REGIONS?)
+[1704665149.852369] [compute-b7-30:684084:0]          parser.c:2037 UCX  WARN  (set UCX_WARN_UNUSED_ENV_VARS=n to suppress this warning)
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+=============================================================================
+Warning: particle_families are modified at /site-packages/yt/frontends/ramses
+=============================================================================
+yt : [ERROR    ] 2024-01-07 17:06:19,873 Could not enable parallelism: only one mpi process is running. To remedy this, launch the Python interpreter as
+  mpirun -n <X> python3 <yourscript>.py  # with X > 1 
+********************************************************************
+ rendering gas properties movie 
+********************************************************************
+> running filter_snapshots
+> processing ramses_snapshot
+> found 161 snapshots
+> returning 161
+>>> done 
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00064/info_00064.txt
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+no stars
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+>>> saved: ../../container_tiramisu/renders/haloD_varSFE_Lfid_Salp_ks20231024/LfidSF/LfidSF-00064.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00065/info_00065.txt
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+>>> saved: ../../container_tiramisu/renders/haloD_varSFE_Lfid_Salp_ks20231024/LfidSF/LfidSF-00065.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00066/info_00066.txt
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+>>> saved: ../../container_tiramisu/renders/haloD_varSFE_Lfid_Salp_ks20231024/LfidSF/LfidSF-00066.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00067/info_00067.txt
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+>>> saved: ../../container_tiramisu/renders/haloD_varSFE_Lfid_Salp_ks20231024/LfidSF/LfidSF-00067.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00068/info_00068.txt
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+>>> saved: ../../container_tiramisu/renders/haloD_varSFE_Lfid_Salp_ks20231024/LfidSF/LfidSF-00068.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00069/info_00069.txt
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+>>> saved: ../../container_tiramisu/renders/haloD_varSFE_Lfid_Salp_ks20231024/LfidSF/LfidSF-00069.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00070/info_00070.txt
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+>>> saved: ../../container_tiramisu/renders/haloD_varSFE_Lfid_Salp_ks20231024/LfidSF/LfidSF-00070.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00071/info_00071.txt
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+>>> saved: ../../container_tiramisu/renders/haloD_varSFE_Lfid_Salp_ks20231024/LfidSF/LfidSF-00071.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00072/info_00072.txt
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+>>> saved: ../../container_tiramisu/renders/haloD_varSFE_Lfid_Salp_ks20231024/LfidSF/LfidSF-00072.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00073/info_00073.txt
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+>>> saved: ../../container_tiramisu/renders/haloD_varSFE_Lfid_Salp_ks20231024/LfidSF/LfidSF-00073.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00074/info_00074.txt
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+>>> saved: ../../container_tiramisu/renders/haloD_varSFE_Lfid_Salp_ks20231024/LfidSF/LfidSF-00074.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00075/info_00075.txt
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+>>> saved: ../../container_tiramisu/renders/haloD_varSFE_Lfid_Salp_ks20231024/LfidSF/LfidSF-00075.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00076/info_00076.txt
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+>>> saved: ../../container_tiramisu/renders/haloD_varSFE_Lfid_Salp_ks20231024/LfidSF/LfidSF-00076.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00077/info_00077.txt
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+>>> saved: ../../container_tiramisu/renders/haloD_varSFE_Lfid_Salp_ks20231024/LfidSF/LfidSF-00077.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00078/info_00078.txt
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+>>> saved: ../../container_tiramisu/renders/haloD_varSFE_Lfid_Salp_ks20231024/LfidSF/LfidSF-00078.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00079/info_00079.txt
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+>>> saved: ../../container_tiramisu/renders/haloD_varSFE_Lfid_Salp_ks20231024/LfidSF/LfidSF-00079.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00080/info_00080.txt
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
+slurmstepd: error: slurm_get_node_energy: Zero Bytes were transmitted or received
+slurmstepd: error: _get_joules_task: can't get info from slurmd
