@@ -87,7 +87,7 @@ def draw_frame(
 ):
     lum_range = (3e33, 3e36)
     gas_range = (0.007, 0.32)
-    temp_range = (1e4, 2e5)
+    temp_range = (6e3, 3e5)
 
     pxl_size = (wdth / star_bins) ** 2
     lum_alpha = 1
@@ -105,7 +105,7 @@ def draw_frame(
     # the final transparencey is dictatted by
 
     gascmap = linear_cmap(0, 0.50, "cmr", "cmr.cosmic")
-    tempcmap = linear_cmap(0.15, 0.7, "cmr", "cmr.ember")
+    tempcmap = linear_cmap(0.40, 0.70, "cmr", "cmr.ember")
     lumcmap = "cmr.amethyst"
     gauss_sig = 10
 
