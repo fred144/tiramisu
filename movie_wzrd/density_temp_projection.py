@@ -396,7 +396,7 @@ if __name__ == "__main__":
                     plt_wdth,
                     t_myr,
                     redshift,
-                    label=sim_run,
+                    label=render_nickname,
                 )
                 output_path = os.path.join(
                     render_container,
@@ -448,7 +448,7 @@ if __name__ == "__main__":
                 plt_wdth,
                 t_myr,
                 redshift,
-                label=sim_run,
+                label=render_nickname,
             )
             output_path = os.path.join(
                 render_container, "{}-{}.png".format(render_nickname, snums[i])
