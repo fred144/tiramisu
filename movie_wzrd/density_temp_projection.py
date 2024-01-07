@@ -85,7 +85,7 @@ def draw_frame(
     label,
     star_bins=2000,
 ):
-    lum_range = (1e33, 1e36)
+    lum_range = (3e33, 3e36)
     gas_range = (0.007, 0.32)
     temp_range = (1e4, 2e5)
 
@@ -161,19 +161,19 @@ def draw_frame(
     ax.add_patch(scale)
 
     ##add the luminosity color bar
-    lum_cbar_ax = ax.inset_axes([0.8, 0.90, 0.28, 0.010])
+    lum_cbar_ax = ax.inset_axes([0.7, 0.90, 0.28, 0.010])
     lum_cbar = fig.colorbar(lum, cax=lum_cbar_ax, pad=0, orientation="horizontal")
     lum_cbar_ax.set_title(
         r" Surface Brightness [${\rm erg\:\:s^{-1}\:\AA^{-1}\:pc^{-2}}$]", fontsize=11
     )
     # add the gas color bar
-    gas_cbar_ax = ax.inset_axes([0.8, 0.96, 0.28, 0.010])
+    gas_cbar_ax = ax.inset_axes([0.7, 0.96, 0.28, 0.010])
     gas_cbar = fig.colorbar(gas, cax=gas_cbar_ax, pad=0, orientation="horizontal")
     gas_cbar_ax.yaxis.set_ticks_position("left")
     gas_cbar_ax.set_title(r"$\Sigma \: [\mathrm{ g \: cm^{-2}}$]", fontsize=11)
 
     # temp color bar
-    temp_cbar_ax = ax.inset_axes([0.8, 0.84, 0.28, 0.010])
+    temp_cbar_ax = ax.inset_axes([0.7, 0.84, 0.28, 0.010])
     temp_cbar = fig.colorbar(temp, cax=temp_cbar_ax, pad=0, orientation="horizontal")
     temp_cbar_ax.yaxis.set_ticks_position("left")
     temp_cbar_ax.set_title(r"Temperature \: [K]", fontsize=11)
