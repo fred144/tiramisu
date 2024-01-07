@@ -237,7 +237,7 @@ if __name__ == "__main__":
     star_bins = 2000
     pxl_size = (pw / star_bins) ** 2  # pc
 
-    pan_frames = 500  # number of frames to use up for animaton
+    pan_frames = 400  # number of frames to use up for animaton
     num_rots = 4  # number of 360 degreee rotations
     rotation_interval = np.linspace(0, 2 * num_rots, pan_frames, endpoint=False) * np.pi
     zoom_interval = np.concatenate(
