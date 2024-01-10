@@ -148,14 +148,17 @@ if __name__ == "__main__":
             print("Creating ram-py container", sim_container)
             print("====================================================")
             os.makedirs(sim_container)
-
-        output_folders = sorted(os.listdir(sim_folder))
-        output_folders = [x for x in output_folders if "output_" in x]
-        # print(output_folders)
-        latest_snapshots_abs_dir = os.path.join(sim_folder, output_folders[-1])
-        # get the run name
-        run_name = os.path.split(os.path.split(latest_snapshots_abs_dir)[0])[1]
-        # save path based on the simulation run name
-        save_path = os.path.join(container, run_name)
-        print("# Saving latest results for", run_name)
-        snap_shot_info(latest_snapshots_abs_dir, save_path)
+        try:
+            output_folders = sorted(os.listdir(sim_folder))
+            output_folders = [x for x in output_folders if "output_" in x]
+            # print(output_folders)
+            latest_snapshots_abs_dir = os.path.join(sim_folder, output_folders[-1])
+            # get the run name
+            run_name = os.path.split(os.path.split(latest_snapshots_abs_dir)[0])[1]
+            # save path based on the simulation run name
+            save_path = os.path.join(container, run_name)
+            print("# Saving latest results for", run_name)
+            snap_shot_info(latest_snapshots_abs_dir, save_path)
+        except:
+            print("> no snapshots found")
+            continue
