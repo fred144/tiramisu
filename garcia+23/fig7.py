@@ -1,3 +1,7 @@
+"""
+Bound/unbound fraction plot
+"""
+
 import sys
 
 sys.path.append("..")

@@ -1,3 +1,7 @@
+"""
+
+"""
+
 import sys
 
 sys.path.append("..")
@@ -49,6 +53,32 @@ def star_formation_efficiency(n_h: float, mass: float, metallicity: float):
 
 
 def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: str):
+    """
+
+
+    Parameters
+    ----------
+    run_logpath : str, list
+        path to the logfiles, can be obtained by running sim_scraper.py
+    simulation_name : str, list
+        what to name the simulations
+    marker : TYPE
+        marker shape
+    hist_color : TYPE
+        color
+    sfe : str
+        type of sim run, "variable" SFE or "constant"
+
+    Raises
+    ------
+    ValueError
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+
+    """
     fig, ax = plt.subplots(1, 1, figsize=(4.8, 4.25), dpi=400)
 
     hist_ax_right = ax.inset_axes([1.02, 0, 0.30, 1], sharey=ax)

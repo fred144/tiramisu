@@ -1,3 +1,7 @@
+"""
+Bound unbound luminosity fraction
+"""
+
 import sys
 
 sys.path.append("..")

@@ -1,3 +1,7 @@
+"""
+Cluster mass functions
+"""
+
 import sys
 
 sys.path.append("..")

@@ -1,3 +1,7 @@
+"""
+PDFs of cluster size and ratio of original cluster mass and bound star cluster mass
+"""
+
 import sys
 
 sys.path.append("..")

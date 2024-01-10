@@ -1,3 +1,7 @@
+"""
+This shows the pop2 star formation histories
+"""
+
 import sys
 
 sys.path.append("..")

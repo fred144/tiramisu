@@ -104,7 +104,7 @@ if __name__ == "__main__":
 
     if not os.path.exists(container):
         print("====================================================")
-        print("Creating ram-py container", container)
+        print("Creating tiramisu container", container)
         print("====================================================")
         os.makedirs(container)
 
