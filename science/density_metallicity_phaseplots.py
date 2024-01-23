@@ -206,10 +206,10 @@ if __name__ == "__main__":
         axis.axvspan(np.log10(n_crit), np.log10(1e6), color="grey", alpha=0.5)
 
         axis.text(
-            0.97,
-            0.08,
+            0.05,
+            0.05,
             tlabels[a],
-            ha="right",
+            ha="left",
             va="bottom",
             transform=axis.transAxes,
             fontsize=10,
