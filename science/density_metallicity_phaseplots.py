@@ -237,7 +237,7 @@ if __name__ == "__main__":
         # ),
         r"$t = {:.0f} - {:.0f} $ Myr"
         "\n"
-        r"$z =  {:.0f} - {:.0f} $".format(
+        r"$z =  {:.3f} - {:.3f} $".format(
             np.array(myrs).min(),
             np.array(myrs).max(),
             np.array(redshifts).max(),
