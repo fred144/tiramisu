@@ -50,10 +50,10 @@ if __name__ == "__main__":
         ("gas", "mass"): ((1e-2, "msun"), (1e6, "msun")),
     }
 
-    if len(sys.argv) != 7:
+    if len(sys.argv) != 6:
         print(sys.argv[0], "usage:")
         print(
-            "{} snapshot_dir logSFC start_snap end_snap step render_nickname".format(
+            "{} snapshot_dir start_snap end_snap step render_nickname".format(
                 sys.argv[0]
             )
         )
@@ -64,11 +64,11 @@ if __name__ == "__main__":
         print("********************************************************************")
 
     datadir = sys.argv[1]
-    logsfc_path = sys.argv[2]
-    start_snapshot = int(sys.argv[3])
-    end_snapshot = int(sys.argv[4])
-    step = int(sys.argv[5])
-    render_nickname = sys.argv[6]
+    logsfc_path = os.path.join(sys.argv[1], "logSFC")
+    start_snapshot = int(sys.argv[2])
+    end_snapshot = int(sys.argv[3])
+    step = int(sys.argv[4])
+    render_nickname = sys.argv[5]
 
     sim_run = os.path.basename(os.path.normpath(datadir))
     fpaths, snums = filter_snapshots(
