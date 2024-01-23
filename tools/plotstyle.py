@@ -10,10 +10,11 @@ plt.rcParams.update(
         "mathtext.fontset": "cm",
         "xtick.labelsize": 10,
         "ytick.labelsize": 10,
-        "font.size": 12,
+        "font.size": 11,
         "xtick.direction": "in",
         "ytick.direction": "in",
         "ytick.right": True,
         "xtick.top": True,
+        # "axes.linewidth": ,
     }
 )

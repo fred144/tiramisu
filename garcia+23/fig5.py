@@ -1,5 +1,5 @@
 """
-
+SFE
 """
 
 import sys
@@ -14,6 +14,7 @@ import matplotlib
 import os
 from tools import plotstyle
 from labellines import labelLines
+import cmasher as cmr
 
 
 def star_formation_efficiency(n_h: float, mass: float, metallicity: float):
@@ -79,16 +80,23 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
     None.
 
     """
-    fig, ax = plt.subplots(1, 1, figsize=(4.8, 4.25), dpi=400)
+    fig, ax = plt.subplots(
+        1,
+        2,
+        figsize=(5, 4),
+        gridspec_kw={"width_ratios": [3, 1]},
+        dpi=400,
+        sharey=True,
+    )
 
-    hist_ax_right = ax.inset_axes([1.02, 0, 0.30, 1], sharey=ax)
-    hist_ax_right.set_xlabel(r"$\mathrm{PDF (SFE)}$")
-    hist_ax_right.tick_params(axis="both", labelleft=False, labelsize=6)
-
+    # hist_ax_right = ax.inset_axes([1.02, 0, 0.30, 1], sharey=ax)
+    ax[1].set_xlabel(r"$\mathrm{PDF (SFE)}$")
+    ax[1].tick_params(axis="both", labelleft=False, labelsize=6)
+    plt.subplots_adjust(wspace=0.05)
     latest_redshift = 5
     hatches = ["\\\\\\\\\\", "/////"]
 
-    sfe_bins = np.geomspace(3, 100, 25)
+    sfe_bins = np.geomspace(1, 100, 25)
     for i, r in enumerate(run_logpath):
         run_name = os.path.basename(os.path.normpath(r))
         print(os.path.join(r, "logSFC"))
@@ -114,20 +122,20 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
             print("sfe is ether constant or variable")
             raise ValueError
 
-        sfe_scatter = ax.scatter(
+        sfe_scatter = ax[0].scatter(
             m_sun_cloud,
             sfe_val,
             c=np.log10(n_hydrogen),
             label=simulation_name[i],
-            cmap="summer",
+            cmap=cmr.tropical,
             marker=marker[i],
             edgecolors="black",
             linewidth=0.5,
             s=40,
-            alpha=0.8,
+            alpha=0.7,
         )
-
-        hist_ax_right.hist(
+        print(np.max(sfe_val))
+        ax[1].hist(
             sfe_val,
             bins=sfe_bins,
             color=hist_color[i],
@@ -141,12 +149,12 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
             label=simulation_name[i],
         )
 
-    hist_ax_right.legend(fontsize=8, loc="upper center")
-    cbar_ax = ax.inset_axes([0, 1.02, 1, 0.05])
+    ax[1].legend(fontsize=8, loc="upper center", frameon=False)
+    cbar_ax = ax[0].inset_axes([0, 1.02, 1, 0.05])
     dens_bar = fig.colorbar(sfe_scatter, cax=cbar_ax, pad=0, orientation="horizontal")
 
     dens_bar.set_label(
-        label=(r"$\log_{10}\:\overline{n_\mathrm{H}}\:\left(\mathrm{cm}^{-3} \right)$"),
+        label=(r"$\log_{10}\:\overline{n_\mathrm{H}}\:\left[\mathrm{cm}^{-3} \right]$"),
         fontsize=12,
         labelpad=6,
     )
@@ -154,9 +162,9 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
     dens_bar.ax.xaxis.set_ticks_position("top")
     dens_bar.ax.locator_params(nbins=6)
 
-    ax.set(
-        xlabel=r"$M_{\rm MC} (\mathrm{M}_{\odot})$",
-        ylabel=r"$\mathrm{SFE}\:(\%)$",
+    ax[0].set(
+        xlabel=r"Cloud Mass $\left[\mathrm{M}_{\odot}\right]$",
+        ylabel=r"$\mathrm{SFE}\:\left[\% \right]$",
         xscale="log",
         yscale="log",
     )
@@ -173,35 +181,35 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
         )
         h.append(sim_label)
 
-    ax.legend(loc="lower right", handles=h)
+    ax[0].legend(loc="lower right", handles=h, frameon=False)
 
-    ax.set_ylim(top=120)
-    xmin, _ = ax.get_xlim()
-    ax.axhline(y=90, color="grey", ls="--", zorder=-1)
-    ax.annotate("$90 \%$", (xmin * 1.2, 75), color="grey")
+    ax[0].set_ylim(top=120)
+    xmin, _ = ax[0].get_xlim()
+    ax[0].axhline(y=80, color="grey", ls="--", zorder=-1)
+    ax[0].annotate("$80 \%$", (xmin * 1.2, 65), color="grey")
 
-    ax.axhline(y=10, color="grey", ls="--", zorder=-1)
-    ax.annotate("$10 \%$", (xmin * 1.2, 8), color="grey")
+    ax[0].axhline(y=10, color="grey", ls="--", zorder=-1)
+    ax[0].annotate("$10 \%$", (xmin * 1.2, 8), color="grey")
 
 
 if __name__ == "__main__":
-    cmap = matplotlib.colormaps["Set2"]
+    cmap = matplotlib.colormaps["Dark2"]
     cmap = cmap(np.linspace(0, 1, 8))
-    colors = [
-        cmap[0],
-        # cmap[1],
-        cmap[2],
-    ]
 
+    colors = [
+        # cmap[0],
+        cmap[0],
+        cmap[1],
+    ]
     runs = [
         "../../container_tiramisu/sim_log_files/fs07_refine",
         # "../../container_tiramisu/sim_log_files/fs035_ms10",
         "../../container_tiramisu/sim_log_files/CC-Fiducial",
     ]
     names = [
-        "$f_* = 0.70$",
+        "high SFE",
         # "$f_* = 0.35$",
-        r"${\rm He+19}$",
+        "VSFE",
     ]
     markers = [
         "o",
@@ -222,7 +230,7 @@ if __name__ == "__main__":
         sfe=calc_type,
     )
     plt.savefig(
-        "../../gdrive_columbia/research/massimo/fig5.png",
+        "../../gdrive_columbia/research/massimo/paper2/SFE.png",
         dpi=300,
         bbox_inches="tight",
         pad_inches=0.05,
