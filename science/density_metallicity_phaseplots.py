@@ -78,9 +78,14 @@ if __name__ == "__main__":
         sampling=step,
         str_snaps=True,
     )
+
     # first starburst in the CC-fid run
+    # queiscent phase after 1st star burst, before 2nd snap 203 - 370
     # second starburst in the CC-fid run snap 377 - 389
+    # after the second starburst
+
     # =============================================================================
+
     # datadir = os.path.expanduser("~/test_data/fid-broken-feedback/")
     # logsfc_path = os.path.expanduser(
     #     "~/container_tiramisu/sim_log_files/CC-Fiducial/logSFC"
@@ -186,7 +191,7 @@ if __name__ == "__main__":
                 np.log10(lims[("ramses", "Metallicity")][0] / zsun),
                 np.log10(lims[("ramses", "Metallicity")][1] / zsun),
             ],
-            cmap=cmr.dusk_r,
+            cmap=cmr.tropical_r,
             vmin=np.log10(lims[("gas", "mass")][0][0]),
             vmax=np.log10(lims[("gas", "mass")][1][0]),
             aspect=1.6,

@@ -154,7 +154,7 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
     dens_bar = fig.colorbar(sfe_scatter, cax=cbar_ax, pad=0, orientation="horizontal")
 
     dens_bar.set_label(
-        label=(r"$\log_{10}\:\overline{n_\mathrm{H}}\:\left[\mathrm{cm}^{-3} \right]$"),
+        label=(r"$\log\:\overline{n_\mathrm{H}}\:\left[\mathrm{cm}^{-3} \right]$"),
         fontsize=12,
         labelpad=6,
     )
