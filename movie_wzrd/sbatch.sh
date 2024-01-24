@@ -16,10 +16,10 @@ module load openmpi
 # activate py environment
 source ~/scratch/master/bin/activate
  
-SCRIPT="/scratch/zt1/project/ricotti-prj/user/fgarcia4/tiramisu/movie_wzrd/density_temp_projection.py"
-DIR="/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024"
+SCRIPT="/scratch/zt1/project/ricotti-prj/user/fgarcia4/tiramisu/movie_wzrd/stellar_surface_dens.py"
+DIR="/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial"
 # also tried
 # cd /scratch/zt1/project/ricotti-prj/user/fgarcia4/globclustevo/visuals/
 # SCRIPT = "./low-sfe.py"
 # number of cores specified above
-mpirun python3 $SCRIPT $DIR 64 224 1 LfidSF 2>&1 
+mpirun python3 $SCRIPT $DIR 304 466 1 VSFE 2>&1 
