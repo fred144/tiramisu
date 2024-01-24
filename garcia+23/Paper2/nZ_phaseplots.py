@@ -208,52 +208,52 @@ if __name__ == "__main__":
                 fontsize=10,
             )
 
-    ax[0].set(
-        ylabel=r"$\log\:{\rm Metallicity\:(Z_{\odot})}$",
-        xlabel=r"$\log\:n_{\rm H} \:{\rm (cm^{-3}})$",
-        xlim=(
-            np.log10(lims[("gas", "density")][0][0] / m_h),
-            np.log10(lims[("gas", "density")][1][0] / m_h),
-        ),
-        ylim=(
-            np.log10(lims[("ramses", "Metallicity")][0] / zsun),
-            np.log10(lims[("ramses", "Metallicity")][1] / zsun),
-        ),
-    )
-    ax[0].text(
-        0.05,
-        0.95,
-        # ("{}" "\:" r"t = {:.2f} Myr" "\:" r"z = {:.2f} ").format(
-        #     render_nickname,
-        #     t_myr,
-        #     redshift,
-        # ),
-        r"$t = {:.0f} $ Myr" "\n" r"$z =  {:.2f} $".format(t_myr, redshift),
-        ha="left",
-        va="top",
-        color="black",
-        transform=ax[0].transAxes,
-        fontsize=10,
-    )
+        ax[0].set(
+            ylabel=r"$\log\:{\rm Metallicity\:(Z_{\odot})}$",
+            xlabel=r"$\log\:n_{\rm H} \:{\rm (cm^{-3}})$",
+            xlim=(
+                np.log10(lims[("gas", "density")][0][0] / m_h),
+                np.log10(lims[("gas", "density")][1][0] / m_h),
+            ),
+            ylim=(
+                np.log10(lims[("ramses", "Metallicity")][0] / zsun),
+                np.log10(lims[("ramses", "Metallicity")][1] / zsun),
+            ),
+        )
+        ax[0].text(
+            0.05,
+            0.95,
+            # ("{}" "\:" r"t = {:.2f} Myr" "\:" r"z = {:.2f} ").format(
+            #     render_nickname,
+            #     t_myr,
+            #     redshift,
+            # ),
+            r"$t = {:.0f} $ Myr" "\n" r"$z =  {:.2f} $".format(t_myr, redshift),
+            ha="left",
+            va="top",
+            color="black",
+            transform=ax[0].transAxes,
+            fontsize=10,
+        )
 
-    ax[0].xaxis.set_major_locator(plt.MaxNLocator(12))
+        ax[0].xaxis.set_major_locator(plt.MaxNLocator(12))
 
-    cbar_ax = ax[2].inset_axes([1.02, 0, 0.05, 1])
-    bar = fig.colorbar(nt_image, cax=cbar_ax, pad=0)
-    # bar .ax.xaxis.set_tick_params(pad=2)
-    bar.set_label(r"$\mathrm{\log\:Total\:Mass\:(M_{\odot}})$")
-    bar.ax.xaxis.set_label_position("top")
-    bar.ax.xaxis.set_ticks_position("top")
+        cbar_ax = ax[2].inset_axes([1.02, 0, 0.05, 1])
+        bar = fig.colorbar(nt_image, cax=cbar_ax, pad=0)
+        # bar .ax.xaxis.set_tick_params(pad=2)
+        bar.set_label(r"$\mathrm{\log\:Total\:Mass\:(M_{\odot}})$")
+        bar.ax.xaxis.set_label_position("top")
+        bar.ax.xaxis.set_ticks_position("top")
 
-    output_path = os.path.join(
-        render_container, "{}-{}.png".format(render_nickname, snums[i])
-    )
+        output_path = os.path.join(
+            render_container, "{}-{}.png".format(render_nickname, snums[i])
+        )
 
-    print("Saved", output_path)
-    plt.savefig(
-        output_path,
-        dpi=400,
-        bbox_inches="tight",
-        # pad_inches=0.00,
-    )
+        print("Saved", output_path)
+        plt.savefig(
+            output_path,
+            dpi=400,
+            bbox_inches="tight",
+            # pad_inches=0.00,
+        )
     # plt.show()
