@@ -45,8 +45,8 @@ if __name__ == "__main__":
         r"Hot ($T > 5 \times 10^4$ K)",
     ]
     lims = {
-        ("gas", "density"): ((1e-28, "g/cm**3"), (1e-18, "g/cm**3")),
-        ("ramses", "Metallicity"): (1e-5 * zsun, 10 * zsun),
+        ("gas", "density"): ((5e-30, "g/cm**3"), (1e-18, "g/cm**3")),
+        ("ramses", "Metallicity"): (1e-6 * zsun, 5 * zsun),
         ("gas", "mass"): ((1e-2, "msun"), (1e6, "msun")),
     }
 
@@ -88,7 +88,7 @@ if __name__ == "__main__":
     # fpaths, snums = filter_snapshots(
     #     datadir,
     #     304,
-    #     388,
+    #     304,
     #     sampling=1,
     #     str_snaps=True,
     #     snapshot_type="ramses_snapshot",
@@ -142,7 +142,7 @@ if __name__ == "__main__":
 
         mstar = np.sum(np.array(ad["star", "particle_mass"].to("Msun")))
 
-        fig, ax = plt.subplots(1, 3, figsize=(13, 5), dpi=300, sharex=True, sharey=True)
+        fig, ax = plt.subplots(1, 3, figsize=(10, 7), dpi=400, sharex=True, sharey=True)
         plt.subplots_adjust(hspace=0, wspace=0)
 
         axes = ax.ravel()
@@ -237,7 +237,7 @@ if __name__ == "__main__":
         # ),
         r"$t = {:.0f} - {:.0f} $ Myr"
         "\n"
-        r"$z =  {:.3f} - {:.3f} $".format(
+        r"$z =  {:.2f} - {:.2f} $".format(
             np.array(myrs).min(),
             np.array(myrs).max(),
             np.array(redshifts).max(),
