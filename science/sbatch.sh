@@ -23,4 +23,4 @@ NICKNAME="VSFE-DensityContour"
 # cd /scratch/zt1/project/ricotti-prj/user/fgarcia4/globclustevo/visuals/
 # SCRIPT = "./low-sfe.py"
 # number of cores specified above
-mpirun python3 $SCRIPT $DIR $NICKNAME 304 375 1  2>&1 
+mpirun python3 $SCRIPT $DIR 304 375 1 $NICKNAME 2>&1 
