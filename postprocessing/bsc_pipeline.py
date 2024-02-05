@@ -42,6 +42,13 @@ def modified_king_model(
     return sigma
 
 
+def get_core_mass(x_coord: float, y_coord: float, masses: float, r_core: float):
+    all_positions = np.vstack((x_coord, y_coord)).T
+    distances = np.sqrt(np.sum(np.square(all_positions), axis=1))
+    mcore = np.sum(masses[distances < r_core])
+    return mcore
+
+
 def trunc_radius(sigma_0: float, r_c: float, alpha: float, sigma_bg: float):
     """
     get the truncation radius.
@@ -199,30 +206,30 @@ def projected_surf_densities(
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 5:
-        print(sys.argv[0], "usage:")
-        print(
-            "{} data_directory_to_postprocess start_snapshot end_snapshot step".format(
-                sys.argv[0]
-            )
-        )
-        exit()
-    else:
-        print("********************************************************************")
-        print(" running BSC finder / star clump finder")
-        print("********************************************************************")
+    # if len(sys.argv) != 5:
+    #     print(sys.argv[0], "usage:")
+    #     print(
+    #         "{} data_directory_to_postprocess start_snapshot end_snapshot step".format(
+    #             sys.argv[0]
+    #         )
+    #     )
+    #     exit()
+    # else:
+    #     print("********************************************************************")
+    #     print(" running BSC finder / star clump finder")
+    #     print("********************************************************************")
 
-    datadir = sys.argv[1]
-    start_snapshot = int(sys.argv[2])
-    end_snapshot = int(sys.argv[3])
-    step = int(sys.argv[4])
+    # datadir = sys.argv[1]
+    # start_snapshot = int(sys.argv[2])
+    # end_snapshot = int(sys.argv[3])
+    # step = int(sys.argv[4])
 
     # local path for test
-    # datadir = os.path.relpath("../../sim_data/cluster_evolution/CC-radius1")
-    # datadir = os.path.relpath("../../garcia23_testdata/fs07_refine")
-    # start_snapshot = 500
-    # end_snapshot = 500
-    # step = 1
+    datadir = os.path.relpath("../..//test_data/CC-Fiducial")
+
+    start_snapshot = 397
+    end_snapshot = 397
+    step = 1
 
     sim_run = os.path.basename(os.path.normpath(datadir))
 
@@ -270,34 +277,6 @@ if __name__ == "__main__":
         ds = yt.load(infofile, fields=cell_fields, extra_particle_fields=epf)
         ad = ds.all_data()
 
-        clump_cata_yt = f"{bsc_cat_container}/info_{snap_strings[i]}/info_{snap_strings[i]}.{processor_number}.h5"
-        snapshot_container = os.path.join(bsc_cat_container, f"info_{snap_strings[i]}")
-        if os.path.isfile(clump_cata_yt) is True:
-            print("# file already exists")
-            print("# reading in", clump_cata_yt)
-
-            pass
-        else:
-            hc = HaloCatalog(
-                data_ds=ds,
-                finder_method="fof",
-                finder_kwargs={
-                    "ptype": "star",
-                    "padding": 0.0001,
-                    "link": 0.00001,  # "best"
-                    "dm_only": False,
-                },
-                output_dir=bsc_cat_container,
-            )
-            hc.create()
-
-        # need to read in using yt for clump radius
-        cata_yt = yt.load(clump_cata_yt)
-        # make a halo catalogue for yt overplot
-        halo_cat_plotting = HaloCatalog(halos_ds=cata_yt)
-        halo_cat_plotting.load()
-        cata_yt = cata_yt.all_data()
-
         # post processed pop2
         pop2_header = (
             "ID"
@@ -332,6 +311,54 @@ if __name__ == "__main__":
         pop2_vy = pop2_data[:, 8]
         pop2_vz = pop2_data[:, 9]
         pop2_masses = pop2_data[:, 10]
+        sfregion = ds.region(
+            center=ctr_at_code_length,
+            left_edge=ds.arr(ctr_at_code_length, "code_length")
+            - ds.arr(300, "pc").to("code_length"),
+            right_edge=ds.arr(ctr_at_code_length, "code_length")
+            + ds.arr(300, "pc").to("code_length"),
+        )
+        clump_cata_yt = f"{bsc_cat_container}/info_{snap_strings[i]}/info_{snap_strings[i]}.{processor_number}.h5"
+        snapshot_container = os.path.join(bsc_cat_container, f"info_{snap_strings[i]}")
+        if os.path.isfile(clump_cata_yt) is True:
+            print("# file already exists")
+            print("# reading in", clump_cata_yt)
+
+            pass
+        else:
+            hc = HaloCatalog(
+                data_ds=ds,
+                finder_method="fof",
+                finder_kwargs={
+                    "ptype": "star",
+                    "padding": 0.0001,
+                    "link": 1e-5,  # "best"
+                    "dm_only": False,
+                },
+                output_dir=bsc_cat_container,
+            )
+            # hc = HaloCatalog(
+            #     data_ds=ds,
+            #     finder_method="hop",
+            #     finder_kwargs={
+            #         "subvolume": sfregion,
+            #         "ptype": "star",
+            #         "total_mass": np.sum(pop2_masses) / 10,
+            #         "padding": 0.0001,
+            #         "threshold": 1e10,
+            #         "dm_only": False,
+            #         "save_particles": True,
+            #     },
+            #     output_dir=bsc_cat_container,
+            # )
+            hc.create()
+
+        # need to read in using yt for clump radius
+        cata_yt = yt.load(clump_cata_yt)
+        # make a halo catalogue for yt overplot
+        halo_cat_plotting = HaloCatalog(halos_ds=cata_yt)
+        halo_cat_plotting.load()
+        cata_yt = cata_yt.all_data()
 
         # get the clump centers
         cata_h5 = h5.File(clump_cata_yt, "r")
@@ -388,14 +415,18 @@ if __name__ == "__main__":
             oldest_star = np.max(pop2_ages[clump_mask])
             youngest_star = np.min(pop2_ages[clump_mask])
             clump_mass = np.sum(pop2_masses[clump_mask])
-
+            if clump_mass < 300:  # msun threshold mass
+                print("The clump identified is noise, skipping")
+                continue
             # clump_integrated_light = np.sum(10 ** pop2_lums[clump_mask])
             # 1d velovity dispersions
             std_vx = np.std(pop2_vx[clump_mask])
             std_vy = np.std(pop2_vy[clump_mask])
             std_vz = np.std(pop2_vz[clump_mask])
 
-            # save each star position for profiler, recentered on the clump center
+            # save each star position for profiler,
+            # recentered on the clump center as determined by the halo finder
+            #
             clump_x = pop2_x[clump_mask] - clump_ctr_x
             clump_y = pop2_y[clump_mask] - clump_ctr_y
             clump_z = pop2_z[clump_mask] - clump_ctr_z
@@ -439,7 +470,11 @@ if __name__ == "__main__":
                 truncation_radius = trunc_radius(
                     central_dens, core_radius, alpha, bg_dens
                 )
-                if alpha > 8:
+                core_mass = get_core_mass(
+                    clump_x, clump_y, pop2_masses[clump_mask], core_radius
+                )
+
+                if alpha > 100:  # 8:
                     print("> Clump {} is being disrupted".format(clump_idnum))
 
                     disrupted_clump_data = pop2_data[:, 1:][clump_mask]
@@ -479,6 +514,7 @@ if __name__ == "__main__":
                         truncation_radius,
                         r_mhalf,
                         r_half_light,
+                        core_mass,
                     ]
                     reprocessed_clump_cata.append(catalogue_to_save)
                     bsc_profile_dat = np.vstack(
@@ -522,9 +558,10 @@ if __name__ == "__main__":
             "alpha \t err \t "
             "central_dens [msun/pc^2] \t err \t "
             "bg_dens [msun/pc^2] \t err \t "
-            "trunc rad [msun/pc^2]"
-            "half mass rad [pc]"
-            "half light rad [pc]"
+            "trunc rad [msun/pc^2]\t "
+            "half mass rad [pc]\t "
+            "half light rad [pc]\t "
+            "core mass [Msun]"
         )
 
         current_time = float(ds.current_time.in_units("Myr"))

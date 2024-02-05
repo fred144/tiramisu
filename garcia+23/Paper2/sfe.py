@@ -4,7 +4,7 @@ SFE
 
 import sys
 
-sys.path.append("..")
+sys.path.append("../../")
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import cm
@@ -93,6 +93,7 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
     ax[1].set_xlabel(r"$\mathrm{PDF (SFE)}$")
     ax[1].tick_params(axis="both", labelleft=False, labelsize=6)
     plt.subplots_adjust(wspace=0.05)
+    # latest_redshift = 9.12 # before second starburst
     latest_redshift = 5
     hatches = ["\\\\\\\\\\", "/////"]
 
@@ -146,10 +147,11 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
             linewidth=1.25,
             density=True,
             orientation="horizontal",
-            label=simulation_name[i],
+            label=" ",  # simulation_name[i],
         )
 
-    ax[1].legend(fontsize=8, loc="upper center", frameon=False)
+    ax[1].legend(loc="lower left", frameon=False, bbox_to_anchor=(-1.45, 0.0))
+
     cbar_ax = ax[0].inset_axes([0, 1.02, 1, 0.05])
     dens_bar = fig.colorbar(sfe_scatter, cax=cbar_ax, pad=0, orientation="horizontal")
 
@@ -177,11 +179,11 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
             color="k",
             marker=m,
             ls="",
-            label=n,
+            label="\t" + n,
         )
         h.append(sim_label)
 
-    ax[0].legend(loc="lower right", handles=h, frameon=False)
+    ax[0].legend(loc="lower right", handles=h, frameon=False, handletextpad=2)
 
     ax[0].set_ylim(top=120)
     xmin, _ = ax[0].get_xlim()
@@ -202,9 +204,9 @@ if __name__ == "__main__":
         cmap[1],
     ]
     runs = [
-        "../../container_tiramisu/sim_log_files/fs07_refine",
+        "../../../container_tiramisu/sim_log_files/fs07_refine",
         # "../../container_tiramisu/sim_log_files/fs035_ms10",
-        "../../container_tiramisu/sim_log_files/CC-Fiducial",
+        "../../../container_tiramisu/sim_log_files/CC-Fiducial",
     ]
     names = [
         "high SFE",
@@ -230,7 +232,7 @@ if __name__ == "__main__":
         sfe=calc_type,
     )
     plt.savefig(
-        "../../gdrive_columbia/research/massimo/paper2/SFE.png",
+        "../../../gdrive_columbia/research/massimo/paper2/SFE.png",
         dpi=300,
         bbox_inches="tight",
         pad_inches=0.05,
