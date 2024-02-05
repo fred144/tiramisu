@@ -158,20 +158,20 @@ def draw_frame(
     )
 
     ax.text(
-        0.95, 0.92, r"100", ha="right", va="top", color=lcmap[0], transform=ax.transAxes
+        0.95, 0.91, r"100", ha="right", va="top", color=lcmap[0], transform=ax.transAxes
     )
 
     ax.text(
-        0.95, 0.89, r"200", ha="right", va="top", color=lcmap[1], transform=ax.transAxes
+        0.95, 0.88, r"200", ha="right", va="top", color=lcmap[1], transform=ax.transAxes
     )
 
     ax.text(
-        0.95, 0.86, r"500", ha="right", va="top", color=lcmap[4], transform=ax.transAxes
+        0.95, 0.85, r"500", ha="right", va="top", color=lcmap[4], transform=ax.transAxes
     )
 
     ax.text(
         0.95,
-        0.83,
+        0.82,
         r"1000",
         ha="right",
         va="top",
