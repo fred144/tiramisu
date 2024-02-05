@@ -18,7 +18,7 @@ source ~/scratch/master/bin/activate
  
 SCRIPT="/scratch/zt1/project/ricotti-prj/user/fgarcia4/tiramisu/science/gas_density.py"
 DIR="/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial"
-NICKNAME="VSFE Density Contour"
+NICKNAME="VSFE-DensityContour"
 # also tried
 # cd /scratch/zt1/project/ricotti-prj/user/fgarcia4/globclustevo/visuals/
 # SCRIPT = "./low-sfe.py"
