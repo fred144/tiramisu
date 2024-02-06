@@ -135,7 +135,7 @@ def draw_frame(
         norm=LogNorm(gas_range[0], gas_range[1]),
     )
 
-    lcmap = matplotlib.colormaps["Set2"]
+    lcmap = cm.get_cmap("Set2")
     lcmap = lcmap(np.linspace(0, 1, 8))
 
     density_contours = ax.contour(
