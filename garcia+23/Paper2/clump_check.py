@@ -24,9 +24,6 @@ disrupted_paths = glob.glob(
     os.path.join(os.path.join(path, snapshot), "disrupted_*.txt")
 )
 
-pop2 = "../../../container_tiramisu/post_processed/pop2/CC-Fiducial"
-full_dat = np.loadtxt(os.path.join(pop2, "pop2-00397-588_12-myr-z-8_746.txt"))
-
 # %%
 bound_dat = np.loadtxt(bound_star_path[0])
 unbound_dat = np.loadtxt(field_star_path[0])
@@ -250,6 +247,8 @@ plt.show()
 import numpy as np
 from pytreegrav import Accel, Potential
 
+pop2 = "../../../container_tiramisu/post_processed/pop2/CC-Fiducial"
+full_dat = np.loadtxt(os.path.join(pop2, "pop2-00397-588_12-myr-z-8_746.txt"))
 
 pots = Potential(big_bsc[:, 3:6], big_bsc[:, -1], method="bruteforce")
 minimum_u_xyz_pos = np.argmin(pots)
@@ -262,13 +261,14 @@ avg_x = np.mean(bigx)
 avg_y = np.mean(bigy)
 avg_z = np.mean(bigz)
 
-catalog_idx = int(np.argwhere(clumped_dat[:, 0] == int(34)))
+# name of BSC
+bsc = 34
+catalog_idx = int(np.argwhere(clumped_dat[:, 0] == int(bsc)))
 fof_x = clumped_dat[:, 1][catalog_idx]
 fof_y = clumped_dat[:, 2][catalog_idx]
 fof_z = clumped_dat[:, 3][catalog_idx]
 
 
-# %% plotting the ages
 fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(5, 5), dpi=300)
 
 age_1 = big_ages < 50  # myr
@@ -304,21 +304,14 @@ ax.scatter(
 ax.scatter(min_y, min_z, c="magenta", s=10, label="minimum potential")
 ax.scatter(avg_y, avg_z, c="cyan", s=10, label="centroid")
 ax.scatter(fof_y, fof_z, c="k", s=10, label="fof")
-
 ax.legend(ncols=2)
-
+plt.show()
 # %%
-
-allx, ally, allz = full_dat[:, 4:7].T
-
+pop2 = "../../../container_tiramisu/post_processed/pop2/CC-Fiducial"
+full_dat = np.loadtxt(os.path.join(pop2, "pop2-00397-588_12-myr-z-8_746.txt"))
 full_mass = full_dat[:, -1]
 starting_point = 0.01
 prof_rad = 200
-
-
-allx -= fof_x
-ally -= fof_y
-allz -= fof_z
 
 
 def surf_dense(x, y, m):
@@ -342,22 +335,43 @@ def surf_dense(x, y, m):
     return bin_ctrs, surf_mass_density
 
 
-bin_ctrsxy, sigma_xy = surf_dense(allx, ally, full_mass)
-bin_ctrsxz, sigma_xz = surf_dense(allx, allz, full_mass)
-bin_ctrsyz, sigma_yz = surf_dense(ally, allz, full_mass)
+allx, ally, allz = full_dat[:, 4:7].T
+all_ages = full_dat[:, 2]
+
+age_mask = all_ages < 50
+
+allx_recentered = allx - fof_x
+ally_recentered = ally - fof_y
+allz_recentered = allz - fof_z
+
+bin_ctrsxy, sigma_xy = surf_dense(
+    allx_recentered[age_mask], ally_recentered[age_mask], full_mass[age_mask]
+)
+bin_ctrsxz, sigma_xz = surf_dense(
+    allx_recentered[age_mask], allz_recentered[age_mask], full_mass[age_mask]
+)
+bin_ctrsyz, sigma_yz = surf_dense(
+    ally_recentered[age_mask], allz_recentered[age_mask], full_mass[age_mask]
+)
 
 fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(5, 5), dpi=300)
 ax.plot(bin_ctrsxy, sigma_xy)
 ax.plot(bin_ctrsxz, sigma_xz)
 ax.plot(bin_ctrsyz, sigma_yz)
 
-ax.plot(big_profile[:, 0], big_profile[:, 1], color="k", label=r"$R_{\rm vir}$ cutoff")
+ax.plot(
+    big_profile[:, 0],
+    big_profile[:, 1],
+    color="k",
+    label=r"$R_{\rm vir}$ cutoff",
+)
 ax.set(
-    xscale="log",
+    # xscale="log",
     yscale="log",
     ylabel=r"Surface Density ${\rm M_\odot pc^{-2}}$",
     xlabel="Radial Distance (pc)",
     # xlim=(0.1, 12),
 )
 ax.legend()
+
 plt.show()
