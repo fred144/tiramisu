@@ -307,11 +307,20 @@ ax.scatter(fof_y, fof_z, c="k", s=10, label="fof")
 ax.legend(ncols=2)
 plt.show()
 # %%
+from scipy.optimize import curve_fit
+from astropy.modeling.models import Sersic1D
+
 pop2 = "../../../container_tiramisu/post_processed/pop2/CC-Fiducial"
 full_dat = np.loadtxt(os.path.join(pop2, "pop2-00397-588_12-myr-z-8_746.txt"))
 full_mass = full_dat[:, -1]
 starting_point = 0.01
 prof_rad = 200
+
+
+def sersic(r, i0, r_halflight, n):
+    b = 1.9992 * n - 0.3271
+    intensity = i0 * np.exp(-b * ((r / r_halflight) ** (1 / n) - 1))
+    return intensity
 
 
 def surf_dense(x, y, m):
@@ -354,24 +363,49 @@ bin_ctrsyz, sigma_yz = surf_dense(
     ally_recentered[age_mask], allz_recentered[age_mask], full_mass[age_mask]
 )
 
-fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(5, 5), dpi=300)
-ax.plot(bin_ctrsxy, sigma_xy)
-ax.plot(bin_ctrsxz, sigma_xz)
-ax.plot(bin_ctrsyz, sigma_yz)
+fit_mask = sigma_yz > 0.1
 
+
+# without the mask
+all_bin_ctrsxy, all_sigma_xy = surf_dense(allx_recentered, ally_recentered, full_mass)
+all_bin_ctrsxz, all_sigma_xz = surf_dense(allx_recentered, allz_recentered, full_mass)
+all_bin_ctrsyz, all_sigma_yz = surf_dense(ally_recentered, allz_recentered, full_mass)
+
+# popt, pcov = curve_fit(sersic, bin_ctrsyz[fit_mask], sigma_yz[fit_mask])
+
+fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(4, 4), dpi=300)
+ax.plot(bin_ctrsxy, sigma_xy, color="tab:blue", alpha=0.4, lw=3)
+ax.plot(bin_ctrsxz, sigma_xz, color="tab:blue", alpha=0.4, lw=3)
 ax.plot(
-    big_profile[:, 0],
-    big_profile[:, 1],
-    color="k",
-    label=r"$R_{\rm vir}$ cutoff",
+    bin_ctrsyz, sigma_yz, color="tab:blue", label=r"age $<$ 50 Myr", alpha=0.4, lw=3
 )
+
+# ax.plot(all_bin_ctrsxy, all_sigma_xy, color="tab:red", alpha=0.4, lw=3)
+# ax.plot(all_bin_ctrsxz, all_sigma_xz, color="tab:red", alpha=0.4, lw=3)
+# ax.plot(all_bin_ctrsyz, all_sigma_yz, color="tab:red", label=r"all", alpha=0.4, lw=3)
+
+# ax.plot(
+#     big_profile[:, 0],
+#     big_profile[:, 1],
+#     color="k",
+#     label=r"$R_{\rm vir}$ cutoff",
+# )
+
+
+s1 = Sersic1D(amplitude=90, r_eff=20, n=2)
+r = np.arange(0.1, 50, 0.01)
+
+ax.plot(r, s1(r), ls="--", lw="3", color="black", label="sersic index = 2")
+
+
 ax.set(
-    # xscale="log",
+    xscale="log",
     yscale="log",
     ylabel=r"Surface Density ${\rm M_\odot pc^{-2}}$",
     xlabel="Radial Distance (pc)",
-    # xlim=(0.1, 12),
+    xlim=(0.04, 120),
+    ylim=(1, 3e4),
 )
+ax.axvspan(0.001, 0.1, alpha=0.2, color="k")
 ax.legend()
-
 plt.show()

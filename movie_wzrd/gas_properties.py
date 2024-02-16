@@ -85,47 +85,47 @@ yt.add_field(
 )
 
 if __name__ == "__main__":
-    if len(sys.argv) != 6:
-        print(sys.argv[0], "usage:")
-        print(
-            "{} snapshot_dir start_snap end_snap step render_nickname".format(
-                sys.argv[0]
-            )
-        )
-        exit()
-    else:
-        print("********************************************************************")
-        print(" rendering gas properties movie ")
-        print("********************************************************************")
+    # if len(sys.argv) != 6:
+    #     print(sys.argv[0], "usage:")
+    #     print(
+    #         "{} snapshot_dir start_snap end_snap step render_nickname".format(
+    #             sys.argv[0]
+    #         )
+    #     )
+    #     exit()
+    # else:
+    #     print("********************************************************************")
+    #     print(" rendering gas properties movie ")
+    #     print("********************************************************************")
 
-    datadir = sys.argv[1]
-    # logsfc_path = sys.argv[2]
-    start_snapshot = int(sys.argv[2])
-    end_snapshot = int(sys.argv[3])
-    step = int(sys.argv[4])
-    render_nickname = sys.argv[5]
+    # datadir = sys.argv[1]
+    # # logsfc_path = sys.argv[2]
+    # start_snapshot = int(sys.argv[2])
+    # end_snapshot = int(sys.argv[3])
+    # step = int(sys.argv[4])
+    # render_nickname = sys.argv[5]
 
-    sim_run = os.path.basename(os.path.normpath(datadir))
-    fpaths, snums = filter_snapshots(
-        datadir,
-        start_snapshot,
-        end_snapshot,
-        sampling=step,
-        str_snaps=True,
-        snapshot_type="ramses_snapshot",
-    )
-
-    # datadir = os.path.expanduser("~/test_data/fs035_ms10/")
-
+    # sim_run = os.path.basename(os.path.normpath(datadir))
     # fpaths, snums = filter_snapshots(
     #     datadir,
-    #     567,
-    #     567,
-    #     sampling=1,
+    #     start_snapshot,
+    #     end_snapshot,
+    #     sampling=step,
     #     str_snaps=True,
     #     snapshot_type="ramses_snapshot",
     # )
-    # render_nickname = "test"
+
+    datadir = os.path.expanduser("~/test_data/haloD_varSFE_Lfid_Salp_ks20231024/")
+
+    fpaths, snums = filter_snapshots(
+        datadir,
+        217,
+        217,
+        sampling=1,
+        str_snaps=True,
+        snapshot_type="ramses_snapshot",
+    )
+    render_nickname = "test"
 
     # =============================================================================
     #                         timelapse paramaters
@@ -136,7 +136,7 @@ if __name__ == "__main__":
     gas_res = 1000  # resolution of the fixed resolution buffer
     dens_norm = LogNorm(0.008, 1)
     temp_norm = LogNorm(100, 1e6)
-    met_norm = LogNorm(2e-3, 0.20)
+    met_norm = LogNorm(8e-4, 0.20)
     vrad_norm = colors.SymLogNorm(linthresh=0.1, linscale=1, vmin=-95, vmax=95)
     zsun = 0.02
     # plotting axis parameters
