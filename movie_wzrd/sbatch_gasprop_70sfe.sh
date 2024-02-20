@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -J 35sfegasProperties
 #SBATCH --ntasks=1
-#SBATCH -t 48:00:00
+#SBATCH -t 72:00:00
 #SBATCH --mem-per-cpu=8192
 #SBATCH --mail-user=g.fred@columbia.edu
 #SBATCH --mail-type=ALL
