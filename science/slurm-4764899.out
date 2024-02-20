@@ -1,0 +1,444 @@
+Loading python/zen2/3.8.12
+  Loading requirement: matplotlib/3.4.3/zen2
+--------------------------------------------------------------------------
+The library attempted to open the following supporting CUDA libraries,
+but each of them failed.  CUDA-aware support is disabled.
+libcuda.so.1: cannot open shared object file: No such file or directory
+libcuda.dylib: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.so.1: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.dylib: cannot open shared object file: No such file or directory
+If you are not interested in CUDA-aware support, then run with
+--mca opal_warn_on_missing_libcuda 0 to suppress this message.  If you are interested
+in CUDA-aware support, then try setting LD_LIBRARY_PATH to the location
+of libcuda.so.1 to get passed this issue.
+--------------------------------------------------------------------------
+[compute-b5-23.zaratan.umd.edu:1069742] 3 more processes have sent help message help-mpi-common-cuda.txt / dlopen failed
+[compute-b5-23.zaratan.umd.edu:1069742] Set MCA parameter "orte_base_help_aggregate" to 0 to see all help / error messages
+=============================================================================
+Warning: particle_families are modified at /site-packages/yt/frontends/ramses
+=============================================================================
+=============================================================================
+Warning: particle_families are modified at /site-packages/yt/frontends/ramses
+=============================================================================
+=============================================================================
+Warning: particle_families are modified at /site-packages/yt/frontends/ramses
+=============================================================================
+=============================================================================
+Warning: particle_families are modified at /site-packages/yt/frontends/ramses
+=============================================================================
+********************************************************************
+ rendering gas properties movie 
+********************************************************************
+> running filter_snapshots
+> processing ramses_snapshot
+> found 163 snapshots
+> returning 72
+>>> done 
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00304/info_00304.txt
+********************************************************************
+ rendering gas properties movie 
+********************************************************************
+********************************************************************
+ rendering gas properties movie 
+********************************************************************
+********************************************************************
+ rendering gas properties movie 
+********************************************************************
+> running filter_snapshots
+> processing ramses_snapshot
+> found 163 snapshots
+> running filter_snapshots
+> processing ramses_snapshot
+> found 163 snapshots
+> running filter_snapshots
+> processing ramses_snapshot
+> found 163 snapshots
+> returning 72
+>>> done 
+> returning 72
+>>> done 
+> returning 72
+>>> done 
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00304/info_00304.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00304/info_00304.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00304/info_00304.txt
+47555.555555555555
+226.9477733601942 Msun/pc**2
+47555.555555555555
+226.9477733601942 Msun/pc**2
+47555.555555555555
+47555.555555555555
+226.9477733601942 Msun/pc**2
+226.9477733601942 Msun/pc**2
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00304.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00305/info_00305.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00304.png
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00304.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00305/info_00305.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00305/info_00305.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00304.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00305/info_00305.txt
+51555.555555555555
+246.93114148021886 Msun/pc**2
+51555.555555555555
+246.93114148021886 Msun/pc**2
+51555.555555555555
+51555.555555555555
+246.93114148021886 Msun/pc**2
+246.93114148021886 Msun/pc**2
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00305.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00306/info_00306.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00305.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00306/info_00306.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00305.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00306/info_00306.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00305.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00306/info_00306.txt
+46666.66666666667
+276.4981976088539 Msun/pc**2
+46666.66666666667
+276.4981976088539 Msun/pc**2
+46666.66666666667
+276.4981976088539 Msun/pc**2
+46666.66666666667
+276.4981976088539 Msun/pc**2
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00306.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00307/info_00307.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00306.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00307/info_00307.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00306.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00307/info_00307.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00306.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00307/info_00307.txt
+48888.88888888889
+324.53081370603843 Msun/pc**2
+48888.88888888889
+324.53081370603843 Msun/pc**2
+48888.88888888889
+324.53081370603843 Msun/pc**2
+48888.88888888889
+324.53081370603843 Msun/pc**2
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00307.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00308/info_00308.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00307.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00308/info_00308.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00307.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00308/info_00308.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00307.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00308/info_00308.txt
+44888.88888888889
+365.59612509285444 Msun/pc**2
+44888.88888888889
+365.59612509285444 Msun/pc**2
+44888.88888888889
+365.59612509285444 Msun/pc**2
+44888.88888888889
+365.59612509285444 Msun/pc**2
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00308.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00309/info_00309.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00308.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00309/info_00309.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00308.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00309/info_00309.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00308.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00309/info_00309.txt
+44444.444444444445
+791.7566346132102 Msun/pc**2
+44444.444444444445
+791.7566346132102 Msun/pc**2
+44444.444444444445
+791.7566346132102 Msun/pc**2
+44444.444444444445
+791.7566346132102 Msun/pc**2
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00309.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00310/info_00310.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00309.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00310/info_00310.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00309.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00310/info_00310.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00309.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00310/info_00310.txt
+43555.555555555555
+1234.3482720693642 Msun/pc**2
+43555.555555555555
+1234.3482720693642 Msun/pc**2
+43555.555555555555
+43555.555555555555
+1234.3482720693642 Msun/pc**2
+1234.3482720693642 Msun/pc**2
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00310.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00311/info_00311.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00310.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00311/info_00311.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00310.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00311/info_00311.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00310.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00311/info_00311.txt
+42666.66666666667
+672.1655632950874 Msun/pc**2
+42666.66666666667
+672.1655632950874 Msun/pc**2
+42666.66666666667
+42666.66666666667
+672.1655632950874 Msun/pc**2
+672.1655632950874 Msun/pc**2
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00311.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00312/info_00312.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00311.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00312/info_00312.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00311.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00312/info_00312.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00311.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00312/info_00312.txt
+51555.555555555555
+475.37601652255205 Msun/pc**2
+51555.555555555555
+475.37601652255205 Msun/pc**2
+51555.555555555555
+475.37601652255205 Msun/pc**2
+51555.555555555555
+475.37601652255205 Msun/pc**2
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00312.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00313/info_00313.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00312.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00313/info_00313.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00312.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00313/info_00313.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00312.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00313/info_00313.txt
+36888.88888888889
+574.2477351005452 Msun/pc**2
+36888.88888888889
+574.2477351005452 Msun/pc**2
+36888.88888888889
+574.2477351005452 Msun/pc**2
+36888.88888888889
+574.2477351005452 Msun/pc**2
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00313.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00314/info_00314.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00313.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00314/info_00314.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00313.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00314/info_00314.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00313.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00314/info_00314.txt
+33777.77777777778
+33777.77777777778
+782.934250145883 Msun/pc**2
+782.934250145883 Msun/pc**2
+33777.77777777778
+782.934250145883 Msun/pc**2
+33777.77777777778
+782.934250145883 Msun/pc**2
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00314.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00315/info_00315.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00314.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00315/info_00315.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00314.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00315/info_00315.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00314.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00315/info_00315.txt
+41777.77777777778
+407.8537325258203 Msun/pc**2
+41777.77777777778
+407.8537325258203 Msun/pc**2
+41777.77777777778
+407.8537325258203 Msun/pc**2
+41777.77777777778
+407.8537325258203 Msun/pc**2
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00315.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00316/info_00316.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00315.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00316/info_00316.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00315.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00316/info_00316.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00315.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00316/info_00316.txt
+39111.11111111111
+130.8729122358111 Msun/pc**2
+39111.11111111111
+130.8729122358111 Msun/pc**2
+39111.11111111111
+130.8729122358111 Msun/pc**2
+39111.11111111111
+130.8729122358111 Msun/pc**2
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00316.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00317/info_00317.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00316.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00317/info_00317.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00316.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00317/info_00317.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00316.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00317/info_00317.txt
+46222.222222222226
+46222.222222222226
+96.13155991310664 Msun/pc**2
+96.13155991310664 Msun/pc**2
+46222.222222222226
+46222.222222222226
+96.13155991310664 Msun/pc**2
+96.13155991310664 Msun/pc**2
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00317.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00318/info_00318.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00317.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00318/info_00318.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00317.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00318/info_00318.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00317.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00318/info_00318.txt
+46222.222222222226
+78.68811248321427 Msun/pc**2
+46222.222222222226
+78.68811248321427 Msun/pc**2
+46222.222222222226
+46222.222222222226
+78.68811248321427 Msun/pc**2
+78.68811248321427 Msun/pc**2
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00318.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00319/info_00319.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00318.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00319/info_00319.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00318.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00319/info_00319.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00318.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00319/info_00319.txt
+37777.77777777778
+37777.77777777778
+76.5897820601084 Msun/pc**2
+76.5897820601084 Msun/pc**2
+37777.77777777778
+76.5897820601084 Msun/pc**2
+37777.77777777778
+76.5897820601084 Msun/pc**2
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00319.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00320/info_00320.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00319.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00320/info_00320.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00319.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00320/info_00320.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00319.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00320/info_00320.txt
+37777.77777777778
+67.78427252468326 Msun/pc**2
+37777.77777777778
+67.78427252468326 Msun/pc**2
+37777.77777777778
+67.78427252468326 Msun/pc**2
+37777.77777777778
+67.78427252468326 Msun/pc**2
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00320.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00321/info_00321.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00320.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00321/info_00321.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00320.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00321/info_00321.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00320.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00321/info_00321.txt
+43111.11111111111
+64.49437954294228 Msun/pc**2
+43111.11111111111
+64.49437954294228 Msun/pc**2
+43111.11111111111
+64.49437954294228 Msun/pc**2
+43111.11111111111
+64.49437954294228 Msun/pc**2
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00321.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00322/info_00322.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00321.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00322/info_00322.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00321.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00322/info_00322.txt
+>>> saved: ../../container_tiramisu/renders/CC-Fiducial/VSFE-DensityContour/VSFE-DensityContour-00321.png
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00322/info_00322.txt
+45333.333333333336
+62.19546175586177 Msun/pc**2
+45333.333333333336
+62.19546175586177 Msun/pc**2
+45333.333333333336
+45333.333333333336
+62.19546175586177 Msun/pc**2
+62.19546175586177 Msun/pc**2
+--------------------------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code. Per user-direction, the job has been aborted.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun noticed that process rank 2 with PID 400056 on node compute-b5-32 exited on signal 9 (Killed).
+--------------------------------------------------------------------------
+slurmstepd: error: Detected 1 oom-kill event(s) in StepId=4764899.batch. Some of your processes may have been killed by the cgroup out-of-memory handler.

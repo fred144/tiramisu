@@ -1,0 +1,105 @@
+Loading python/zen2/3.8.12
+  Loading requirement: matplotlib/3.4.3/zen2
+--------------------------------------------------------------------------
+The library attempted to open the following supporting CUDA libraries,
+but each of them failed.  CUDA-aware support is disabled.
+libcuda.so.1: cannot open shared object file: No such file or directory
+libcuda.dylib: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.so.1: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.dylib: cannot open shared object file: No such file or directory
+If you are not interested in CUDA-aware support, then run with
+--mca opal_warn_on_missing_libcuda 0 to suppress this message.  If you are interested
+in CUDA-aware support, then try setting LD_LIBRARY_PATH to the location
+of libcuda.so.1 to get passed this issue.
+--------------------------------------------------------------------------
+=============================================================================
+Warning: particle_families are modified at /site-packages/yt/frontends/ramses
+=============================================================================
+yt : [ERROR    ] 2024-02-20 00:39:45,443 Could not enable parallelism: only one mpi process is running. To remedy this, launch the Python interpreter as
+  mpirun -n <X> python3 <yourscript>.py  # with X > 1 
+********************************************************************
+ rendering gas properties movie 
+********************************************************************
+> running filter_snapshots
+> processing ramses_snapshot
+> found 163 snapshots
+> returning 163
+>>> done 
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00304/info_00304.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00305/info_00305.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00306/info_00306.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00307/info_00307.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00308/info_00308.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00309/info_00309.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00310/info_00310.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00311/info_00311.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00312/info_00312.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00313/info_00313.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00314/info_00314.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00315/info_00315.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00316/info_00316.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00317/info_00317.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00318/info_00318.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00319/info_00319.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00320/info_00320.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00321/info_00321.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00322/info_00322.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00323/info_00323.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00324/info_00324.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00325/info_00325.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00326/info_00326.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00327/info_00327.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00328/info_00328.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00329/info_00329.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00330/info_00330.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00331/info_00331.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00332/info_00332.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00333/info_00333.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00334/info_00334.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00335/info_00335.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00336/info_00336.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00337/info_00337.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00338/info_00338.txt
+--------------------------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code. Per user-direction, the job has been aborted.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun noticed that process rank 0 with PID 1785834 on node compute-b7-55 exited on signal 9 (Killed).
+--------------------------------------------------------------------------
+slurmstepd: error: Detected 1 oom-kill event(s) in StepId=4922478.batch. Some of your processes may have been killed by the cgroup out-of-memory handler.

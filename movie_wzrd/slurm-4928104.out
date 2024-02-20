@@ -1,0 +1,81 @@
+Loading python/zen2/3.8.12
+  Loading requirement: matplotlib/3.4.3/zen2
+--------------------------------------------------------------------------
+The library attempted to open the following supporting CUDA libraries,
+but each of them failed.  CUDA-aware support is disabled.
+libcuda.so.1: cannot open shared object file: No such file or directory
+libcuda.dylib: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.so.1: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.dylib: cannot open shared object file: No such file or directory
+If you are not interested in CUDA-aware support, then run with
+--mca opal_warn_on_missing_libcuda 0 to suppress this message.  If you are interested
+in CUDA-aware support, then try setting LD_LIBRARY_PATH to the location
+of libcuda.so.1 to get passed this issue.
+--------------------------------------------------------------------------
+=============================================================================
+Warning: particle_families are modified at /site-packages/yt/frontends/ramses
+=============================================================================
+yt : [ERROR    ] 2024-02-20 08:44:39,483 Could not enable parallelism: only one mpi process is running. To remedy this, launch the Python interpreter as
+  mpirun -n <X> python3 <yourscript>.py  # with X > 1 
+********************************************************************
+ rendering gas properties movie 
+********************************************************************
+> running filter_snapshots
+> processing ramses_snapshot
+> found 212 snapshots
+> returning 27
+>>> done 
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00249/info_00249.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00250/info_00250.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00251/info_00251.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00252/info_00252.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00253/info_00253.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00254/info_00254.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00255/info_00255.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00256/info_00256.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00257/info_00257.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00258/info_00258.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00259/info_00259.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00260/info_00260.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00261/info_00261.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00262/info_00262.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00263/info_00263.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00264/info_00264.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00265/info_00265.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00266/info_00266.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00267/info_00267.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00268/info_00268.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00269/info_00269.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00270/info_00270.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00271/info_00271.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00272/info_00272.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00273/info_00273.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00274/info_00274.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024/output_00275/info_00275.txt
