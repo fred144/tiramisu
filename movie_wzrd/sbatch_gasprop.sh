@@ -1,7 +1,6 @@
 #!/bin/bash
 #SBATCH -J gasProperties
 #SBATCH --ntasks=4
-#SBATCH --mem-per-cpu=3999
 #SBATCH -t 48:00:00
 
 #. ~/.bashrc
