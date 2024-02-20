@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH -J gasProperties
-#SBATCH --ntasks=4
+#SBATCH --ntasks=1
 #SBATCH -t 48:00:00
 
 #. ~/.bashrc
