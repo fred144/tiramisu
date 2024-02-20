@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -J gasProperties
+#SBATCH -J LfidgasProperties
 #SBATCH --ntasks=1
 #SBATCH -t 48:00:00
 
@@ -16,9 +16,9 @@ module load openmpi
 source ~/scratch/master/bin/activate
  
 SCRIPT="/scratch/zt1/project/ricotti-prj/user/fgarcia4/tiramisu/movie_wzrd/gas_properties.py"
-DIR="/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial"
+DIR="/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024"
 # also tried
 # cd /scratch/zt1/project/ricotti-prj/user/fgarcia4/globclustevo/visuals/
 # SCRIPT = "./low-sfe.py"
 # number of cores specified above
-mpirun -n 1 python3 $SCRIPT $DIR 405 466 1 VSFEGas 2>&1 
+mpirun python3 $SCRIPT $DIR 249 275 1 LFiducialGas 2>&1 

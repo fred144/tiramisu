@@ -1,8 +1,10 @@
 #!/bin/bash
-#SBATCH -J gasProperties
+#SBATCH -J vsfe_gasProperties
 #SBATCH --ntasks=1
-#SBATCH --mem-per-cpu=3999
-#SBATCH -t 24:00:00
+#SBATCH -t 48:00:00
+#SBATCH --mem-per-cpu=8192
+#SBATCH --mail-user=g.fred@columbia.edu
+#SBATCH --mail-type=ALL
 
 #. ~/.bashrc
 . ~/.profile
@@ -17,9 +19,9 @@ module load openmpi
 source ~/scratch/master/bin/activate
  
 SCRIPT="/scratch/zt1/project/ricotti-prj/user/fgarcia4/tiramisu/movie_wzrd/gas_properties.py"
-DIR="/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024"
+DIR="/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial"
 # also tried
 # cd /scratch/zt1/project/ricotti-prj/user/fgarcia4/globclustevo/visuals/
 # SCRIPT = "./low-sfe.py"
 # number of cores specified above
-mpirun python3 $SCRIPT $DIR 215 225 1 Lfid 2>&1 
+mpirun -n 1 python3 $SCRIPT $DIR 405 466 1 VSFEGas 2>&1 

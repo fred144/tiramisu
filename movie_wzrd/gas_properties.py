@@ -384,6 +384,7 @@ if __name__ == "__main__":
             bbox_inches="tight"
             # pad_inches=0.05,
         )
+        plt.close()
 
 
 # gd = yt.ProjectionPlot(
