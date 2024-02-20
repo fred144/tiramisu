@@ -1,0 +1,57 @@
+Loading python/zen2/3.8.12
+  Loading requirement: matplotlib/3.4.3/zen2
+--------------------------------------------------------------------------
+The library attempted to open the following supporting CUDA libraries,
+but each of them failed.  CUDA-aware support is disabled.
+libcuda.so.1: cannot open shared object file: No such file or directory
+libcuda.dylib: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.so.1: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.dylib: cannot open shared object file: No such file or directory
+If you are not interested in CUDA-aware support, then run with
+--mca opal_warn_on_missing_libcuda 0 to suppress this message.  If you are interested
+in CUDA-aware support, then try setting LD_LIBRARY_PATH to the location
+of libcuda.so.1 to get passed this issue.
+--------------------------------------------------------------------------
+=============================================================================
+Warning: particle_families are modified at /site-packages/yt/frontends/ramses
+=============================================================================
+yt : [ERROR    ] 2024-02-20 13:09:53,351 Could not enable parallelism: only one mpi process is running. To remedy this, launch the Python interpreter as
+  mpirun -n <X> python3 <yourscript>.py  # with X > 1 
+********************************************************************
+ rendering gas properties movie 
+********************************************************************
+> running filter_snapshots
+> processing ramses_snapshot
+> found 163 snapshots
+> returning 62
+>>> done 
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00405/info_00405.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00406/info_00406.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00407/info_00407.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00408/info_00408.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00409/info_00409.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00410/info_00410.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00411/info_00411.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00412/info_00412.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00413/info_00413.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00414/info_00414.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00415/info_00415.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00416/info_00416.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00417/info_00417.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00418/info_00418.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00419/info_00419.txt

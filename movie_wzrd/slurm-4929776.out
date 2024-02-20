@@ -15,7 +15,7 @@ of libcuda.so.1 to get passed this issue.
 =============================================================================
 Warning: particle_families are modified at /site-packages/yt/frontends/ramses
 =============================================================================
-yt : [ERROR    ] 2024-02-20 00:39:45,443 Could not enable parallelism: only one mpi process is running. To remedy this, launch the Python interpreter as
+yt : [ERROR    ] 2024-02-20 10:54:25,692 Could not enable parallelism: only one mpi process is running. To remedy this, launch the Python interpreter as
   mpirun -n <X> python3 <yourscript>.py  # with X > 1 
 ********************************************************************
  rendering gas properties movie 
@@ -23,83 +23,81 @@ yt : [ERROR    ] 2024-02-20 00:39:45,443 Could not enable parallelism: only one 
 > running filter_snapshots
 > processing ramses_snapshot
 > found 163 snapshots
-> returning 163
+> returning 95
 >>> done 
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00304/info_00304.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00372/info_00372.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00305/info_00305.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00373/info_00373.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00306/info_00306.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00374/info_00374.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00307/info_00307.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00375/info_00375.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00308/info_00308.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00376/info_00376.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00309/info_00309.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00377/info_00377.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00310/info_00310.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00378/info_00378.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00311/info_00311.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00379/info_00379.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00312/info_00312.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00380/info_00380.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00313/info_00313.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00381/info_00381.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00314/info_00314.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00382/info_00382.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00315/info_00315.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00383/info_00383.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00316/info_00316.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00384/info_00384.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00317/info_00317.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00385/info_00385.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00318/info_00318.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00386/info_00386.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00319/info_00319.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00387/info_00387.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00320/info_00320.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00388/info_00388.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00321/info_00321.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00389/info_00389.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00322/info_00322.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00390/info_00390.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00323/info_00323.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00391/info_00391.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00324/info_00324.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00392/info_00392.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00325/info_00325.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00393/info_00393.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00326/info_00326.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00394/info_00394.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00327/info_00327.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00395/info_00395.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00328/info_00328.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00396/info_00396.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00329/info_00329.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00397/info_00397.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00330/info_00330.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00398/info_00398.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00331/info_00331.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00399/info_00399.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00332/info_00332.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00400/info_00400.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00333/info_00333.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00401/info_00401.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00334/info_00334.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00402/info_00402.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00335/info_00335.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00403/info_00403.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00336/info_00336.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00404/info_00404.txt
 # ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00337/info_00337.txt
-# ____________________________________________________________________
-/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00338/info_00338.txt
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00405/info_00405.txt
 --------------------------------------------------------------------------
 Primary job  terminated normally, but 1 process returned
 a non-zero exit code. Per user-direction, the job has been aborted.
 --------------------------------------------------------------------------
 --------------------------------------------------------------------------
-mpirun noticed that process rank 0 with PID 1785834 on node compute-b7-55 exited on signal 9 (Killed).
+mpirun noticed that process rank 0 with PID 1697288 on node compute-b5-26 exited on signal 9 (Killed).
 --------------------------------------------------------------------------
-slurmstepd: error: Detected 1 oom-kill event(s) in StepId=4922478.batch. Some of your processes may have been killed by the cgroup out-of-memory handler.
+slurmstepd: error: Detected 1 oom-kill event(s) in StepId=4929776.batch. Some of your processes may have been killed by the cgroup out-of-memory handler.
