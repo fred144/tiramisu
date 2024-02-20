@@ -17,9 +17,9 @@ module load openmpi
 source ~/scratch/master/bin/activate
  
 SCRIPT="/scratch/zt1/project/ricotti-prj/user/fgarcia4/tiramisu/movie_wzrd/gas_properties.py"
-DIR="/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial"
+DIR="/scratch/zt1/project/ricotti-prj/user/fgarcia4/ramses_current_runs/galaxies/data/cluster_evolution/haloD_varSFE_Lfid_Salp_ks20231024"
 # also tried
 # cd /scratch/zt1/project/ricotti-prj/user/fgarcia4/globclustevo/visuals/
 # SCRIPT = "./low-sfe.py"
 # number of cores specified above
-mpirun python3 $SCRIPT $DIR 304 466 1 VSFEGas 2>&1 
+mpirun python3 $SCRIPT $DIR 217 275 1 LFiducialGas 2>&1 

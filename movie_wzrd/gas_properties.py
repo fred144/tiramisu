@@ -85,68 +85,72 @@ yt.add_field(
 )
 
 if __name__ == "__main__":
-    # if len(sys.argv) != 6:
-    #     print(sys.argv[0], "usage:")
-    #     print(
-    #         "{} snapshot_dir start_snap end_snap step render_nickname".format(
-    #             sys.argv[0]
-    #         )
-    #     )
-    #     exit()
-    # else:
-    #     print("********************************************************************")
-    #     print(" rendering gas properties movie ")
-    #     print("********************************************************************")
+    if len(sys.argv) != 6:
+        print(sys.argv[0], "usage:")
+        print(
+            "{} snapshot_dir start_snap end_snap step render_nickname".format(
+                sys.argv[0]
+            )
+        )
+        exit()
+    else:
+        print("********************************************************************")
+        print(" rendering gas properties movie ")
+        print("********************************************************************")
 
-    # datadir = sys.argv[1]
-    # # logsfc_path = sys.argv[2]
-    # start_snapshot = int(sys.argv[2])
-    # end_snapshot = int(sys.argv[3])
-    # step = int(sys.argv[4])
-    # render_nickname = sys.argv[5]
+    datadir = sys.argv[1]
+    # logsfc_path = sys.argv[2]
+    start_snapshot = int(sys.argv[2])
+    end_snapshot = int(sys.argv[3])
+    step = int(sys.argv[4])
+    render_nickname = sys.argv[5]
 
-    # sim_run = os.path.basename(os.path.normpath(datadir))
-    # fpaths, snums = filter_snapshots(
-    #     datadir,
-    #     start_snapshot,
-    #     end_snapshot,
-    #     sampling=step,
-    #     str_snaps=True,
-    #     snapshot_type="ramses_snapshot",
-    # )
-
-    datadir = os.path.expanduser("~/test_data/haloD_varSFE_Lfid_Salp_ks20231024/")
-
+    sim_run = os.path.basename(os.path.normpath(datadir))
     fpaths, snums = filter_snapshots(
         datadir,
-        217,
-        217,
-        sampling=1,
+        start_snapshot,
+        end_snapshot,
+        sampling=step,
         str_snaps=True,
         snapshot_type="ramses_snapshot",
     )
-    render_nickname = "test"
+
+    # datadir = os.path.expanduser("~/test_data/CC-Fiducial//")
+    # logsfc_path = os.path.join("datadir", "logSFC")
+    # fpaths, snums = filter_snapshots(
+    #     datadir,
+    #     388,
+    #     388,
+    #     sampling=1,
+    #     str_snaps=True,
+    #     snapshot_type="ramses_snapshot",
+    # )
+    # render_nickname = "test"
 
     # =============================================================================
     #                         timelapse paramaters
     # =============================================================================
 
-    pw = 1000  # plot width on one side in pc
+    pw = 250  # plot width on one side in pc
     r_sf = 500  # radii for sf in pc
     gas_res = 1000  # resolution of the fixed resolution buffer
-    dens_norm = LogNorm(0.008, 1)
-    temp_norm = LogNorm(100, 1e6)
-    met_norm = LogNorm(8e-4, 0.20)
+    star_bins = 1000
+    pxl_size = (pw / star_bins) ** 2
+    dens_norm = LogNorm(30, 9e3)
+    temp_norm = LogNorm(100, 5e6)
+    met_norm = LogNorm(7e-5, 0.5)
     vrad_norm = colors.SymLogNorm(linthresh=0.1, linscale=1, vmin=-95, vmax=95)
+    stellar_dens_norm = LogNorm(20, 2e4)
+
     zsun = 0.02
     # plotting axis parameters
     x, y = (5, 10)
     xy_r = x / y
     img_extent = [-pw / 2, pw / 2, -pw / 2, pw / 2]
     dens_cmap = "cubehelix"
-    vrad_cmap = cmr.pride_r
+    vrad_cmap = cmr.amethyst
     temp_cmap = "inferno"
-    metal_cmap = cmr.torch
+    metal_cmap = cmr.rainforest
 
     # run save
     sim_run = os.path.basename(os.path.normpath(datadir))
@@ -174,6 +178,7 @@ if __name__ == "__main__":
             x_pos = np.array(ad["star", "particle_position_x"])
             y_pos = np.array(ad["star", "particle_position_y"])
             z_pos = np.array(ad["star", "particle_position_z"])
+            pop2_masses = np.array(ad["star", "particle_mass"].to("Msun"))
             x_center = np.mean(x_pos)
             y_center = np.mean(y_pos)
             z_center = np.mean(z_pos)
@@ -183,13 +188,17 @@ if __name__ == "__main__":
 
             ctr_at_code = np.array([x_center, y_center, z_center])
         else:
+            print("no stars")
             _, ctr_at_code = ds.find_max(("gas", "density"))
+            pop2_lums = np.zeros(100)
+            star_mass = np.zeros(100)
+            pop2_xyz = np.zeros((100, 3))
 
         # star_mass = np.ones_like(x_pos) * 10
 
-        # pop2_xyz = np.array(
-        #     ds.arr(np.vstack([x_pos, y_pos, z_pos]), "code_length").to("pc")
-        # ).T
+        pop2_xyz = np.array(
+            ds.arr(np.vstack([x_pos, y_pos, z_pos]), "code_length").to("pc")
+        ).T
         # current_ages = get_star_ages(ram_ds=ds, ram_ad=ad, logsfc=logsfc_path)
         # pop2_lums = lum_look_up_table(
         #     stellar_ages=current_ages * 1e6,  # in myr
@@ -198,6 +207,16 @@ if __name__ == "__main__":
         #     column_idx=1,
         #     log=False,
         # )
+
+        stellar_mass_dens, _, _ = np.histogram2d(
+            pop2_xyz[:, 0],
+            pop2_xyz[:, 1],
+            bins=star_bins,
+            weights=pop2_masses,
+            range=[[-pw / 2, pw / 2], [-pw / 2, pw / 2]],
+        )
+        stellar_mass_dens = stellar_mass_dens.T / pxl_size  # Msun / pc^2
+
         # to define the radial velocity, we define a region around the origin (star CoM)
 
         sfregion = ds.sphere(ctr_at_code, (r_sf, "pc"))
@@ -206,7 +225,7 @@ if __name__ == "__main__":
 
         data_fields = [
             ("gas", "density"),
-            ("gas", "my_radial_velocity"),
+            # ("gas", "my_radial_velocity"),
             ("gas", "temperature"),
             ("ramses", "Metallicity"),
         ]
@@ -250,24 +269,33 @@ if __name__ == "__main__":
         axes = [ax, vax, tax, mex]
 
         dens = ax.imshow(
-            prjctns[0],
+            np.array(ds.arr(prjctns[0], "g/cm**2").to("Msun/pc**2")),
             cmap=dens_cmap,
             interpolation="gaussian",
             origin="lower",
             extent=img_extent,
             norm=dens_norm,
         )
-        vrad = vax.imshow(
-            prjctns[1],
+        # vrad = vax.imshow(
+        #     prjctns[1],
+        #     cmap=vrad_cmap,
+        #     interpolation="gaussian",
+        #     origin="lower",
+        #     extent=img_extent,
+        #     norm=vrad_norm,
+        # )
+        # vax.scatter(0, 0, marker="x", color="white", s=30)
+
+        sigma = vax.imshow(
+            stellar_mass_dens,
             cmap=vrad_cmap,
-            interpolation="gaussian",
             origin="lower",
             extent=img_extent,
-            norm=vrad_norm,
+            norm=stellar_dens_norm,
         )
-        vax.scatter(0, 0, marker="x", color="white", s=30)
+
         temp = tax.imshow(
-            prjctns[2],
+            prjctns[1],
             cmap=temp_cmap,
             interpolation="gaussian",
             origin="lower",
@@ -275,7 +303,7 @@ if __name__ == "__main__":
             norm=temp_norm,
         )
         metal = mex.imshow(
-            prjctns[3] / zsun,
+            prjctns[2] / zsun,
             cmap=metal_cmap,
             interpolation="gaussian",
             origin="lower",
@@ -286,13 +314,14 @@ if __name__ == "__main__":
         dens_cbar_ax = ax.inset_axes([0, -0.07, 1, 0.04])
         dens_cbar = fig.colorbar(dens, cax=dens_cbar_ax, orientation="horizontal")
         dens_cbar_ax.set_xlabel(
-            r"$\mathrm{Gas\:Surface\:Density}\:\mathrm{\left[g\:cm^{-2}\right]}$"
+            r"$\mathrm{Gas\:Surface\:Density}\:\mathrm{\left[M_\odot\:pc^{-2}\right]}$"
         )
 
         vrad_cbar_ax = vax.inset_axes([0, -0.07, 1, 0.04])
-        vrad_cbar = fig.colorbar(vrad, cax=vrad_cbar_ax, orientation="horizontal")
+        vrad_cbar = fig.colorbar(sigma, cax=vrad_cbar_ax, orientation="horizontal")
         vrad_cbar_ax.set_xlabel(
-            r"$\mathrm{Radial\:Velocity}\:\left[\mathrm{km\:s}^{-1}\right]$"
+            # r"$\mathrm{Radial\:Velocity}\:\left[\mathrm{km\:s}^{-1}\right]$"
+            r"$\mathrm{Stellar\:Surface\:Density}\:\mathrm{\left[M_\odot\:pc^{-2}\right]}$"
         )
 
         temp_cbar_ax = tax.inset_axes([0, -0.07, 1, 0.04])
