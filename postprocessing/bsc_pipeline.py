@@ -206,30 +206,30 @@ def projected_surf_densities(
 
 
 if __name__ == "__main__":
-    # if len(sys.argv) != 5:
-    #     print(sys.argv[0], "usage:")
-    #     print(
-    #         "{} data_directory_to_postprocess start_snapshot end_snapshot step".format(
-    #             sys.argv[0]
-    #         )
-    #     )
-    #     exit()
-    # else:
-    #     print("********************************************************************")
-    #     print(" running BSC finder / star clump finder")
-    #     print("********************************************************************")
+    if len(sys.argv) != 5:
+        print(sys.argv[0], "usage:")
+        print(
+            "{} data_directory_to_postprocess start_snapshot end_snapshot step".format(
+                sys.argv[0]
+            )
+        )
+        exit()
+    else:
+        print("********************************************************************")
+        print(" running BSC finder / star clump finder")
+        print("********************************************************************")
 
-    # datadir = sys.argv[1]
-    # start_snapshot = int(sys.argv[2])
-    # end_snapshot = int(sys.argv[3])
-    # step = int(sys.argv[4])
+    datadir = sys.argv[1]
+    start_snapshot = int(sys.argv[2])
+    end_snapshot = int(sys.argv[3])
+    step = int(sys.argv[4])
 
     # local path for test
-    datadir = os.path.relpath("../..//test_data/CC-Fiducial")
+    # datadir = os.path.relpath("../..//test_data/CC-Fiducial")
 
-    start_snapshot = 397
-    end_snapshot = 397
-    step = 1
+    # start_snapshot = 397
+    # end_snapshot = 397
+    # step = 1
 
     sim_run = os.path.basename(os.path.normpath(datadir))
 
@@ -527,7 +527,7 @@ if __name__ == "__main__":
                             "bsc_profile_{}.txt".format(str(int(clump_idnum)).zfill(4)),
                         ),
                         X=bsc_profile_dat,
-                        header=r"radial_distnace [pc], sigma [msun/pc^2], err",
+                        header=r"radial_distance [pc], sigma [msun/pc^2], err",
                         fmt="%.6e",
                     )
 
