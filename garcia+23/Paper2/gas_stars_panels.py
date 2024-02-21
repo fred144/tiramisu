@@ -126,9 +126,18 @@ if __name__ == "__main__":
     #     snapshot_type="ramses_snapshot",
     # )
     # render_nickname = "test"
+    # =============================================================================
+    #                         key times
+    # =============================================================================
+
+    # 70 % sfe, first starburst peaks at 474.8 Myr, second starburst peaks at 672.45 Myr
+
+    # 35 % sfe, first starburst peaks at 422.4 Myr, second starburst has not happened
+
+    # variable sfe, second starburst peaks at 578.8 Myr
 
     # =============================================================================
-    #                         timelapse paramaters
+    #                         timelapse parameters
     # =============================================================================
 
     pw = 250  # plot width on one side in pc

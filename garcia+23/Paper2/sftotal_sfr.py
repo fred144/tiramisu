@@ -59,7 +59,12 @@ def plotting_interface(run_logpath, simulation_name, color):
         total_mass = total_mass_interpolator(t_interp_points)
         # calculate the sfr in msun / yr
         sfr = np.gradient(total_mass) / (sfr_binwidth_myr * 1e6)
-
+        print(
+            "sfr peaks at",
+            t_interp_points[t_interp_points < 550][
+                np.argmax(sfr[t_interp_points < 550])
+            ],
+        )
         earliest_times.append(t_myr.min())
         latest_times.append(t_myr.max())
 
@@ -90,7 +95,7 @@ def plotting_interface(run_logpath, simulation_name, color):
         # ylim=(0, 0.12),
         ylabel=r"$\mathrm{SFR} \:\left[ \mathrm{M}_{\odot} \:\mathrm{yr}^{-1}\right]$",
         xlabel=r"time $\left[ \mathrm{ Myr} \right]$",
-        xlim=(np.min(earliest_times) - 1, np.min(latest_times)),
+        xlim=(np.min(earliest_times) - 1, np.max(latest_times)),
     )
 
     redshft_ax.set(xlim=(np.min(earliest_times), np.min(latest_times)), xlabel="$z$")
@@ -109,8 +114,9 @@ if __name__ == "__main__":
     cmap = cmap(np.linspace(0, 1, 8))
 
     runs = [
-        "../../container_tiramisu/sim_log_files/CC-Fiducial",
-        "../../container_tiramisu/sim_log_files/fs07_refine",
+        "../../../container_tiramisu/sim_log_files/CC-Fiducial",
+        "../../../container_tiramisu/sim_log_files/fs07_refine",
+        "../../../container_tiramisu/sim_log_files/fs035_ms10",
         # "../../container_tiramisu/sim_log_files/haloD_varSFE_Lfid_Salp_ks20231024",
         # "../../container_tiramisu/sim_log_files/CC_2x_Salp",
     ]
@@ -118,6 +124,7 @@ if __name__ == "__main__":
     names = [
         "VSFE",
         "high SFE",
+        "low SFE",
         # r"$2.0 \times$ Lfid",
     ]
 
@@ -125,6 +132,7 @@ if __name__ == "__main__":
         # cmap[0],
         cmap[0],
         cmap[1],
+        cmap[2],
     ]
 
     plotting_interface(
@@ -132,11 +140,10 @@ if __name__ == "__main__":
         simulation_name=names,
         color=colors,
     )
-
-    plt.savefig(
-        "../../gdrive_columbia/research/massimo/paper2/SF_history.png",
-        dpi=300,
-        bbox_inches="tight",
-        pad_inches=0.05,
-    )
     plt.show()
+    # plt.savefig(
+    #     "../../../gdrive_columbia/research/massimo/paper2/SF_history.png",
+    #     dpi=300,
+    #     bbox_inches="tight",
+    #     pad_inches=0.05,
+    # )
