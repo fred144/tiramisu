@@ -1,0 +1,39 @@
+Loading python/zen2/3.8.12
+  Loading requirement: matplotlib/3.4.3/zen2
+--------------------------------------------------------------------------
+The library attempted to open the following supporting CUDA libraries,
+but each of them failed.  CUDA-aware support is disabled.
+libcuda.so.1: cannot open shared object file: No such file or directory
+libcuda.dylib: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.so.1: cannot open shared object file: No such file or directory
+/usr/lib64/libcuda.dylib: cannot open shared object file: No such file or directory
+If you are not interested in CUDA-aware support, then run with
+--mca opal_warn_on_missing_libcuda 0 to suppress this message.  If you are interested
+in CUDA-aware support, then try setting LD_LIBRARY_PATH to the location
+of libcuda.so.1 to get passed this issue.
+--------------------------------------------------------------------------
+=============================================================================
+Warning: particle_families are modified at /site-packages/yt/frontends/ramses
+=============================================================================
+yt : [ERROR    ] 2024-02-20 15:42:07,995 Could not enable parallelism: only one mpi process is running. To remedy this, launch the Python interpreter as
+  mpirun -n <X> python3 <yourscript>.py  # with X > 1 
+********************************************************************
+ rendering gas properties movie 
+********************************************************************
+Traceback (most recent call last):
+  File "/scratch/zt1/project/ricotti-prj/user/fgarcia4/tiramisu/movie_wzrd/gas_properties.py", line 109, in <module>
+    fpaths, snums = filter_snapshots(
+  File "/scratch/zt1/project/ricotti-prj/user/fgarcia4/tiramisu/movie_wzrd/../tools/fscanner.py", line 20, in filter_snapshots
+    files = sorted(os.listdir(folder_path))
+FileNotFoundError: [Errno 2] No such file or directory: '/afs/shell.umd.edu/project/ricotti-prj/user/fgarcia4/dwarf/data/cluster_evolution/fs07_refine'
+--------------------------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code. Per user-direction, the job has been aborted.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun detected that one or more processes exited with non-zero status, thus causing
+the job to be terminated. The first process to do so was:
+
+  Process name: [[48798,1],0]
+  Exit code:    1
+--------------------------------------------------------------------------

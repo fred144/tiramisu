@@ -24,4 +24,4 @@ DIR="/afs/shell.umd.edu/project/ricotti-prj/user/fgarcia4/dwarf/data/cluster_evo
 # cd /scratch/zt1/project/ricotti-prj/user/fgarcia4/globclustevo/visuals/
 # SCRIPT = "./low-sfe.py"
 # number of cores specified above
-mpirun -n 1 python3 $SCRIPT $DIR 150 1607 1 35SFEGas 2>&1 
+mpirun -n 1 python3 $SCRIPT $DIR 170 1607 1 35SFEGas 2>&1 

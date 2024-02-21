@@ -55,3 +55,49 @@ yt : [ERROR    ] 2024-02-20 13:09:53,351 Could not enable parallelism: only one 
 /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00418/info_00418.txt
 # ____________________________________________________________________
 /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00419/info_00419.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00420/info_00420.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00421/info_00421.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00422/info_00422.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00423/info_00423.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00424/info_00424.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00425/info_00425.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00426/info_00426.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00427/info_00427.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00428/info_00428.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00429/info_00429.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00430/info_00430.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00431/info_00431.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00432/info_00432.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00433/info_00433.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00434/info_00434.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00435/info_00435.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00436/info_00436.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00437/info_00437.txt
+# ____________________________________________________________________
+/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00438/info_00438.txt
+--------------------------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code. Per user-direction, the job has been aborted.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun noticed that process rank 0 with PID 1760633 on node compute-b5-26 exited on signal 9 (Killed).
+--------------------------------------------------------------------------
+slurmstepd: error: Detected 1 oom-kill event(s) in StepId=4932393.batch. Some of your processes may have been killed by the cgroup out-of-memory handler.
