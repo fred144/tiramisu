@@ -6,7 +6,7 @@ Region centered on star formation, radius of 0.5 kpc
 
 import sys
 
-sys.path.append("../../")
+sys.path.append("../")
 
 import yt
 import numpy as np
@@ -55,34 +55,34 @@ if __name__ == "__main__":
         ("gas", "mass"): ((1e-2, "msun"), (1e6, "msun")),
     }
 
-    # if len(sys.argv) != 6:
-    #     print(sys.argv[0], "usage:")
-    #     print(
-    #         "{} snapshot_dir start_snap end_snap step render_nickname".format(
-    #             sys.argv[0]
-    #         )
-    #     )
-    #     exit()
-    # else:
-    #     print("********************************************************************")
-    #     print(" rendering movie ")
-    #     print("********************************************************************")
+    if len(sys.argv) != 6:
+        print(sys.argv[0], "usage:")
+        print(
+            "{} snapshot_dir start_snap end_snap step render_nickname".format(
+                sys.argv[0]
+            )
+        )
+        exit()
+    else:
+        print("********************************************************************")
+        print(" rendering movie ")
+        print("********************************************************************")
 
-    # datadir = sys.argv[1]
-    # logsfc_path = os.path.join(sys.argv[1], "logSFC")
-    # start_snapshot = int(sys.argv[2])
-    # end_snapshot = int(sys.argv[3])
-    # step = int(sys.argv[4])
-    # render_nickname = sys.argv[5]
+    datadir = sys.argv[1]
+    logsfc_path = os.path.join(sys.argv[1], "logSFC")
+    start_snapshot = int(sys.argv[2])
+    end_snapshot = int(sys.argv[3])
+    step = int(sys.argv[4])
+    render_nickname = sys.argv[5]
 
-    # sim_run = os.path.basename(os.path.normpath(datadir))
-    # fpaths, snums = filter_snapshots(
-    #     datadir,
-    #     start_snapshot,
-    #     end_snapshot,
-    #     sampling=step,
-    #     str_snaps=True,
-    # )
+    sim_run = os.path.basename(os.path.normpath(datadir))
+    fpaths, snums = filter_snapshots(
+        datadir,
+        start_snapshot,
+        end_snapshot,
+        sampling=step,
+        str_snaps=True,
+    )
 
     # first starburst in the CC-fid run
     # queiscent phase after 1st star burst, before 2nd snap 203 - 370
@@ -91,18 +91,19 @@ if __name__ == "__main__":
 
     # =============================================================================
 
-    datadir = os.path.expanduser("~/test_data/CC-Fiducial/")
-    logsfc_path = os.path.expanduser(os.path.join(datadir, "logSFC"))
-
-    fpaths, snums = filter_snapshots(
-        datadir,
-        304,
-        304,
-        sampling=1,
-        str_snaps=True,
-        snapshot_type="ramses_snapshot",
-    )
-    render_nickname = "test"
+    # datadir = os.path.expanduser("~/test_data/fid-broken-feedback/")
+    # logsfc_path = os.path.expanduser(
+    #     "~/container_tiramisu/sim_log_files/CC-Fiducial/logSFC"
+    # )
+    # fpaths, snums = filter_snapshots(
+    #     datadir,
+    #     304,
+    #     304,
+    #     sampling=1,
+    #     str_snaps=True,
+    #     snapshot_type="ramses_snapshot",
+    # )
+    # render_nickname = "test"
 
     # =============================================================================
 
@@ -111,13 +112,19 @@ if __name__ == "__main__":
     render_container = os.path.join(
         "..",
         "..",
-        "..",
         "container_tiramisu",
         "plots",
         sim_run,
         render_nickname,
     )
     check_path(render_container)
+
+    cold = []
+    warm = []
+    hot = []
+
+    myrs = []
+    redshifts = []
 
     for i, sn in enumerate(fpaths):
         print(
@@ -131,6 +138,8 @@ if __name__ == "__main__":
 
         t_myr = float(ds.current_time.in_units("Myr"))
         redshift = ds.current_redshift
+        myrs.append(t_myr)
+        redshifts.append(redshift)
 
         x_pos = np.array(ad["star", "particle_position_x"])
         y_pos = np.array(ad["star", "particle_position_y"])
@@ -166,94 +175,109 @@ if __name__ == "__main__":
 
             gas_mass = np.array(profile2d["gas", "mass"].to("msun")).T
             print(gas_mass.shape)
+            if a == 0:
+                cold.append(gas_mass)
+            elif a == 1:
+                warm.append(gas_mass)
+            else:
+                hot.append(gas_mass)
 
             # metal = np.array(profile2d.y)
             # dens = np.array(profile2d.x)  # / 1.6e-24
-
-            nt_image = axis.imshow(
-                np.log10(gas_mass),
-                origin="lower",
-                extent=[
-                    np.log10(lims[("gas", "density")][0][0] / m_h),
-                    np.log10(lims[("gas", "density")][1][0] / m_h),
-                    np.log10(lims[("ramses", "Metallicity")][0] / zsun),
-                    np.log10(lims[("ramses", "Metallicity")][1] / zsun),
-                ],
-                cmap=cmr.tropical_r,
-                vmin=np.log10(lims[("gas", "mass")][0][0]),
-                vmax=np.log10(lims[("gas", "mass")][1][0]),
-                aspect=1.6,
-            )
-            axis.set(xlabel=r"$\log\:n_{\rm H} \:{\rm (cm^{-3}})$")
-
-            axis.text(
-                0.97,
-                0.08,
-                r"$n_{ \rm crit}$",
-                ha="right",
-                va="bottom",
-                color="k",
-                rotation=90,
-                transform=axis.transAxes,
-            )
-            axis.axvspan(np.log10(n_crit), np.log10(1e6), color="grey", alpha=0.5)
-
-            axis.text(
-                0.05,
-                0.05,
-                tlabels[a],
-                ha="left",
-                va="bottom",
-                transform=axis.transAxes,
-                fontsize=10,
-            )
-
-        ax[0].set(
-            ylabel=r"$\log\:{\rm Metallicity\:(Z_{\odot})}$",
-            xlabel=r"$\log\:n_{\rm H} \:{\rm (cm^{-3}})$",
-            xlim=(
+    print("averaging over snapshot range")
+    time_avg_vals = [np.mean(cold, axis=0), np.mean(warm, axis=0), np.mean(hot, axis=0)]
+    for a, axis in enumerate(axes):
+        nt_image = axis.imshow(
+            np.log10(time_avg_vals[a]),
+            origin="lower",
+            extent=[
                 np.log10(lims[("gas", "density")][0][0] / m_h),
                 np.log10(lims[("gas", "density")][1][0] / m_h),
-            ),
-            ylim=(
                 np.log10(lims[("ramses", "Metallicity")][0] / zsun),
                 np.log10(lims[("ramses", "Metallicity")][1] / zsun),
-            ),
+            ],
+            cmap=cmr.tropical_r,
+            vmin=np.log10(lims[("gas", "mass")][0][0]),
+            vmax=np.log10(lims[("gas", "mass")][1][0]),
+            aspect=1.6,
         )
-        ax[0].text(
+        axis.set(xlabel=r"$\log\:n_{\rm H} \:{\rm (cm^{-3}})$")
+
+        axis.text(
+            0.97,
+            0.08,
+            r"$n_{ \rm crit}$",
+            ha="right",
+            va="bottom",
+            color="k",
+            rotation=90,
+            transform=axis.transAxes,
+        )
+        axis.axvspan(np.log10(n_crit), np.log10(1e6), color="grey", alpha=0.5)
+
+        axis.text(
             0.05,
-            0.95,
-            # ("{}" "\:" r"t = {:.2f} Myr" "\:" r"z = {:.2f} ").format(
-            #     render_nickname,
-            #     t_myr,
-            #     redshift,
-            # ),
-            r"$t = {:.0f} $ Myr" "\n" r"$z =  {:.2f} $".format(t_myr, redshift),
+            0.05,
+            tlabels[a],
             ha="left",
-            va="top",
-            color="black",
-            transform=ax[0].transAxes,
+            va="bottom",
+            transform=axis.transAxes,
             fontsize=10,
         )
 
-        ax[0].xaxis.set_major_locator(plt.MaxNLocator(12))
+    ax[0].set(
+        ylabel=r"$\log\:{\rm Metallicity\:(Z_{\odot})}$",
+        xlabel=r"$\log\:n_{\rm H} \:{\rm (cm^{-3}})$",
+        xlim=(
+            np.log10(lims[("gas", "density")][0][0] / m_h),
+            np.log10(lims[("gas", "density")][1][0] / m_h),
+        ),
+        ylim=(
+            np.log10(lims[("ramses", "Metallicity")][0] / zsun),
+            np.log10(lims[("ramses", "Metallicity")][1] / zsun),
+        ),
+    )
+    ax[0].text(
+        0.05,
+        0.95,
+        # ("{}" "\:" r"t = {:.2f} Myr" "\:" r"z = {:.2f} ").format(
+        #     render_nickname,
+        #     t_myr,
+        #     redshift,
+        # ),
+        r"$t = {:.0f} - {:.0f} $ Myr"
+        "\n"
+        r"$z =  {:.2f} - {:.2f} $".format(
+            np.array(myrs).min(),
+            np.array(myrs).max(),
+            np.array(redshifts).max(),
+            np.array(redshifts).min(),
+        ),
+        ha="left",
+        va="top",
+        color="black",
+        transform=ax[0].transAxes,
+        fontsize=10,
+    )
 
-        cbar_ax = ax[2].inset_axes([1.02, 0, 0.05, 1])
-        bar = fig.colorbar(nt_image, cax=cbar_ax, pad=0)
-        # bar .ax.xaxis.set_tick_params(pad=2)
-        bar.set_label(r"$\mathrm{\log\:Total\:Mass\:(M_{\odot}})$")
-        bar.ax.xaxis.set_label_position("top")
-        bar.ax.xaxis.set_ticks_position("top")
+    ax[0].xaxis.set_major_locator(plt.MaxNLocator(12))
 
-        output_path = os.path.join(
-            render_container, "{}-{}.png".format(render_nickname, snums[i])
-        )
+    cbar_ax = ax[2].inset_axes([1.02, 0, 0.05, 1])
+    bar = fig.colorbar(nt_image, cax=cbar_ax, pad=0)
+    # bar .ax.xaxis.set_tick_params(pad=2)
+    bar.set_label(r"$\mathrm{\log\:Total\:Mass\:(M_{\odot}})$")
+    bar.ax.xaxis.set_label_position("top")
+    bar.ax.xaxis.set_ticks_position("top")
 
-        print("Saved", output_path)
-        plt.savefig(
-            output_path,
-            dpi=400,
-            bbox_inches="tight",
-            # pad_inches=0.00,
-        )
+    output_path = os.path.join(
+        render_container, "{}-{}.png".format(render_nickname, snums[i])
+    )
+
+    print("Saved", output_path)
+    plt.savefig(
+        output_path,
+        dpi=400,
+        bbox_inches="tight",
+        # pad_inches=0.00,
+    )
     plt.show()
