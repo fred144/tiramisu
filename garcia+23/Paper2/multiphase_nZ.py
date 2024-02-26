@@ -90,8 +90,8 @@ if __name__ == "__main__":
 
     fpaths3, snums3 = filter_snapshots(
         datadir,
-        392,
-        400,
+        395,
+        411,
         sampling=2,
         str_snaps=True,
         snapshot_type="ramses_snapshot",
