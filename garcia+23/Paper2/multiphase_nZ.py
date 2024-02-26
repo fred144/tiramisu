@@ -75,7 +75,7 @@ if __name__ == "__main__":
         datadir,
         350,
         376,
-        sampling=3,
+        sampling=4,
         str_snaps=True,
         snapshot_type="ramses_snapshot",
     )
@@ -84,7 +84,7 @@ if __name__ == "__main__":
         datadir,
         377,
         389,
-        sampling=3,
+        sampling=4,
         str_snaps=True,
         snapshot_type="ramses_snapshot",
     )
@@ -314,7 +314,9 @@ if __name__ == "__main__":
     cbar_ax = ax[0, 0].inset_axes([0, 1.02, 3, 0.05])
     bar = fig.colorbar(nz_image, cax=cbar_ax, pad=0, orientation="horizontal")
     # bar .ax.xaxis.set_tick_params(pad=2)
-    bar.set_label(r"$\mathrm{\log\:Total\:Cell\:Mass\:\left[M_{\odot}}\right]$")
+    bar.set_label(
+        r"$\mathrm{\log \:Total\:Cell\:Mass\:} \left[ {\rm M_{\odot}} \right] $"
+    )
     bar.ax.xaxis.set_label_position("top")
     bar.ax.xaxis.set_ticks_position("top")
     # cbar_ax.xaxis.set_major_locator(plt.MaxNLocator(8))

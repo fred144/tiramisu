@@ -37,7 +37,7 @@ cell_fields, epf = ram_fields()
 
 if __name__ == "__main__":
     m_h = 1.6735e-24  # grams
-    r_sf = 500  # radii for sf in pc
+    r_sf = 1000  # radii for sf in pc
     zsun = 0.02
     n_crit = 5e4
     cold_phase_t = (0, 100)
@@ -51,12 +51,10 @@ if __name__ == "__main__":
     # ]
 
     lims = {
-        # ("gas", "density"): ((5e-30, "g/cm**3"), (1e-18, "g/cm**3")),
-        ("gas", "temperature"): ((10, "K"), (1e8, "K")),
-        ("ramses", "Metallicity"): (1e-6 * zsun, 5 * zsun),
-        ("gas", "radial_velocity"): ((-500, "km/s"), (500, "km/s")),
+        ("gas", "radial_velocity"): ((-4e3, "km/s"), (4e3, "km/s")),
+        ("gas", "temperature"): ((50, "K"), (5e8, "K")),
+        ("gas", "mass"): ((1e-2, "msun"), (1e6, "msun")),
     }
-
     # datadir = os.path.expanduser(
     #     "/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial"
     # )
@@ -74,8 +72,8 @@ if __name__ == "__main__":
     # for the other rows
     fpaths1, snums1 = filter_snapshots(
         datadir,
-        304,
-        304,
+        370,
+        370,
         sampling=1,
         str_snaps=True,
         snapshot_type="ramses_snapshot",
@@ -83,8 +81,8 @@ if __name__ == "__main__":
 
     fpaths2, snums2 = filter_snapshots(
         datadir,
-        304,
-        304,
+        397,
+        397,
         sampling=1,
         str_snaps=True,
         snapshot_type="ramses_snapshot",
@@ -161,6 +159,7 @@ if __name__ == "__main__":
     )
     # plt.subplots_adjust(hspace=-0.4, wspace=0)
 
+    ax = ax.ravel()
     for sg, sn_group in enumerate(snapshot_list):
         sfevariable = []
         sfe70 = []
@@ -210,14 +209,14 @@ if __name__ == "__main__":
                 # the x bin field, the y bin field
                 # metallicity is
                 [("gas", "radial_velocity"), ("gas", "temperature")],
-                [("ramses", "Metallicity")],  # the profile field
-                weight_field=("gas", "mass"),  # sums each quantity in each bin
+                [("gas", "mass")],  # the profile field
+                weight_field=None,  # sums each quantity in each bin
                 n_bins=(200, 200),
                 extrema=lims,
                 logs={("gas", "radial_velocity"): False},
             )
 
-            gas_mass = np.array(profile2d["ramses", "Metallicity"])
+            gas_mass = np.array(profile2d["gas", "mass"].to("msun")).T
 
             if r == 0:
                 sfevariable.append(gas_mass)
@@ -232,27 +231,23 @@ if __name__ == "__main__":
             np.mean(sfe35, axis=0),
         ]
         # %%
-        fig, ax = plt.subplots(
-            nrows=3,
-            ncols=1,
-            sharex=True,
-            figsize=(5, 12),
-            dpi=300,
-        )
-        nz_image = ax[0].imshow(
-            time_avg_vals[0],
-            origin="lower",
-            extent=[
-                lims[("gas", "radial_velocity")][0][0],
-                lims[("gas", "radial_velocity")][1][0],
-                np.log10(lims[("gas", "Temperature")][0][0]),
-                np.log10(lims[("gas", "Temperature")][1][0]),
-            ],
-            cmap=cmr.guppy,
-            vmin=np.log10(lims[("ramses", "Metallicity")][0][0] / zsun),
-            vmax=np.log10(lims[("ramses", "Metallicity")][1][0] / zsun),
-            # aspect=1.6,
-        )
+
+        for a, phase_plot in enumerate(time_avg_vals):
+            nz_image = ax[a].imshow(
+                np.log10(time_avg_vals[0]),
+                origin="lower",
+                extent=[
+                    lims[("gas", "radial_velocity")][0][0],
+                    lims[("gas", "radial_velocity")][1][0],
+                    np.log10(lims[("gas", "temperature")][0][0]),
+                    np.log10(lims[("gas", "temperature")][1][0]),
+                ],
+                cmap=cmr.torch_r,
+                vmin=np.log10(lims[("gas", "mass")][0][0]),
+                vmax=np.log10(lims[("gas", "mass")][1][0]),
+                aspect=1000,
+            )
+
         plt.show()
         # %%
         for a, phase_plot in enumerate(time_avg_vals):
