@@ -52,7 +52,7 @@ if __name__ == "__main__":
     tlabels = [r"CNM ", r"WNM  ", r"Hot "]
     lims = {
         ("gas", "density"): ((5e-30, "g/cm**3"), (1e-18, "g/cm**3")),
-        ("ramses", "Metallicity"): (1e-6 * zsun, 3 * zsun),
+        ("ramses", "Metallicity"): (1e-6 * zsun, 5 * zsun),
         ("gas", "mass"): ((1e-2, "msun"), (2e6, "msun")),
     }
 
