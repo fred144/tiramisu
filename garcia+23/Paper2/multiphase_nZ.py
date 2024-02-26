@@ -83,7 +83,7 @@ if __name__ == "__main__":
         datadir,
         375,
         389,
-        sampling=2,
+        sampling=1,
         str_snaps=True,
         snapshot_type="ramses_snapshot",
     )
@@ -92,7 +92,7 @@ if __name__ == "__main__":
         datadir,
         392,
         400,
-        sampling=1,
+        sampling=2,
         str_snaps=True,
         snapshot_type="ramses_snapshot",
     )
