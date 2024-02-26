@@ -130,12 +130,12 @@ if __name__ == "__main__":
     #                         key times
     # =============================================================================
 
-    # 70 % sfe, first starburst peaks at 455.4 Myr
-    # second starburst peaks at 672.45 Myr 1366
+    # 70 % sfe, first starburst peaks at 455.4 Myr (snap_0381)
+    # second starburst peaks at 672.45 Myr (snap_1366)
 
-    # 35 % sfe, first starburst peaks at 422.4 Myr, second starburst has not happened
+    # 35 % sfe, first starburst peaks at 422.4 Myr (snap_384)
 
-    # variable sfe, second starburst peaks at 578.8 Myr, snapshot 388
+    # variable sfe, second starburst peaks at 578.8 Myr (snap_388)
 
     # =============================================================================
     #                         timelapse parameters

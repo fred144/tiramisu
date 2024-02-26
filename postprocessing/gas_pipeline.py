@@ -328,7 +328,6 @@ if __name__ == "__main__":
         f.create_dataset("Header/redshift", data=redshift, dtype="f")
         f.create_dataset("Header/time", data=t_myr, dtype="f")
         f.create_dataset("Halo/radius", data=vir_rad, dtype="f")
-        f.create_dataset("Halo/mass", data=dm_halo_m, dtype="f")
         f.create_dataset("Halo/Mass", data=dm_halo_m, dtype="f")
 
         f.create_dataset("Galaxy/MeanMetallicity", data=sf_region_mean_Z, dtype="f")

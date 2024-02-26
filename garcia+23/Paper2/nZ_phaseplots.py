@@ -29,8 +29,8 @@ from tools.fscanner import filter_snapshots
 from tools.ram_fields import ram_fields
 import cmasher as cmr
 
-mylog.setLevel(40)
-warnings.simplefilter(action="ignore", category=RuntimeWarning)
+# mylog.setLevel(40)
+# warnings.simplefilter(action="ignore", category=RuntimeWarning)
 
 cell_fields, epf = ram_fields()
 
