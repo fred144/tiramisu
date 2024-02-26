@@ -15,6 +15,9 @@ plt.rcParams.update(
         "ytick.direction": "in",
         "ytick.right": True,
         "xtick.top": True,
-        # "axes.linewidth": ,
+        "xtick.major.size": 4,
+        "ytick.major.size": 4,
+        "xtick.minor.size": 3,
+        "ytick.minor.size": 3,
     }
 )

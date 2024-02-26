@@ -59,7 +59,6 @@ if __name__ == "__main__":
     datadir = os.path.expanduser(
         "/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial"
     )
-
     logsfc_path = os.path.expanduser(os.path.join(datadir, "logSFC"))
 
     fpaths, snums = filter_snapshots(
@@ -82,8 +81,8 @@ if __name__ == "__main__":
 
     fpaths2, snums2 = filter_snapshots(
         datadir,
-        377,
-        389,
+        380,
+        396,
         sampling=2,
         str_snaps=True,
         snapshot_type="ramses_snapshot",
@@ -162,7 +161,7 @@ if __name__ == "__main__":
         [fpaths3, snums3],
     ]
 
-    fig, ax = plt.subplots(4, 3, figsize=(8.25, 11), dpi=400, sharex=True, sharey=True)
+    fig, ax = plt.subplots(4, 3, figsize=(8, 11), dpi=400, sharex=True, sharey=True)
     plt.subplots_adjust(hspace=-0.4, wspace=0)
 
     for sg, sn_group in enumerate(snapshot_list):
@@ -215,7 +214,7 @@ if __name__ == "__main__":
                     [("gas", "density"), ("ramses", "Metallicity")],
                     [("gas", "mass")],  # the profile field
                     weight_field=None,  # sums each quantity in each bin
-                    n_bins=(200, 200),
+                    n_bins=(180, 180),
                     extrema=lims,
                 )
 
@@ -244,7 +243,7 @@ if __name__ == "__main__":
                     np.log10(lims[("ramses", "Metallicity")][0] / zsun),
                     np.log10(lims[("ramses", "Metallicity")][1] / zsun),
                 ],
-                cmap=cmr.tropical_r,
+                cmap=cmr.savanna_r,
                 vmin=np.log10(lims[("gas", "mass")][0][0]),
                 vmax=np.log10(lims[("gas", "mass")][1][0]),
                 aspect=1.6,
@@ -307,23 +306,25 @@ if __name__ == "__main__":
             np.log10(lims[("gas", "density")][0][0] / m_h),
             np.log10(lims[("gas", "density")][1][0] / m_h),
         ),
-        ylim=(-5.5, 0.5),
+        ylim=(-5.4, 0.81),
     )
     ax[sg, a].xaxis.set_major_locator(plt.MaxNLocator(12))
     ax[sg, a].yaxis.set_major_locator(plt.MaxNLocator(6))
 
-    cbar_ax = ax[0, 0].inset_axes([0, 1.02, 3, 0.05])
+    cbar_ax = ax[0, 0].inset_axes([0, 1.02, 3, 0.08])
     bar = fig.colorbar(nz_image, cax=cbar_ax, pad=0, orientation="horizontal")
     # bar .ax.xaxis.set_tick_params(pad=2)
-    bar.set_label(
-        r"$\mathrm{\log \:Total\:Cell\:Mass\:} \left[ {\rm M_{\odot}} \right] $"
-    )
+    bar.set_label(r"$\mathrm{\log \:Gas\:Mass\:} \left[ {\rm M_{\odot}} \right] $")
     bar.ax.xaxis.set_label_position("top")
     bar.ax.xaxis.set_ticks_position("top")
     # cbar_ax.xaxis.set_major_locator(plt.MaxNLocator(8))
 
     fig.text(
-        0.5, 0.13, r"$\log\: n_{\rm H} \: { \rm \left[cm^{-3} \right] }$", ha="center"
+        0.5,
+        0.13,
+        r"$\log\: n_{\rm H} \: { \rm \left[cm^{-3} \right] }$",
+        ha="center",
+        fontsize=10,
     )
 
     fig.text(
@@ -332,6 +333,7 @@ if __name__ == "__main__":
         r"$\log\:{\rm Metallicity\:\left[Z_{\odot}\right]}$",
         va="center",
         rotation="vertical",
+        fontsize=10,
     )
 
     output_path = os.path.join(render_container, "multiphase_nZ.png")
