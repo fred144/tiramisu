@@ -49,17 +49,18 @@ if __name__ == "__main__":
     #     r"WNM  ($ 100 < T \leq 5 \times 10^4$ K)",
     #     r"Hot ($T > 5 \times 10^4$ K)",
     # ]
-    tlabels = [r"CNM ", r"WNM  ", r"Hot "]
+
     lims = {
-        ("gas", "density"): ((5e-30, "g/cm**3"), (1e-18, "g/cm**3")),
-        ("ramses", "Metallicity"): (1e-6 * zsun, 3 * zsun),
-        ("gas", "mass"): ((1e-2, "msun"), (2e6, "msun")),
+        # ("gas", "density"): ((5e-30, "g/cm**3"), (1e-18, "g/cm**3")),
+        ("gas", "temperature"): ((10, "K"), (1e8, "K")),
+        ("ramses", "Metallicity"): (1e-6 * zsun, 5 * zsun),
+        ("gas", "radial_velocity"): ((-500, "km/s"), (500, "km/s")),
     }
 
-    datadir = os.path.expanduser(
-        "/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial"
-    )
-
+    # datadir = os.path.expanduser(
+    #     "/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial"
+    # )
+    datadir = os.path.expanduser("~/test_data/CC-Fiducial/")
     logsfc_path = os.path.expanduser(os.path.join(datadir, "logSFC"))
 
     fpaths, snums = filter_snapshots(
@@ -70,29 +71,20 @@ if __name__ == "__main__":
         str_snaps=True,
         snapshot_type="ramses_snapshot",
     )
-
+    # for the other rows
     fpaths1, snums1 = filter_snapshots(
         datadir,
-        350,
-        376,
-        sampling=3,
+        304,
+        304,
+        sampling=1,
         str_snaps=True,
         snapshot_type="ramses_snapshot",
     )
 
     fpaths2, snums2 = filter_snapshots(
         datadir,
-        377,
-        389,
-        sampling=3,
-        str_snaps=True,
-        snapshot_type="ramses_snapshot",
-    )
-
-    fpaths3, snums3 = filter_snapshots(
-        datadir,
-        397,
-        397,
+        304,
+        304,
         sampling=1,
         str_snaps=True,
         snapshot_type="ramses_snapshot",
@@ -158,26 +150,29 @@ if __name__ == "__main__":
         [fpaths, snums],
         [fpaths1, snums1],
         [fpaths2, snums2],
-        [fpaths3, snums3],
     ]
 
-    fig, ax = plt.subplots(4, 3, figsize=(8.25, 11), dpi=400, sharex=True, sharey=True)
-    plt.subplots_adjust(hspace=-0.4, wspace=0)
+    fig, ax = plt.subplots(
+        nrows=3,
+        ncols=1,
+        sharex=True,
+        figsize=(5, 12),
+        dpi=300,
+    )
+    # plt.subplots_adjust(hspace=-0.4, wspace=0)
 
     for sg, sn_group in enumerate(snapshot_list):
-        cold = []
-        warm = []
-        hot = []
+        sfevariable = []
+        sfe70 = []
+        sfe35 = []
 
         myrs = []
         redshifts = []
 
         # within each row  or grouping, read and update
-        for fpaths, snums in zip(sn_group[0], sn_group[1]):
+        for r, (fpaths, snums) in enumerate(zip(sn_group[0], sn_group[1])):
             len_ofgroup = len(sn_group[0])
-            print(
-                "# ________________________________________________________________________"
-            )
+            print("# _________________________________________________________________")
             infofile = os.path.abspath(os.path.join(fpaths, f"info_{snums}.txt"))
             print("# reading in", infofile)
 
@@ -196,43 +191,70 @@ if __name__ == "__main__":
             y_center = np.mean(y_pos)
             z_center = np.mean(z_pos)
 
-            ctr_at_code = np.array([x_center, y_center, z_center])
+            ctr_at_code = ds.arr([x_center, y_center, z_center], "code_length")
 
             mstar = np.sum(np.array(ad["star", "particle_mass"].to("Msun")))
 
             # for each grouping, go throught the CNM, WNM, and HOT phases
-            for t, trange in enumerate(temp_cuts):
-                galaxy = ds.sphere(ctr_at_code, (r_sf, "pc"))
 
-                galaxy_filtered = galaxy.include_inside(
-                    ("gas", "temperature"), trange[0], trange[1]
-                )
+            sf_region = ds.sphere(ctr_at_code, (r_sf, "pc"))
+            bulk_vel = sf_region.quantities.bulk_velocity()
 
-                profile2d = galaxy_filtered.profile(
-                    # the x bin field, the y bin field
-                    # metallicity is
-                    [("gas", "density"), ("ramses", "Metallicity")],
-                    [("gas", "mass")],  # the profile field
-                    weight_field=None,  # sums each quantity in each bin
-                    n_bins=(200, 200),
-                    extrema=lims,
-                )
+            # Get the second sphere
+            sf_region = ds.sphere(ctr_at_code, (r_sf, "pc"))
 
-                gas_mass = np.array(profile2d["gas", "mass"].to("msun")).T
+            # Set the bulk velocity field parameter
+            sf_region.set_field_parameter("bulk_velocity", bulk_vel)
 
-                if t == 0:
-                    cold.append(gas_mass)
-                elif t == 1:
-                    warm.append(gas_mass)
-                else:
-                    hot.append(gas_mass)
+            profile2d = sf_region.profile(
+                # the x bin field, the y bin field
+                # metallicity is
+                [("gas", "radial_velocity"), ("gas", "temperature")],
+                [("ramses", "Metallicity")],  # the profile field
+                weight_field=("gas", "mass"),  # sums each quantity in each bin
+                n_bins=(200, 200),
+                extrema=lims,
+                logs={("gas", "radial_velocity"): False},
+            )
+
+            gas_mass = np.array(profile2d["ramses", "Metallicity"])
+
+            if r == 0:
+                sfevariable.append(gas_mass)
+            elif r == 1:
+                sfe70.append(gas_mass)
+            else:
+                sfe35.append(gas_mass)
 
         time_avg_vals = [
-            np.mean(cold, axis=0),
-            np.mean(warm, axis=0),
-            np.mean(hot, axis=0),
+            np.mean(sfevariable, axis=0),
+            np.mean(sfe70, axis=0),
+            np.mean(sfe35, axis=0),
         ]
-
+        # %%
+        fig, ax = plt.subplots(
+            nrows=3,
+            ncols=1,
+            sharex=True,
+            figsize=(5, 12),
+            dpi=300,
+        )
+        nz_image = ax[0].imshow(
+            time_avg_vals[0],
+            origin="lower",
+            extent=[
+                lims[("gas", "radial_velocity")][0][0],
+                lims[("gas", "radial_velocity")][1][0],
+                np.log10(lims[("gas", "Temperature")][0][0]),
+                np.log10(lims[("gas", "Temperature")][1][0]),
+            ],
+            cmap=cmr.guppy,
+            vmin=np.log10(lims[("ramses", "Metallicity")][0][0] / zsun),
+            vmax=np.log10(lims[("ramses", "Metallicity")][1][0] / zsun),
+            # aspect=1.6,
+        )
+        plt.show()
+        # %%
         for a, phase_plot in enumerate(time_avg_vals):
             nz_image = ax[sg, a].imshow(
                 np.log10(phase_plot),
