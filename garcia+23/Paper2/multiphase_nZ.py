@@ -321,7 +321,9 @@ if __name__ == "__main__":
     bar.ax.xaxis.set_ticks_position("top")
     # cbar_ax.xaxis.set_major_locator(plt.MaxNLocator(8))
 
-    fig.text(0.5, 0.13, r"$\log\:n_{\rm H} \:{\rm \left[cm^{-3}} \right]$", ha="center")
+    fig.text(
+        0.5, 0.13, r"$\log\: n_{\rm H} \: { \rm \left[cm^{-3} \right] }$", ha="center"
+    )
 
     fig.text(
         0.06,

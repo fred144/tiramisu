@@ -150,26 +150,19 @@ if __name__ == "__main__":
         [fpaths2, snums2],
     ]
 
-    fig, ax = plt.subplots(
-        nrows=3,
-        ncols=1,
-        sharex=True,
-        figsize=(5, 12),
-        dpi=300,
-    )
-    # plt.subplots_adjust(hspace=-0.4, wspace=0)
+    sfevariable = []
+    sfe70 = []
+    sfe35 = []
 
-    ax = ax.ravel()
+    myrs = []
+    redshifts = []
+    
     for sg, sn_group in enumerate(snapshot_list):
-        sfevariable = []
-        sfe70 = []
-        sfe35 = []
-
-        myrs = []
-        redshifts = []
+       
 
         # within each row  or grouping, read and update
         for r, (fpaths, snums) in enumerate(zip(sn_group[0], sn_group[1])):
+            
             len_ofgroup = len(sn_group[0])
             print("# _________________________________________________________________")
             infofile = os.path.abspath(os.path.join(fpaths, f"info_{snums}.txt"))
@@ -218,37 +211,49 @@ if __name__ == "__main__":
 
             gas_mass = np.array(profile2d["gas", "mass"].to("msun")).T
 
-            if r == 0:
+            if sg == 0:
                 sfevariable.append(gas_mass)
-            elif r == 1:
+            elif sg == 1:
                 sfe70.append(gas_mass)
             else:
                 sfe35.append(gas_mass)
+                
+#%%
+    time_avg_vals = [
+        np.mean(sfevariable, axis=0),
+        np.mean(sfe70, axis=0),
+        np.mean(sfe35, axis=0),
+    ]
+    # %%
+    
+    fig, ax = plt.subplots(
+        nrows=3,
+        ncols=1,
+        sharex=True,
+        figsize=(5, 12),
+        dpi=300,
+    )
+        
+    # plt.subplots_adjust(hspace=-0.4, wspace=0)
 
-        time_avg_vals = [
-            np.mean(sfevariable, axis=0),
-            np.mean(sfe70, axis=0),
-            np.mean(sfe35, axis=0),
-        ]
-        # %%
+    ax = ax.ravel()
+    for a, phase_plot in enumerate(time_avg_vals):
+        nz_image = ax[a].imshow(
+            np.log10(phase_plot),
+            origin="lower",
+            extent=[
+                lims[("gas", "radial_velocity")][0][0],
+                lims[("gas", "radial_velocity")][1][0],
+                np.log10(lims[("gas", "temperature")][0][0]),
+                np.log10(lims[("gas", "temperature")][1][0]),
+            ],
+            cmap=cmr.torch_r,
+            vmin=np.log10(lims[("gas", "mass")][0][0]),
+            vmax=np.log10(lims[("gas", "mass")][1][0]),
+            aspect=1000,
+        )
 
-        for a, phase_plot in enumerate(time_avg_vals):
-            nz_image = ax[a].imshow(
-                np.log10(time_avg_vals[0]),
-                origin="lower",
-                extent=[
-                    lims[("gas", "radial_velocity")][0][0],
-                    lims[("gas", "radial_velocity")][1][0],
-                    np.log10(lims[("gas", "temperature")][0][0]),
-                    np.log10(lims[("gas", "temperature")][1][0]),
-                ],
-                cmap=cmr.torch_r,
-                vmin=np.log10(lims[("gas", "mass")][0][0]),
-                vmax=np.log10(lims[("gas", "mass")][1][0]),
-                aspect=1000,
-            )
-
-        plt.show()
+    plt.show()
         # %%
         for a, phase_plot in enumerate(time_avg_vals):
             nz_image = ax[sg, a].imshow(
