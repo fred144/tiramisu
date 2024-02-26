@@ -73,7 +73,7 @@ if __name__ == "__main__":
     fpaths1, snums1 = filter_snapshots(
         datadir,
         350,
-        376,
+        374,
         sampling=2,
         str_snaps=True,
         snapshot_type="ramses_snapshot",
@@ -81,8 +81,8 @@ if __name__ == "__main__":
 
     fpaths2, snums2 = filter_snapshots(
         datadir,
-        380,
-        396,
+        375,
+        389,
         sampling=2,
         str_snaps=True,
         snapshot_type="ramses_snapshot",
@@ -90,8 +90,8 @@ if __name__ == "__main__":
 
     fpaths3, snums3 = filter_snapshots(
         datadir,
-        397,
-        397,
+        392,
+        400,
         sampling=1,
         str_snaps=True,
         snapshot_type="ramses_snapshot",
