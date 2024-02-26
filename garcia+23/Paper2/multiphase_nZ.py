@@ -56,53 +56,11 @@ if __name__ == "__main__":
         ("gas", "mass"): ((1e-2, "msun"), (2e6, "msun")),
     }
 
-    datadir = os.path.expanduser(
-        "/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial"
-    )
-    logsfc_path = os.path.expanduser(os.path.join(datadir, "logSFC"))
-
-    fpaths, snums = filter_snapshots(
-        datadir,
-        304,
-        304,
-        sampling=1,
-        str_snaps=True,
-        snapshot_type="ramses_snapshot",
-    )
-
-    fpaths1, snums1 = filter_snapshots(
-        datadir,
-        350,
-        374,
-        sampling=2,
-        str_snaps=True,
-        snapshot_type="ramses_snapshot",
-    )
-
-    fpaths2, snums2 = filter_snapshots(
-        datadir,
-        375,
-        389,
-        sampling=2,
-        str_snaps=True,
-        snapshot_type="ramses_snapshot",
-    )
-
-    fpaths3, snums3 = filter_snapshots(
-        datadir,
-        392,
-        400,
-        sampling=1,
-        str_snaps=True,
-        snapshot_type="ramses_snapshot",
-    )
-
-    # =============================================================================
-
-    # datadir = os.path.expanduser("~/test_data/CC-Fiducial/")
-    # logsfc_path = os.path.expanduser(
-    #     "~/container_tiramisu/sim_log_files/CC-Fiducial/logSFC"
+    # datadir = os.path.expanduser(
+    #     "/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial"
     # )
+    # logsfc_path = os.path.expanduser(os.path.join(datadir, "logSFC"))
+
     # fpaths, snums = filter_snapshots(
     #     datadir,
     #     304,
@@ -111,33 +69,75 @@ if __name__ == "__main__":
     #     str_snaps=True,
     #     snapshot_type="ramses_snapshot",
     # )
-    # # for the other rows
+
     # fpaths1, snums1 = filter_snapshots(
     #     datadir,
-    #     375,
-    #     388,
-    #     sampling=1,
+    #     350,
+    #     374,
+    #     sampling=2,
     #     str_snaps=True,
     #     snapshot_type="ramses_snapshot",
     # )
 
     # fpaths2, snums2 = filter_snapshots(
     #     datadir,
-    #     390,
-    #     390,
-    #     sampling=1,
+    #     375,
+    #     389,
+    #     sampling=2,
     #     str_snaps=True,
     #     snapshot_type="ramses_snapshot",
     # )
 
     # fpaths3, snums3 = filter_snapshots(
     #     datadir,
-    #     397,
-    #     397,
+    #     392,
+    #     400,
     #     sampling=1,
     #     str_snaps=True,
     #     snapshot_type="ramses_snapshot",
     # )
+
+    # =============================================================================
+
+    datadir = os.path.expanduser("~/test_data/CC-Fiducial/")
+    logsfc_path = os.path.expanduser(
+        "~/container_tiramisu/sim_log_files/CC-Fiducial/logSFC"
+    )
+    fpaths, snums = filter_snapshots(
+        datadir,
+        304,
+        304,
+        sampling=1,
+        str_snaps=True,
+        snapshot_type="ramses_snapshot",
+    )
+    # for the other rows
+    fpaths1, snums1 = filter_snapshots(
+        datadir,
+        375,
+        388,
+        sampling=1,
+        str_snaps=True,
+        snapshot_type="ramses_snapshot",
+    )
+
+    fpaths2, snums2 = filter_snapshots(
+        datadir,
+        390,
+        390,
+        sampling=1,
+        str_snaps=True,
+        snapshot_type="ramses_snapshot",
+    )
+
+    fpaths3, snums3 = filter_snapshots(
+        datadir,
+        397,
+        397,
+        sampling=1,
+        str_snaps=True,
+        snapshot_type="ramses_snapshot",
+    )
 
     # =============================================================================
     render_nickname = "science_plots"
@@ -161,8 +161,8 @@ if __name__ == "__main__":
         [fpaths3, snums3],
     ]
 
-    fig, ax = plt.subplots(4, 3, figsize=(8, 11), dpi=400, sharex=True, sharey=True)
-    plt.subplots_adjust(hspace=-0.4, wspace=0)
+    fig, ax = plt.subplots(4, 3, figsize=(8, 10), dpi=400, sharex=True, sharey=True)
+    plt.subplots_adjust(hspace=-0.31, wspace=0)
 
     for sg, sn_group in enumerate(snapshot_list):
         cold = []
@@ -306,29 +306,32 @@ if __name__ == "__main__":
             np.log10(lims[("gas", "density")][0][0] / m_h),
             np.log10(lims[("gas", "density")][1][0] / m_h),
         ),
-        ylim=(-5.4, 0.81),
+        ylim=(-5.4, 0.5),
     )
     ax[sg, a].xaxis.set_major_locator(plt.MaxNLocator(12))
     ax[sg, a].yaxis.set_major_locator(plt.MaxNLocator(6))
 
-    cbar_ax = ax[0, 0].inset_axes([0, 1.02, 3, 0.08])
+    cbar_ax = ax[0, 0].inset_axes([0, 1.02, 3, 0.05])
     bar = fig.colorbar(nz_image, cax=cbar_ax, pad=0, orientation="horizontal")
     # bar .ax.xaxis.set_tick_params(pad=2)
-    bar.set_label(r"$\mathrm{\log \:Gas\:Mass\:} \left[ {\rm M_{\odot}} \right] $")
+    bar.set_label(
+        r"$\mathrm{\log \:Gas\:Mass\:} \left[ {\rm M_{\odot}} \right] $",
+        fontsize=10,
+    )
     bar.ax.xaxis.set_label_position("top")
     bar.ax.xaxis.set_ticks_position("top")
     # cbar_ax.xaxis.set_major_locator(plt.MaxNLocator(8))
 
     fig.text(
         0.5,
-        0.13,
+        0.11,
         r"$\log\: n_{\rm H} \: { \rm \left[cm^{-3} \right] }$",
         ha="center",
         fontsize=10,
     )
 
     fig.text(
-        0.06,
+        0.07,
         0.5,
         r"$\log\:{\rm Metallicity\:\left[Z_{\odot}\right]}$",
         va="center",
@@ -343,7 +346,7 @@ if __name__ == "__main__":
         output_path,
         dpi=300,
         bbox_inches="tight",
-        pad_inches=0.05,
+        pad_inches=0.01,
     )
 
     plt.show()
