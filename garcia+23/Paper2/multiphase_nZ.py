@@ -56,39 +56,49 @@ if __name__ == "__main__":
         ("gas", "mass"): ((1e-2, "msun"), (2e6, "msun")),
     }
 
-    # if len(sys.argv) != 6:
-    #     print(sys.argv[0], "usage:")
-    #     print(
-    #         "{} snapshot_dir start_snap end_snap step render_nickname".format(
-    #             sys.argv[0]
-    #         )
-    #     )
-    #     exit()
-    # else:
-    #     print("********************************************************************")
-    #     print(" rendering movie ")
-    #     print("********************************************************************")
+    datadir = os.path.expanduser(
+        "/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial"
+    )
 
-    # datadir = sys.argv[1]
-    # logsfc_path = os.path.join(sys.argv[1], "logSFC")
-    # start_snapshot = int(sys.argv[2])
-    # end_snapshot = int(sys.argv[3])
-    # step = int(sys.argv[4])
-    # render_nickname = sys.argv[5]
+    logsfc_path = os.path.expanduser(os.path.join(datadir, "logSFC"))
 
-    # sim_run = os.path.basename(os.path.normpath(datadir))
-    # fpaths, snums = filter_snapshots(
-    #     datadir,
-    #     start_snapshot,
-    #     end_snapshot,
-    #     sampling=step,
-    #     str_snaps=True,
-    # )
+    fpaths, snums = filter_snapshots(
+        datadir,
+        304,
+        304,
+        sampling=1,
+        str_snaps=True,
+        snapshot_type="ramses_snapshot",
+    )
+    # for the other rows
+    fpaths1, snums1 = filter_snapshots(
+        datadir,
+        350,
+        376,
+        sampling=1,
+        str_snaps=True,
+        snapshot_type="ramses_snapshot",
+    )
 
-    # first starburst in the CC-fid run
-    # queiscent phase after 1st star burst, before 2nd snap 203 - 370
-    # second starburst in the CC-fid run snap 377 - 389
-    # after the second starburst snap 402 - 432
+    fpaths2, snums2 = filter_snapshots(
+        datadir,
+        377,
+        389,
+        sampling=1,
+        str_snaps=True,
+        snapshot_type="ramses_snapshot",
+    )
+
+    fpaths3, snums3 = filter_snapshots(
+        datadir,
+        397,
+        397,
+        sampling=1,
+        str_snaps=True,
+        snapshot_type="ramses_snapshot",
+    )
+
+    # =============================================================================
 
     # datadir = os.path.expanduser("~/test_data/CC-Fiducial/")
     # logsfc_path = os.path.expanduser(
@@ -105,8 +115,8 @@ if __name__ == "__main__":
     # # for the other rows
     # fpaths1, snums1 = filter_snapshots(
     #     datadir,
-    #     350,
-    #     376,
+    #     375,
+    #     388,
     #     sampling=1,
     #     str_snaps=True,
     #     snapshot_type="ramses_snapshot",
@@ -114,8 +124,8 @@ if __name__ == "__main__":
 
     # fpaths2, snums2 = filter_snapshots(
     #     datadir,
-    #     377,
-    #     389,
+    #     390,
+    #     390,
     #     sampling=1,
     #     str_snaps=True,
     #     snapshot_type="ramses_snapshot",
@@ -131,51 +141,7 @@ if __name__ == "__main__":
     # )
 
     # =============================================================================
-
-    datadir = os.path.expanduser("~/test_data/CC-Fiducial/")
-    logsfc_path = os.path.expanduser(
-        "~/container_tiramisu/sim_log_files/CC-Fiducial/logSFC"
-    )
-    fpaths, snums = filter_snapshots(
-        datadir,
-        304,
-        304,
-        sampling=1,
-        str_snaps=True,
-        snapshot_type="ramses_snapshot",
-    )
-    # for the other rows
-    fpaths1, snums1 = filter_snapshots(
-        datadir,
-        375,
-        388,
-        sampling=1,
-        str_snaps=True,
-        snapshot_type="ramses_snapshot",
-    )
-
-    fpaths2, snums2 = filter_snapshots(
-        datadir,
-        390,
-        390,
-        sampling=1,
-        str_snaps=True,
-        snapshot_type="ramses_snapshot",
-    )
-
-    fpaths3, snums3 = filter_snapshots(
-        datadir,
-        397,
-        397,
-        sampling=1,
-        str_snaps=True,
-        snapshot_type="ramses_snapshot",
-    )
-
     render_nickname = "science_plots"
-
-    # =============================================================================
-
     # run save
     sim_run = os.path.basename(os.path.normpath(datadir))
     render_container = os.path.join(
