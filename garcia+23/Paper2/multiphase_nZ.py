@@ -6,7 +6,7 @@ Region centered on star formation, radius of 0.5 kpc
 
 import sys
 
-sys.path.append("../")
+sys.path.append("../../")
 
 import yt
 import numpy as np
