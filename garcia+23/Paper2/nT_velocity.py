@@ -51,7 +51,7 @@ if __name__ == "__main__":
     # ]
 
     lims = {
-        ("gas", "radial_velocity"): ((-4e3, "km/s"), (4e3, "km/s")),
+        ("gas", "radial_velocity"): ((-3e3, "km/s"), (3e3, "km/s")),
         ("gas", "temperature"): ((50, "K"), (5e8, "K")),
         ("gas", "mass"): ((1e-2, "msun"), (1e6, "msun")),
     }
@@ -156,13 +156,10 @@ if __name__ == "__main__":
 
     myrs = []
     redshifts = []
-    
-    for sg, sn_group in enumerate(snapshot_list):
-       
 
+    for sg, sn_group in enumerate(snapshot_list):
         # within each row  or grouping, read and update
         for r, (fpaths, snums) in enumerate(zip(sn_group[0], sn_group[1])):
-            
             len_ofgroup = len(sn_group[0])
             print("# _________________________________________________________________")
             infofile = os.path.abspath(os.path.join(fpaths, f"info_{snums}.txt"))
@@ -193,12 +190,12 @@ if __name__ == "__main__":
             bulk_vel = sf_region.quantities.bulk_velocity()
 
             # Get the second sphere
-            sf_region = ds.sphere(ctr_at_code, (r_sf, "pc"))
+            sf_region_corrected = ds.sphere(ctr_at_code, (r_sf, "pc"))
 
             # Set the bulk velocity field parameter
-            sf_region.set_field_parameter("bulk_velocity", bulk_vel)
+            sf_region_corrected.set_field_parameter("bulk_velocity", bulk_vel)
 
-            profile2d = sf_region.profile(
+            profile2d = sf_region_corrected.profile(
                 # the x bin field, the y bin field
                 # metallicity is
                 [("gas", "radial_velocity"), ("gas", "temperature")],
@@ -217,24 +214,23 @@ if __name__ == "__main__":
                 sfe70.append(gas_mass)
             else:
                 sfe35.append(gas_mass)
-                
-#%%
+
+    # %%
     time_avg_vals = [
         np.mean(sfevariable, axis=0),
         np.mean(sfe70, axis=0),
         np.mean(sfe35, axis=0),
     ]
-    # %%
-    
+
     fig, ax = plt.subplots(
         nrows=3,
         ncols=1,
         sharex=True,
-        figsize=(5, 12),
+        figsize=(5, 9),
         dpi=300,
     )
-        
-    # plt.subplots_adjust(hspace=-0.4, wspace=0)
+
+    plt.subplots_adjust(hspace=0, wspace=0)
 
     ax = ax.ravel()
     for a, phase_plot in enumerate(time_avg_vals):
@@ -250,115 +246,138 @@ if __name__ == "__main__":
             cmap=cmr.torch_r,
             vmin=np.log10(lims[("gas", "mass")][0][0]),
             vmax=np.log10(lims[("gas", "mass")][1][0]),
-            aspect=1000,
+            aspect=600,
+        )
+        row_time = (r"$t = {:.0f} $ Myr" "\n" r"$z =  {:.1f} $").format(
+            myrs[a], redshifts[a]
         )
 
-    plt.show()
-        # %%
-        for a, phase_plot in enumerate(time_avg_vals):
-            nz_image = ax[sg, a].imshow(
-                np.log10(phase_plot),
-                origin="lower",
-                extent=[
-                    np.log10(lims[("gas", "density")][0][0] / m_h),
-                    np.log10(lims[("gas", "density")][1][0] / m_h),
-                    np.log10(lims[("ramses", "Metallicity")][0] / zsun),
-                    np.log10(lims[("ramses", "Metallicity")][1] / zsun),
-                ],
-                cmap=cmr.tropical_r,
-                vmin=np.log10(lims[("gas", "mass")][0][0]),
-                vmax=np.log10(lims[("gas", "mass")][1][0]),
-                aspect=1.6,
-            )
-
-            # ax[sg, a].set(xlabel=r"$\log\:n_{\rm H} \:{\rm (cm^{-3}})$")
-
-            ax[sg, a].text(
-                0.97,
-                0.08,
-                r"$n_{ \rm crit}$",
-                ha="right",
-                va="bottom",
-                color="k",
-                rotation=90,
-                transform=ax[sg, a].transAxes,
-            )
-            ax[sg, a].axvspan(np.log10(n_crit), np.log10(1e6), color="grey", alpha=0.5)
-
-            if sg == 0:
-                ax[sg, a].text(
-                    0.05,
-                    0.95,
-                    tlabels[a],
-                    ha="left",
-                    va="top",
-                    transform=ax[sg, a].transAxes,
-                    fontsize=10,
-                )
-
-        if len_ofgroup == 1:
-            row_time = (r"$t = {:.0f} $ Myr" "\n" r"$z =  {:.1f} $").format(
-                myrs[0],
-                redshifts[0],
-            )
-
-        else:
-            row_time = (
-                r"$t = {:.0f} - {:.0f} $ Myr" "\n" r"$z =  {:.1f} - {:.1f} $"
-            ).format(
-                np.array(myrs).min(),
-                np.array(myrs).max(),
-                np.array(redshifts).max(),
-                np.array(redshifts).min(),
-            )
-
-        ax[sg, 0].text(
+        ax[a].text(
             0.05,
-            0.05,
+            0.95,
             row_time,
             ha="left",
-            va="bottom",
+            va="top",
             color="black",
-            transform=ax[sg, 0].transAxes,
+            transform=ax[a].transAxes,
             fontsize=10,
         )
 
-    ax[sg, a].set(
-        xlim=(
-            np.log10(lims[("gas", "density")][0][0] / m_h),
-            np.log10(lims[("gas", "density")][1][0] / m_h),
-        ),
-        ylim=(-5.5, 0.5),
-    )
-    ax[sg, a].xaxis.set_major_locator(plt.MaxNLocator(12))
-    ax[sg, a].yaxis.set_major_locator(plt.MaxNLocator(6))
-
-    cbar_ax = ax[0, 0].inset_axes([0, 1.02, 3, 0.05])
+    cbar_ax = ax[0].inset_axes([0, 1.02, 1, 0.05])
     bar = fig.colorbar(nz_image, cax=cbar_ax, pad=0, orientation="horizontal")
     # bar .ax.xaxis.set_tick_params(pad=2)
-    bar.set_label(r"$\mathrm{\log\:Total\:Cell\:Mass\:\left[M_{\odot}}\right]$")
+    bar.set_label(r"$\mathrm{\log\:Total\:Cell\:Mass\:\left[M_{\odot}\right]}$")
     bar.ax.xaxis.set_label_position("top")
     bar.ax.xaxis.set_ticks_position("top")
-    # cbar_ax.xaxis.set_major_locator(plt.MaxNLocator(8))
 
-    fig.text(0.5, 0.13, r"$\log\:n_{\rm H} \:{\rm \left[cm^{-3}} \right]$", ha="center")
-
-    fig.text(
-        0.06,
-        0.5,
-        r"$\log\:{\rm Metallicity\:\left[Z_{\odot}\right]}$",
-        va="center",
-        rotation="vertical",
-    )
-
-    output_path = os.path.join(render_container, "multiphase_nZ.png")
-
-    print("Saved", output_path)
-    plt.savefig(
-        output_path,
-        dpi=300,
-        bbox_inches="tight",
-        pad_inches=0.05,
-    )
-
+    ax[1].set(ylabel="Temperature [K]")
+    ax[2].set(xlabel=r"Radial Velocity $[ \mathrm{km \: s^{-1} }  ]$")
     plt.show()
+    #     # %%
+    #     for a, phase_plot in enumerate(time_avg_vals):
+    #         nz_image = ax[sg, a].imshow(
+    #             np.log10(phase_plot),
+    #             origin="lower",
+    #             extent=[
+    #                 np.log10(lims[("gas", "density")][0][0] / m_h),
+    #                 np.log10(lims[("gas", "density")][1][0] / m_h),
+    #                 np.log10(lims[("ramses", "Metallicity")][0] / zsun),
+    #                 np.log10(lims[("ramses", "Metallicity")][1] / zsun),
+    #             ],
+    #             cmap=cmr.tropical_r,
+    #             vmin=np.log10(lims[("gas", "mass")][0][0]),
+    #             vmax=np.log10(lims[("gas", "mass")][1][0]),
+    #             aspect=1.6,
+    #         )
+
+    #         # ax[sg, a].set(xlabel=r"$\log\:n_{\rm H} \:{\rm (cm^{-3}})$")
+
+    #         ax[sg, a].text(
+    #             0.97,
+    #             0.08,
+    #             r"$n_{ \rm crit}$",
+    #             ha="right",
+    #             va="bottom",
+    #             color="k",
+    #             rotation=90,
+    #             transform=ax[sg, a].transAxes,
+    #         )
+    #         ax[sg, a].axvspan(np.log10(n_crit), np.log10(1e6), color="grey", alpha=0.5)
+
+    #         if sg == 0:
+    #             ax[sg, a].text(
+    #                 0.05,
+    #                 0.95,
+    #                 tlabels[a],
+    #                 ha="left",
+    #                 va="top",
+    #                 transform=ax[sg, a].transAxes,
+    #                 fontsize=10,
+    #             )
+
+    #     if len_ofgroup == 1:
+    #         row_time = (r"$t = {:.0f} $ Myr" "\n" r"$z =  {:.1f} $").format(
+    #             myrs[0],
+    #             redshifts[0],
+    #         )
+
+    #     else:
+    #         row_time = (
+    #             r"$t = {:.0f} - {:.0f} $ Myr" "\n" r"$z =  {:.1f} - {:.1f} $"
+    #         ).format(
+    #             np.array(myrs).min(),
+    #             np.array(myrs).max(),
+    #             np.array(redshifts).max(),
+    #             np.array(redshifts).min(),
+    #         )
+
+    #     ax[sg, 0].text(
+    #         0.05,
+    #         0.05,
+    #         row_time,
+    #         ha="left",
+    #         va="bottom",
+    #         color="black",
+    #         transform=ax[sg, 0].transAxes,
+    #         fontsize=10,
+    #     )
+
+    # ax[sg, a].set(
+    #     xlim=(
+    #         np.log10(lims[("gas", "density")][0][0] / m_h),
+    #         np.log10(lims[("gas", "density")][1][0] / m_h),
+    #     ),
+    #     ylim=(-5.5, 0.5),
+    # )
+    # ax[sg, a].xaxis.set_major_locator(plt.MaxNLocator(12))
+    # ax[sg, a].yaxis.set_major_locator(plt.MaxNLocator(6))
+
+    # cbar_ax = ax[0, 0].inset_axes([0, 1.02, 3, 0.05])
+    # bar = fig.colorbar(nz_image, cax=cbar_ax, pad=0, orientation="horizontal")
+    # # bar .ax.xaxis.set_tick_params(pad=2)
+    # bar.set_label(r"$\mathrm{\log\:Total\:Cell\:Mass\:\left[M_{\odot}}\right]$")
+    # bar.ax.xaxis.set_label_position("top")
+    # bar.ax.xaxis.set_ticks_position("top")
+    # # cbar_ax.xaxis.set_major_locator(plt.MaxNLocator(8))
+
+    # fig.text(0.5, 0.13, r"$\log\:n_{\rm H} \:{\rm \left[cm^{-3}} \right]$", ha="center")
+
+    # fig.text(
+    #     0.06,
+    #     0.5,
+    #     r"$\log\:{\rm Metallicity\:\left[Z_{\odot}\right]}$",
+    #     va="center",
+    #     rotation="vertical",
+    # )
+
+    # output_path = os.path.join(render_container, "multiphase_nZ.png")
+
+    # print("Saved", output_path)
+    # plt.savefig(
+    #     output_path,
+    #     dpi=300,
+    #     bbox_inches="tight",
+    #     pad_inches=0.05,
+    # )
+
+    # plt.show()
