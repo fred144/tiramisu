@@ -18,16 +18,39 @@ from yt.funcs import mylog
 from yt.extensions.astro_analysis.halo_analysis import HaloCatalog
 import warnings
 import matplotlib.pyplot as plt
-
+import matplotlib as mpl
 import matplotlib.patheffects as patheffects
 from scipy.spatial.transform import Rotation as R
 from yt.visualization.volume_rendering.api import Scene
 from scipy.ndimage import gaussian_filter
 from tools.check_path import check_path
-from tools import plotstyle
+
+# from tools import plotstyle
 from tools.fscanner import filter_snapshots
 from tools.ram_fields import ram_fields
 import cmasher as cmr
+
+mpl.rcParams.update(mpl.rcParamsDefault)
+plt.rcParams.update(
+    {
+        "text.usetex": True,
+        # "font.family": "Helvetica",
+        "font.family": "serif",
+        "mathtext.fontset": "cm",
+        "xtick.labelsize": 8,
+        "ytick.labelsize": 8,
+        "font.size": 9,
+        "xtick.direction": "in",
+        "ytick.direction": "in",
+        "ytick.right": True,
+        "xtick.top": True,
+        "xtick.major.size": 4,
+        "ytick.major.size": 4,
+        "xtick.minor.size": 3,
+        "ytick.minor.size": 3,
+    }
+)
+
 
 mylog.setLevel(40)
 warnings.simplefilter(action="ignore", category=RuntimeWarning)
@@ -271,7 +294,7 @@ if __name__ == "__main__":
                     ha="left",
                     va="top",
                     transform=ax[sg, a].transAxes,
-                    fontsize=10,
+                    # fontsize=10,
                 )
 
         if len_ofgroup == 1:
@@ -298,7 +321,7 @@ if __name__ == "__main__":
             va="bottom",
             color="black",
             transform=ax[sg, 0].transAxes,
-            fontsize=10,
+            # fontsize=10,
         )
 
     ax[sg, a].set(
@@ -327,7 +350,7 @@ if __name__ == "__main__":
         0.11,
         r"$\log\: n_{\rm H} \: { \rm \left[cm^{-3} \right] }$",
         ha="center",
-        fontsize=10,
+        # fontsize=10,
     )
 
     fig.text(
@@ -336,7 +359,7 @@ if __name__ == "__main__":
         r"$\log\:{\rm Metallicity\:\left[Z_{\odot}\right]}$",
         va="center",
         rotation="vertical",
-        fontsize=10,
+        # fontsize=10,
     )
 
     output_path = os.path.join(render_container, "multiphase_nZ.png")
