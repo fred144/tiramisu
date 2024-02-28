@@ -62,27 +62,27 @@ if __name__ == "__main__":
 
     fpaths, snums = filter_snapshots(
         "/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial",
-        304,
-        304,
-        sampling=1,
+        401,
+        431,
+        sampling=3,
         str_snaps=True,
         snapshot_type="ramses_snapshot",
     )
     # for the other rows
     fpaths1, snums1 = filter_snapshots(
         "/afs/shell.umd.edu/project/ricotti-prj/user/fgarcia4/dwarf/data/cluster_evolution/fs07_refine",
-        370,
-        370,
-        sampling=1,
+        1280,
+        1420,
+        sampling=4,
         str_snaps=True,
         snapshot_type="ramses_snapshot",
     )
 
     fpaths2, snums2 = filter_snapshots(
         "/afs/shell.umd.edu/project/ricotti-prj/user/fgarcia4/dwarf/data/cluster_evolution/fs035_ms10",
-        397,
-        397,
-        sampling=1,
+        443,
+        583,
+        sampling=14,
         str_snaps=True,
         snapshot_type="ramses_snapshot",
     )
