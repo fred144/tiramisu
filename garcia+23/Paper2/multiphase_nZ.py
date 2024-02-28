@@ -82,7 +82,6 @@ if __name__ == "__main__":
     datadir = os.path.expanduser(
         "/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial"
     )
-    logsfc_path = os.path.expanduser(os.path.join(datadir, "logSFC"))
 
     fpaths, snums = filter_snapshots(
         datadir,

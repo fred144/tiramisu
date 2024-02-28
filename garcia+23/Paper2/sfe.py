@@ -82,17 +82,18 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
     """
     fig, ax = plt.subplots(
         1,
-        2,
-        figsize=(5, 4),
-        gridspec_kw={"width_ratios": [3, 1]},
+        3,
+        figsize=(9.1, 3),
+        gridspec_kw={"width_ratios": [3, 3, 3]},
         dpi=400,
         sharey=True,
+        sharex=True,
     )
-
-    # hist_ax_right = ax.inset_axes([1.02, 0, 0.30, 1], sharey=ax)
-    ax[1].set_xlabel(r"$\mathrm{PDF (SFE)}$")
-    ax[1].tick_params(axis="both", labelleft=False, labelsize=6)
-    plt.subplots_adjust(wspace=0.05)
+    ax = ax.ravel()
+    hist_ax_right = ax[2].inset_axes([1.02, 0, 0.4, 1], sharey=ax[2])
+    hist_ax_right.set_xlabel(r"$\mathrm{PDF (SFE)}$", fontsize=10)
+    hist_ax_right.tick_params(axis="both", labelleft=False, labelsize=6)
+    plt.subplots_adjust(wspace=0.0)
     # latest_redshift = 9.12 # before second starburst
     latest_redshift = 5
     hatches = ["\\\\\\\\\\", "/////"]
@@ -111,7 +112,7 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
         m_sun_stars = log_sfc[:, 7][mask]
         n_hydrogen = log_sfc[:, 8][mask]
         metal_zsun_cloud = log_sfc[:, 9][mask]  # metalicity is normalized to z_sun
-
+        print(len(m_sun_cloud))
         if sfe[i] == "constant":
             sfe_val = (
                 star_formation_efficiency(n_hydrogen, m_sun_cloud, metal_zsun_cloud)
@@ -123,11 +124,11 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
             print("sfe is ether constant or variable")
             raise ValueError
 
-        sfe_scatter = ax[0].scatter(
+        sfe_scatter = ax[i].scatter(
             m_sun_cloud,
             sfe_val,
             c=np.log10(n_hydrogen),
-            label=simulation_name[i],
+            # label=simulation_name[i],
             cmap=cmr.tropical,
             marker=marker[i],
             edgecolors="black",
@@ -136,62 +137,90 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
             alpha=0.7,
         )
         print(np.max(sfe_val))
-        ax[1].hist(
+
+        hist_ax_right.hist(
             sfe_val,
             bins=sfe_bins,
             color=hist_color[i],
             edgecolor=hist_color[i],
-            histtype="step",
-            hatch=hatches[i % 2],
-            alpha=0.9,
-            linewidth=1.25,
+            histtype="stepfilled",
+            # hatch=hatches[i % 2],
+            alpha=0.3,
+            linewidth=2,
             density=True,
             orientation="horizontal",
-            label=" ",  # simulation_name[i],
+            label=simulation_name[i],
+        )
+        ax[i].set(
+            xscale="log",
+            yscale="log",
         )
 
-    ax[1].legend(loc="lower left", frameon=False, bbox_to_anchor=(-1.45, 0.0))
+        ax[i].text(
+            0.95,
+            0.05,
+            simulation_name[i],
+            ha="right",
+            va="bottom",
+            color="black",
+            transform=ax[i].transAxes,
+            # fontsize=10,
+        )
 
-    cbar_ax = ax[0].inset_axes([0, 1.02, 1, 0.05])
-    dens_bar = fig.colorbar(sfe_scatter, cax=cbar_ax, pad=0, orientation="horizontal")
+        ax[i].set_ylim(bottom=1, top=120)
+        xmin, _ = ax[i].get_xlim()
+        ax[i].axhline(y=80, color="grey", ls="--", zorder=-1)
+        ax[i].axhline(y=10, color="grey", ls="--", zorder=-1)
 
-    dens_bar.set_label(
-        label=(r"$\log\:\overline{n_\mathrm{H}}\:\left[\mathrm{cm}^{-3} \right]$"),
-        fontsize=12,
-        labelpad=6,
-    )
-    dens_bar.ax.xaxis.set_label_position("top")
-    dens_bar.ax.xaxis.set_ticks_position("top")
-    dens_bar.ax.locator_params(nbins=6)
+        if i == 0:
+            ax[i].annotate("$80 \%$", (xmin * 1.2, 60), color="grey")
+            ax[i].annotate("$10 \%$", (xmin * 1.2, 7), color="grey")
 
     ax[0].set(
-        xlabel=r"Cloud Mass $\left[\mathrm{M}_{\odot}\right]$",
         ylabel=r"$\mathrm{SFE}\:\left[\% \right]$",
         xscale="log",
         yscale="log",
     )
+    ax[1].set(xlabel=r"Cloud Mass $\left[\mathrm{M}_{\odot}\right]$")
 
-    h = []
-    for n, m in zip(simulation_name, marker):
-        sim_label = mlines.Line2D(
-            [],
-            [],
-            color="k",
-            marker=m,
-            ls="",
-            label="\t" + n,
-        )
-        h.append(sim_label)
+    hist_ax_right.legend(
+        loc="upper center", frameon=False, bbox_to_anchor=(0.5, 1.25), fontsize=8
+    )
+    # hist_ax_right.axhline(y=80, color="grey", ls="--", zorder=-1)
+    # hist_ax_right.axhline(y=10, color="grey", ls="--", zorder=-1)
 
-    ax[0].legend(loc="lower right", handles=h, frameon=False, handletextpad=2)
+    cbar_ax = ax[0].inset_axes([0, 1.02, 3, 0.05])
+    dens_bar = fig.colorbar(sfe_scatter, cax=cbar_ax, pad=0, orientation="horizontal")
 
-    ax[0].set_ylim(top=120)
-    xmin, _ = ax[0].get_xlim()
-    ax[0].axhline(y=80, color="grey", ls="--", zorder=-1)
-    ax[0].annotate("$80 \%$", (xmin * 1.2, 65), color="grey")
+    dens_bar.set_label(
+        label=(r"$\log\:\overline{n_\mathrm{H}}\:\left[\mathrm{cm}^{-3} \right]$"),
+        fontsize=10,
+        labelpad=6,
+    )
+    dens_bar.ax.xaxis.set_label_position("top")
+    dens_bar.ax.xaxis.set_ticks_position("top")
+    dens_bar.ax.locator_params(nbins=12)
 
-    ax[0].axhline(y=10, color="grey", ls="--", zorder=-1)
-    ax[0].annotate("$10 \%$", (xmin * 1.2, 8), color="grey")
+    # ax[0].set(
+    #     xlabel=r"Cloud Mass $\left[\mathrm{M}_{\odot}\right]$",
+    #     ylabel=r"$\mathrm{SFE}\:\left[\% \right]$",
+    #     xscale="log",
+    #     yscale="log",
+    # )
+
+    # h = []
+    # for n, m in zip(simulation_name, marker):
+    #     sim_label = mlines.Line2D(
+    #         [],
+    #         [],
+    #         color="k",
+    #         marker=m,
+    #         ls="",
+    #         label="\t" + n,
+    #     )
+    #     h.append(sim_label)
+
+    # hist_ax_right.legend(loc="lower right",  frameon=False)
 
 
 if __name__ == "__main__":
@@ -199,29 +228,29 @@ if __name__ == "__main__":
     cmap = cmap(np.linspace(0, 1, 8))
 
     colors = [
-        # cmap[0],
         cmap[0],
+        cmap[2],
         cmap[1],
     ]
     runs = [
-        "../../../container_tiramisu/sim_log_files/fs07_refine",
-        # "../../container_tiramisu/sim_log_files/fs035_ms10",
         "../../../container_tiramisu/sim_log_files/CC-Fiducial",
+        "../../../container_tiramisu/sim_log_files/fs035_ms10",
+        "../../../container_tiramisu/sim_log_files/fs07_refine",
     ]
     names = [
-        "high SFE",
-        # "$f_* = 0.35$",
         "VSFE",
+        "low SFE",
+        "high SFE",
     ]
     markers = [
         "o",
-        # "P",
-        "v",
+        "o",
+        "o",
     ]
     calc_type = [
-        "constant",
-        # "constant",
         "variable",
+        "constant",
+        "constant",
     ]
 
     plotting_interface(

@@ -1,7 +1,10 @@
 """
-Metallicity as a function of density, with mass bins
-Divided into three different gas phases
-Region centered on star formation, radius of 0.5 kpc
+how does SFE affect outflow velocities/ metal mixing?
+Feedback times in the SNe dominated regime
+
+35 SFE 435Myr - 465 Myr
+70 SFE  654Myr - 684
+VSFE 592Myr - 622Myr 
 """
 
 import sys
@@ -52,17 +55,13 @@ if __name__ == "__main__":
 
     lims = {
         ("gas", "radial_velocity"): ((-3e3, "km/s"), (3e3, "km/s")),
-        ("gas", "temperature"): ((50, "K"), (5e8, "K")),
+        # ("gas", "temperature"): ((50, "K"), (5e8, "K")),
+        ("ramses", "Metallicity"): (2e-4 * zsun, 5 * zsun),
         ("gas", "mass"): ((1e-2, "msun"), (1e6, "msun")),
     }
-    # datadir = os.path.expanduser(
-    #     "/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial"
-    # )
-    datadir = os.path.expanduser("~/test_data/CC-Fiducial/")
-    logsfc_path = os.path.expanduser(os.path.join(datadir, "logSFC"))
 
     fpaths, snums = filter_snapshots(
-        datadir,
+        "/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial",
         304,
         304,
         sampling=1,
@@ -71,7 +70,7 @@ if __name__ == "__main__":
     )
     # for the other rows
     fpaths1, snums1 = filter_snapshots(
-        datadir,
+        "/afs/shell.umd.edu/project/ricotti-prj/user/fgarcia4/dwarf/data/cluster_evolution/fs07_refine",
         370,
         370,
         sampling=1,
@@ -80,7 +79,7 @@ if __name__ == "__main__":
     )
 
     fpaths2, snums2 = filter_snapshots(
-        datadir,
+        "/afs/shell.umd.edu/project/ricotti-prj/user/fgarcia4/dwarf/data/cluster_evolution/fs035_ms10",
         397,
         397,
         sampling=1,
@@ -121,19 +120,10 @@ if __name__ == "__main__":
     #     snapshot_type="ramses_snapshot",
     # )
 
-    # fpaths3, snums3 = filter_snapshots(
-    #     datadir,
-    #     397,
-    #     397,
-    #     sampling=1,
-    #     str_snaps=True,
-    #     snapshot_type="ramses_snapshot",
-    # )
-
     # =============================================================================
     render_nickname = "science_plots"
     # run save
-    sim_run = os.path.basename(os.path.normpath(datadir))
+    sim_run = "run_comparison"
     render_container = os.path.join(
         "..",
         "..",
@@ -198,7 +188,7 @@ if __name__ == "__main__":
             profile2d = sf_region_corrected.profile(
                 # the x bin field, the y bin field
                 # metallicity is
-                [("gas", "radial_velocity"), ("gas", "temperature")],
+                [("gas", "radial_velocity"), ("ramses", "Metallicity")],
                 [("gas", "mass")],  # the profile field
                 weight_field=None,  # sums each quantity in each bin
                 n_bins=(200, 200),
@@ -215,18 +205,23 @@ if __name__ == "__main__":
             else:
                 sfe35.append(gas_mass)
 
-    # %%
     time_avg_vals = [
         np.mean(sfevariable, axis=0),
         np.mean(sfe70, axis=0),
         np.mean(sfe35, axis=0),
     ]
 
+    names = [
+        "VSFE",
+        "high SFE",
+        "low SFE",
+    ]
+
     fig, ax = plt.subplots(
         nrows=3,
         ncols=1,
         sharex=True,
-        figsize=(5, 9),
+        figsize=(5, 10),
         dpi=300,
     )
 
@@ -240,13 +235,13 @@ if __name__ == "__main__":
             extent=[
                 lims[("gas", "radial_velocity")][0][0],
                 lims[("gas", "radial_velocity")][1][0],
-                np.log10(lims[("gas", "temperature")][0][0]),
-                np.log10(lims[("gas", "temperature")][1][0]),
+                np.log10(lims[("ramses", "Metallicity")][0] / zsun),
+                np.log10(lims[("ramses", "Metallicity")][1] / zsun),
             ],
-            cmap=cmr.torch_r,
+            cmap=cmr.savanna_r,
             vmin=np.log10(lims[("gas", "mass")][0][0]),
             vmax=np.log10(lims[("gas", "mass")][1][0]),
-            aspect=600,
+            aspect=1000,
         )
         row_time = (r"$t = {:.0f} $ Myr" "\n" r"$z =  {:.1f} $").format(
             myrs[a], redshifts[a]
@@ -255,7 +250,7 @@ if __name__ == "__main__":
         ax[a].text(
             0.05,
             0.95,
-            row_time,
+            names[a],
             ha="left",
             va="top",
             color="black",
@@ -263,121 +258,34 @@ if __name__ == "__main__":
             fontsize=10,
         )
 
+        # ax[a].text(
+        #     0.05,
+        #     0.05,
+        #     names[a],
+        #     ha="left",
+        #     va="bottom",
+        #     color="black",
+        #     transform=ax[a].transAxes,
+        #     fontsize=10,
+        # )
+
     cbar_ax = ax[0].inset_axes([0, 1.02, 1, 0.05])
     bar = fig.colorbar(nz_image, cax=cbar_ax, pad=0, orientation="horizontal")
     # bar .ax.xaxis.set_tick_params(pad=2)
-    bar.set_label(r"$\mathrm{\log\:Total\:Cell\:Mass\:\left[M_{\odot}\right]}$")
+    bar.set_label(r"$\mathrm{log\:Gas\:Mass\:\left[M_{\odot}\right]}$")
     bar.ax.xaxis.set_label_position("top")
     bar.ax.xaxis.set_ticks_position("top")
 
-    ax[1].set(ylabel="Temperature [K]")
+    ax[1].set(ylabel=r"log Metallicity [Z$_\odot$]")
     ax[2].set(xlabel=r"Radial Velocity $[ \mathrm{km \: s^{-1} }  ]$")
+
+    output_path = os.path.join(render_container, "radialvelocity_nZ.png")
+    print("Saved", output_path)
+    plt.savefig(
+        output_path,
+        dpi=300,
+        bbox_inches="tight",
+        pad_inches=0.01,
+    )
+
     plt.show()
-    #     # %%
-    #     for a, phase_plot in enumerate(time_avg_vals):
-    #         nz_image = ax[sg, a].imshow(
-    #             np.log10(phase_plot),
-    #             origin="lower",
-    #             extent=[
-    #                 np.log10(lims[("gas", "density")][0][0] / m_h),
-    #                 np.log10(lims[("gas", "density")][1][0] / m_h),
-    #                 np.log10(lims[("ramses", "Metallicity")][0] / zsun),
-    #                 np.log10(lims[("ramses", "Metallicity")][1] / zsun),
-    #             ],
-    #             cmap=cmr.tropical_r,
-    #             vmin=np.log10(lims[("gas", "mass")][0][0]),
-    #             vmax=np.log10(lims[("gas", "mass")][1][0]),
-    #             aspect=1.6,
-    #         )
-
-    #         # ax[sg, a].set(xlabel=r"$\log\:n_{\rm H} \:{\rm (cm^{-3}})$")
-
-    #         ax[sg, a].text(
-    #             0.97,
-    #             0.08,
-    #             r"$n_{ \rm crit}$",
-    #             ha="right",
-    #             va="bottom",
-    #             color="k",
-    #             rotation=90,
-    #             transform=ax[sg, a].transAxes,
-    #         )
-    #         ax[sg, a].axvspan(np.log10(n_crit), np.log10(1e6), color="grey", alpha=0.5)
-
-    #         if sg == 0:
-    #             ax[sg, a].text(
-    #                 0.05,
-    #                 0.95,
-    #                 tlabels[a],
-    #                 ha="left",
-    #                 va="top",
-    #                 transform=ax[sg, a].transAxes,
-    #                 fontsize=10,
-    #             )
-
-    #     if len_ofgroup == 1:
-    #         row_time = (r"$t = {:.0f} $ Myr" "\n" r"$z =  {:.1f} $").format(
-    #             myrs[0],
-    #             redshifts[0],
-    #         )
-
-    #     else:
-    #         row_time = (
-    #             r"$t = {:.0f} - {:.0f} $ Myr" "\n" r"$z =  {:.1f} - {:.1f} $"
-    #         ).format(
-    #             np.array(myrs).min(),
-    #             np.array(myrs).max(),
-    #             np.array(redshifts).max(),
-    #             np.array(redshifts).min(),
-    #         )
-
-    #     ax[sg, 0].text(
-    #         0.05,
-    #         0.05,
-    #         row_time,
-    #         ha="left",
-    #         va="bottom",
-    #         color="black",
-    #         transform=ax[sg, 0].transAxes,
-    #         fontsize=10,
-    #     )
-
-    # ax[sg, a].set(
-    #     xlim=(
-    #         np.log10(lims[("gas", "density")][0][0] / m_h),
-    #         np.log10(lims[("gas", "density")][1][0] / m_h),
-    #     ),
-    #     ylim=(-5.5, 0.5),
-    # )
-    # ax[sg, a].xaxis.set_major_locator(plt.MaxNLocator(12))
-    # ax[sg, a].yaxis.set_major_locator(plt.MaxNLocator(6))
-
-    # cbar_ax = ax[0, 0].inset_axes([0, 1.02, 3, 0.05])
-    # bar = fig.colorbar(nz_image, cax=cbar_ax, pad=0, orientation="horizontal")
-    # # bar .ax.xaxis.set_tick_params(pad=2)
-    # bar.set_label(r"$\mathrm{\log\:Total\:Cell\:Mass\:\left[M_{\odot}}\right]$")
-    # bar.ax.xaxis.set_label_position("top")
-    # bar.ax.xaxis.set_ticks_position("top")
-    # # cbar_ax.xaxis.set_major_locator(plt.MaxNLocator(8))
-
-    # fig.text(0.5, 0.13, r"$\log\:n_{\rm H} \:{\rm \left[cm^{-3}} \right]$", ha="center")
-
-    # fig.text(
-    #     0.06,
-    #     0.5,
-    #     r"$\log\:{\rm Metallicity\:\left[Z_{\odot}\right]}$",
-    #     va="center",
-    #     rotation="vertical",
-    # )
-
-    # output_path = os.path.join(render_container, "multiphase_nZ.png")
-
-    # print("Saved", output_path)
-    # plt.savefig(
-    #     output_path,
-    #     dpi=300,
-    #     bbox_inches="tight",
-    #     pad_inches=0.05,
-    # )
-
-    # plt.show()

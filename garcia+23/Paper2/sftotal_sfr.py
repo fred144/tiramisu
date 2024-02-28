@@ -140,10 +140,11 @@ if __name__ == "__main__":
         simulation_name=names,
         color=colors,
     )
-    plt.show()
-    # plt.savefig(
-    #     "../../../gdrive_columbia/research/massimo/paper2/SF_history.png",
-    #     dpi=300,
-    #     bbox_inches="tight",
-    #     pad_inches=0.05,
-    # )
+
+    plt.savefig(
+        "../../../gdrive_columbia/research/massimo/paper2/SF_history.png",
+        dpi=300,
+        bbox_inches="tight",
+        pad_inches=0.05,
+    )
+    # plt.show()
