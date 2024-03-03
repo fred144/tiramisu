@@ -61,7 +61,7 @@ plt.rcParams.update(
 
 if __name__ == "__main__":
     m_h = 1.6735e-24  # grams
-    r_sf = 1000  # radii for sf in pc
+    r_sf = 500  # radii for sf in pc
     zsun = 0.02
     n_crit = 5e4
     cold_phase_t = (0, 100)
