@@ -78,13 +78,13 @@ if __name__ == "__main__":
         ("gas", "radial_velocity"): ((-3.5e3, "km/s"), (3.5e3, "km/s")),
         # ("gas", "temperature"): ((50, "K"), (5e8, "K")),
         ("ramses", "Metallicity"): (2e-4 * zsun, 5 * zsun),
-        ("gas", "mass"): ((1e-2, "msun"), (2e6, "msun")),
+        ("gas", "mass"): ((1e-4, "msun"), (2e6, "msun")),
     }
 
     fpaths, snums = filter_snapshots(
         "/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial",
         374,
-        424,
+        438,
         sampling=2,
         str_snaps=True,
         snapshot_type="ramses_snapshot",
@@ -93,7 +93,7 @@ if __name__ == "__main__":
     fpaths1, snums1 = filter_snapshots(
         "/afs/shell.umd.edu/project/ricotti-prj/user/fgarcia4/dwarf/data/cluster_evolution/fs07_refine",
         1300,
-        1426,
+        1570,
         sampling=5,
         str_snaps=True,
         snapshot_type="ramses_snapshot",
@@ -101,8 +101,8 @@ if __name__ == "__main__":
 
     fpaths2, snums2 = filter_snapshots(
         "/afs/shell.umd.edu/project/ricotti-prj/user/fgarcia4/dwarf/data/cluster_evolution/fs035_ms10",
-        358,
-        458,
+        355,
+        655,
         sampling=4,
         str_snaps=True,
         snapshot_type="ramses_snapshot",
@@ -302,11 +302,11 @@ if __name__ == "__main__":
 
     output_path = os.path.join(render_container, "radialvelocity_nZ.png")
     print("Saved", output_path)
-    plt.savefig(
-        output_path,
-        dpi=300,
-        bbox_inches="tight",
-        pad_inches=0.01,
-    )
+    # plt.savefig(
+    #     output_path,
+    #     dpi=300,
+    #     bbox_inches="tight",
+    #     pad_inches=0.01,
+    # )
 
     plt.show()

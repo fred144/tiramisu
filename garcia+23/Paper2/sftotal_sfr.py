@@ -88,16 +88,16 @@ def plotting_interface(run_logpath, simulation_name, color):
             # ax[1].axvspan(465, 485, facecolor=color[i], alpha=0.3)
 
             # snapshot 374 - 399, VSFE
-            ax[1].axvspan(565, 590, facecolor=color[i], alpha=0.3)  # Myr
+            ax[1].axvspan(565, 630, facecolor=color[i], alpha=0.3)  # Myr
         elif i == 1:
             # snapshot 333 - 428, high SFE
             # ax[1].axvspan(445, 465, facecolor=color[i], alpha=0.3)
 
             # snapshot 1300 - 1426, high SFE
-            ax[1].axvspan(658, 685, facecolor=color[i], alpha=0.3)
+            ax[1].axvspan(658, 715, facecolor=color[i], alpha=0.3)
         elif i == 2:
             # snapshot 359 - 458, low SFE
-            ax[1].axvspan(416, 438, facecolor=color[i], alpha=0.3)
+            ax[1].axvspan(416, 480, facecolor=color[i], alpha=0.3)
 
         redshft_ax.plot(t_interp_points, total_mass, linewidth=0)
     ax[0].set(
