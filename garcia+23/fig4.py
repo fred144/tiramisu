@@ -199,22 +199,22 @@ if __name__ == "__main__":
 
     runs = [
         "../../container_tiramisu/sim_log_files/fs07_refine",
-        # "../../container_tiramisu/sim_log_files/fs035_ms10",
+        "../../container_tiramisu/sim_log_files/fs035_ms10",
         "../../container_tiramisu/sim_log_files/CC-Fiducial",
     ]
     names = [
         "$f_* = 0.70$",
-        # "$f_* = 0.35$",
+        "$f_* = 0.35$",
         r"${\rm He+19}$",
     ]
     markers = [
         "o",
-        # "P",
+        "P",
         "v",
     ]
     colors = [
         cmap[0],
-        # cmap[1],
+        cmap[1],
         cmap[2],
     ]
 

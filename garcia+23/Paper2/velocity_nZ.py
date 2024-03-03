@@ -15,6 +15,7 @@ import yt
 import numpy as np
 import os
 from tools.fscanner import filter_snapshots
+from tools.fscanner import find_matching_time
 from tools.ram_fields import ram_fields
 import h5py as h5
 from yt.funcs import mylog
@@ -22,14 +23,14 @@ from yt.extensions.astro_analysis.halo_analysis import HaloCatalog
 import warnings
 import matplotlib.pyplot as plt
 
-import matplotlib.patheffects as patheffects
+import matplotlib as mpl
 from scipy.spatial.transform import Rotation as R
 from yt.visualization.volume_rendering.api import Scene
 from scipy.ndimage import gaussian_filter
 from tools.check_path import check_path
 from tools import plotstyle
-from tools.fscanner import filter_snapshots
-from tools.ram_fields import ram_fields
+
+
 import cmasher as cmr
 
 mylog.setLevel(40)
@@ -37,6 +38,26 @@ warnings.simplefilter(action="ignore", category=RuntimeWarning)
 
 cell_fields, epf = ram_fields()
 
+mpl.rcParams.update(mpl.rcParamsDefault)
+plt.rcParams.update(
+    {
+        "text.usetex": True,
+        # "font.family": "Helvetica",
+        "font.family": "serif",
+        "mathtext.fontset": "cm",
+        "xtick.labelsize": 8,
+        "ytick.labelsize": 8,
+        "font.size": 9,
+        "xtick.direction": "in",
+        "ytick.direction": "in",
+        "ytick.right": True,
+        "xtick.top": True,
+        "xtick.major.size": 4,
+        "ytick.major.size": 4,
+        "xtick.minor.size": 2,
+        "ytick.minor.size": 2,
+    }
+)
 
 if __name__ == "__main__":
     m_h = 1.6735e-24  # grams
@@ -54,35 +75,35 @@ if __name__ == "__main__":
     # ]
 
     lims = {
-        ("gas", "radial_velocity"): ((-3e3, "km/s"), (3e3, "km/s")),
+        ("gas", "radial_velocity"): ((-3.5e3, "km/s"), (3.5e3, "km/s")),
         # ("gas", "temperature"): ((50, "K"), (5e8, "K")),
         ("ramses", "Metallicity"): (2e-4 * zsun, 5 * zsun),
-        ("gas", "mass"): ((1e-2, "msun"), (1e6, "msun")),
+        ("gas", "mass"): ((1e-2, "msun"), (2e6, "msun")),
     }
 
     fpaths, snums = filter_snapshots(
         "/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial",
-        401,
-        431,
-        sampling=3,
+        374,
+        424,
+        sampling=2,
         str_snaps=True,
         snapshot_type="ramses_snapshot",
     )
     # for the other rows
     fpaths1, snums1 = filter_snapshots(
         "/afs/shell.umd.edu/project/ricotti-prj/user/fgarcia4/dwarf/data/cluster_evolution/fs07_refine",
-        1280,
-        1420,
-        sampling=4,
+        1300,
+        1426,
+        sampling=5,
         str_snaps=True,
         snapshot_type="ramses_snapshot",
     )
 
     fpaths2, snums2 = filter_snapshots(
         "/afs/shell.umd.edu/project/ricotti-prj/user/fgarcia4/dwarf/data/cluster_evolution/fs035_ms10",
-        443,
-        583,
-        sampling=14,
+        358,
+        458,
+        sampling=4,
         str_snaps=True,
         snapshot_type="ramses_snapshot",
     )
@@ -121,16 +142,14 @@ if __name__ == "__main__":
     # )
 
     # =============================================================================
-    render_nickname = "science_plots"
+    render_nickname = ""
     # run save
     sim_run = "run_comparison"
     render_container = os.path.join(
         "..",
         "..",
-        "container_tiramisu",
-        "plots",
-        sim_run,
-        render_nickname,
+        "garcia+23",
+        "Paper2",
     )
     check_path(render_container)
 
@@ -144,8 +163,9 @@ if __name__ == "__main__":
     sfe70 = []
     sfe35 = []
 
-    myrs = []
-    redshifts = []
+    sfevariable_myrs = []
+    sfe70_myrs = []
+    sfe35_myrs = []
 
     for sg, sn_group in enumerate(snapshot_list):
         # within each row  or grouping, read and update
@@ -160,8 +180,6 @@ if __name__ == "__main__":
 
             t_myr = float(ds.current_time.in_units("Myr"))
             redshift = ds.current_redshift
-            myrs.append(t_myr)
-            redshifts.append(redshift)
 
             x_pos = np.array(ad["star", "particle_position_x"])
             y_pos = np.array(ad["star", "particle_position_y"])
@@ -191,7 +209,7 @@ if __name__ == "__main__":
                 [("gas", "radial_velocity"), ("ramses", "Metallicity")],
                 [("gas", "mass")],  # the profile field
                 weight_field=None,  # sums each quantity in each bin
-                n_bins=(200, 200),
+                n_bins=(150, 150),
                 extrema=lims,
                 logs={("gas", "radial_velocity"): False},
             )
@@ -200,10 +218,13 @@ if __name__ == "__main__":
 
             if sg == 0:
                 sfevariable.append(gas_mass)
+                sfevariable_myrs.append(t_myr)
             elif sg == 1:
                 sfe70.append(gas_mass)
+                sfe70_myrs.append(t_myr)
             else:
                 sfe35.append(gas_mass)
+                sfe35_myrs.append(t_myr)
 
     time_avg_vals = [
         np.mean(sfevariable, axis=0),
@@ -216,12 +237,13 @@ if __name__ == "__main__":
         "high SFE",
         "low SFE",
     ]
+    times = [np.array(sfevariable_myrs), np.array(sfe70_myrs), np.array(sfe35_myrs)]
 
     fig, ax = plt.subplots(
         nrows=3,
         ncols=1,
         sharex=True,
-        figsize=(5, 10),
+        figsize=(5, 9),
         dpi=300,
     )
 
@@ -241,10 +263,10 @@ if __name__ == "__main__":
             cmap=cmr.savanna_r,
             vmin=np.log10(lims[("gas", "mass")][0][0]),
             vmax=np.log10(lims[("gas", "mass")][1][0]),
-            aspect=1000,
+            aspect=1200,
         )
-        row_time = (r"$t = {:.0f} $ Myr" "\n" r"$z =  {:.1f} $").format(
-            myrs[a], redshifts[a]
+        row_time = (r"$t = {:.0f}  - {:.0f}$ Myr").format(
+            times[a].min(), times[a].max()
         )
 
         ax[a].text(
@@ -255,19 +277,18 @@ if __name__ == "__main__":
             va="top",
             color="black",
             transform=ax[a].transAxes,
-            fontsize=10,
         )
 
-        # ax[a].text(
-        #     0.05,
-        #     0.05,
-        #     names[a],
-        #     ha="left",
-        #     va="bottom",
-        #     color="black",
-        #     transform=ax[a].transAxes,
-        #     fontsize=10,
-        # )
+        ax[a].text(
+            0.05,
+            0.05,
+            row_time,
+            ha="left",
+            va="bottom",
+            color="black",
+            transform=ax[a].transAxes,
+            # fontsize=10,
+        )
 
     cbar_ax = ax[0].inset_axes([0, 1.02, 1, 0.05])
     bar = fig.colorbar(nz_image, cax=cbar_ax, pad=0, orientation="horizontal")
@@ -277,7 +298,7 @@ if __name__ == "__main__":
     bar.ax.xaxis.set_ticks_position("top")
 
     ax[1].set(ylabel=r"log Metallicity [Z$_\odot$]")
-    ax[2].set(xlabel=r"Radial Velocity $[ \mathrm{km \: s^{-1} }  ]$")
+    ax[2].set(xlabel=r"radial velocity $[ \mathrm{km \: s^{-1} }  ]$")
 
     output_path = os.path.join(render_container, "radialvelocity_nZ.png")
     print("Saved", output_path)

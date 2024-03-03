@@ -17,7 +17,7 @@ plt.rcParams.update(
         "xtick.top": True,
         "xtick.major.size": 4,
         "ytick.major.size": 4,
-        "xtick.minor.size": 3,
-        "ytick.minor.size": 3,
+        "xtick.minor.size": 2,
+        "ytick.minor.size": 2,
     }
 )

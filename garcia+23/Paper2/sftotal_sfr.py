@@ -84,6 +84,20 @@ def plotting_interface(run_logpath, simulation_name, color):
             linewidth=1.5,
             # alpha=0.8,
         )
+        if i == 0:
+            # ax[1].axvspan(465, 485, facecolor=color[i], alpha=0.3)
+
+            # snapshot 374 - 399, VSFE
+            ax[1].axvspan(565, 590, facecolor=color[i], alpha=0.3)  # Myr
+        elif i == 1:
+            # snapshot 333 - 428, high SFE
+            # ax[1].axvspan(445, 465, facecolor=color[i], alpha=0.3)
+
+            # snapshot 1300 - 1426, high SFE
+            ax[1].axvspan(658, 685, facecolor=color[i], alpha=0.3)
+        elif i == 2:
+            # snapshot 359 - 458, low SFE
+            ax[1].axvspan(416, 438, facecolor=color[i], alpha=0.3)
 
         redshft_ax.plot(t_interp_points, total_mass, linewidth=0)
     ax[0].set(
@@ -97,6 +111,8 @@ def plotting_interface(run_logpath, simulation_name, color):
         xlabel=r"time $\left[ \mathrm{ Myr} \right]$",
         xlim=(np.min(earliest_times) - 1, np.max(latest_times)),
     )
+    # ax[1].xaxis.get_ticklocs(minor=True)
+    ax[1].minorticks_on()
 
     redshft_ax.set(xlim=(np.min(earliest_times), np.min(latest_times)), xlabel="$z$")
     redshft_ax.set_xticklabels(
@@ -147,4 +163,4 @@ if __name__ == "__main__":
         bbox_inches="tight",
         pad_inches=0.05,
     )
-    # plt.show()
+    plt.show()

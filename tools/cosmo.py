@@ -52,8 +52,7 @@ def code_age_to_myr(all_star_ages, hubble_const, unique_age=True, true_age=False
 def t_myr_from_z(z):
     """
     The times are in reasonable agreement, within 1 Myr, deviations due
-    to the used value of parameters, which change somewhat over cosmic
-    time
+    to the used value of parameters, valid for 70 sfe 35 sfe and vsfe runs
     """
     co = Cosmology(
         hubble_constant=0.70,
