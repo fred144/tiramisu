@@ -64,10 +64,10 @@ if __name__ == "__main__":
     r_sf = 500  # radii for sf in pc
     zsun = 0.02
     n_crit = 5e4
-    cold_phase_t = (0, 100)
-    warm_phase_t = (100, 5e4)
-    hot_phase = (5.001e4, 1e9)
-    temp_cuts = [cold_phase_t, warm_phase_t, hot_phase]
+    # cold_phase_t = (0, 100)
+    # warm_phase_t = (100, 5e4)
+    # hot_phase = (5.001e4, 1e9)
+    # temp_cuts = [cold_phase_t, warm_phase_t, hot_phase]
     # tlabels = [
     #     r"CNM ($T < 100$ K)",
     #     r"WNM  ($ 100 < T \leq 5 \times 10^4$ K)",
@@ -302,11 +302,11 @@ if __name__ == "__main__":
 
     output_path = os.path.join(render_container, "radialvelocity_nZ.png")
     print("Saved", output_path)
-    # plt.savefig(
-    #     output_path,
-    #     dpi=300,
-    #     bbox_inches="tight",
-    #     pad_inches=0.01,
-    # )
+    plt.savefig(
+        output_path,
+        dpi=300,
+        bbox_inches="tight",
+        pad_inches=0.01,
+    )
 
     plt.show()
