@@ -79,52 +79,10 @@ if __name__ == "__main__":
         ("gas", "mass"): ((1e-2, "msun"), (2e6, "msun")),
     }
 
-    datadir = os.path.expanduser(
-        "/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial"
-    )
-
-    fpaths, snums = filter_snapshots(
-        datadir,
-        304,
-        304,
-        sampling=1,
-        str_snaps=True,
-        snapshot_type="ramses_snapshot",
-    )
-
-    fpaths1, snums1 = filter_snapshots(
-        datadir,
-        350,
-        374,
-        sampling=2,
-        str_snaps=True,
-        snapshot_type="ramses_snapshot",
-    )
-
-    fpaths2, snums2 = filter_snapshots(
-        datadir,
-        375,
-        389,
-        sampling=1,
-        str_snaps=True,
-        snapshot_type="ramses_snapshot",
-    )
-
-    fpaths3, snums3 = filter_snapshots(
-        datadir,
-        395,
-        411,
-        sampling=2,
-        str_snaps=True,
-        snapshot_type="ramses_snapshot",
-    )
-
-    # =============================================================================
-
-    # datadir = os.path.expanduser("~/test_data/CC-Fiducial/")
-    # logsfc_path = os.path.expanduser(
-    #     "~/container_tiramisu/sim_log_files/CC-Fiducial/logSFC"
+    # datadir = os.path.expanduser(
+    #     "/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial"
     # )
+
     # fpaths, snums = filter_snapshots(
     #     datadir,
     #     304,
@@ -133,20 +91,20 @@ if __name__ == "__main__":
     #     str_snaps=True,
     #     snapshot_type="ramses_snapshot",
     # )
-    # # for the other rows
+
     # fpaths1, snums1 = filter_snapshots(
     #     datadir,
-    #     375,
-    #     388,
-    #     sampling=1,
+    #     350,
+    #     374,
+    #     sampling=2,
     #     str_snaps=True,
     #     snapshot_type="ramses_snapshot",
     # )
 
     # fpaths2, snums2 = filter_snapshots(
     #     datadir,
-    #     390,
-    #     390,
+    #     375,
+    #     389,
     #     sampling=1,
     #     str_snaps=True,
     #     snapshot_type="ramses_snapshot",
@@ -154,12 +112,54 @@ if __name__ == "__main__":
 
     # fpaths3, snums3 = filter_snapshots(
     #     datadir,
-    #     397,
-    #     397,
-    #     sampling=1,
+    #     395,
+    #     411,
+    #     sampling=2,
     #     str_snaps=True,
     #     snapshot_type="ramses_snapshot",
     # )
+
+    # =============================================================================
+
+    datadir = os.path.expanduser("~/test_data/CC-Fiducial/")
+    logsfc_path = os.path.expanduser(
+        "~/container_tiramisu/sim_log_files/CC-Fiducial/logSFC"
+    )
+    fpaths, snums = filter_snapshots(
+        datadir,
+        304,
+        304,
+        sampling=1,
+        str_snaps=True,
+        snapshot_type="ramses_snapshot",
+    )
+    # for the other rows
+    fpaths1, snums1 = filter_snapshots(
+        datadir,
+        375,
+        388,
+        sampling=1,
+        str_snaps=True,
+        snapshot_type="ramses_snapshot",
+    )
+
+    fpaths2, snums2 = filter_snapshots(
+        datadir,
+        390,
+        390,
+        sampling=1,
+        str_snaps=True,
+        snapshot_type="ramses_snapshot",
+    )
+
+    fpaths3, snums3 = filter_snapshots(
+        datadir,
+        397,
+        397,
+        sampling=1,
+        str_snaps=True,
+        snapshot_type="ramses_snapshot",
+    )
 
     # =============================================================================
     render_nickname = "science_plots"
@@ -364,11 +364,11 @@ if __name__ == "__main__":
     output_path = os.path.join(render_container, "multiphase_nZ.png")
 
     print("Saved", output_path)
-    plt.savefig(
-        output_path,
-        dpi=300,
-        bbox_inches="tight",
-        pad_inches=0.01,
-    )
+    # plt.savefig(
+    #     output_path,
+    #     dpi=300,
+    #     bbox_inches="tight",
+    #     pad_inches=0.01,
+    # )
 
     plt.show()

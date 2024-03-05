@@ -15,6 +15,7 @@ import os
 from tools import plotstyle
 from labellines import labelLines
 import cmasher as cmr
+from tools.cosmo import t_myr_from_z
 
 
 def star_formation_efficiency(n_h: float, mass: float, metallicity: float):
@@ -112,6 +113,7 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
         m_sun_stars = log_sfc[:, 7][mask]
         n_hydrogen = log_sfc[:, 8][mask]
         metal_zsun_cloud = log_sfc[:, 9][mask]  # metalicity is normalized to z_sun
+        t_form = t_myr_from_z(redshft)
         print(len(m_sun_cloud))
         if sfe[i] == "constant":
             sfe_val = (
@@ -260,10 +262,10 @@ if __name__ == "__main__":
         marker=markers,
         sfe=calc_type,
     )
-    plt.savefig(
-        "../../../gdrive_columbia/research/massimo/paper2/SFE.png",
-        dpi=300,
-        bbox_inches="tight",
-        pad_inches=0.05,
-    )
+    # plt.savefig(
+    #     "../../../gdrive_columbia/research/massimo/paper2/SFE.png",
+    #     dpi=300,
+    #     bbox_inches="tight",
+    #     pad_inches=0.05,
+    # )
     plt.show()
