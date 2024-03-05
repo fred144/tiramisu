@@ -121,7 +121,7 @@ for i, sn in enumerate(snaps):
     # =============================================================================
     mstar = np.sum(np.array(ad["star", "particle_mass"].to("Msun")))
     tot_m_star.append(mstar)
-    efficiency = mstar / dm_halo_m
+    # efficiency = mstar / dm_halo_m
     x_pos = np.array(ad["star", "particle_position_x"])
     y_pos = np.array(ad["star", "particle_position_y"])
     z_pos = np.array(ad["star", "particle_position_z"])
