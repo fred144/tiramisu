@@ -84,31 +84,31 @@ for i, sn in enumerate(snaps):
 
     ds = yt.load(infofile, fields=cell_fields, extra_particle_fields=epf)
     ad = ds.all_data()
-    hop_catalogue = os.path.join(
-        dm_container,
-        f"info_{snap_strings[i]}",
-        f"info_{snap_strings[i]}.{processor_number}.h5",
-    )
+    # hop_catalogue = os.path.join(
+    #     dm_container,
+    #     f"info_{snap_strings[i]}",
+    #     f"info_{snap_strings[i]}.{processor_number}.h5",
+    # )
 
-    if os.path.isfile(hop_catalogue) is True:
-        # print("file already exists")
-        pass
-    else:
-        hc = HaloCatalog(
-            data_ds=ds,
-            finder_method="hop",
-            finder_kwargs={"ptype": "DM", "dm_only": False},
-            output_dir=dm_container,
-        )
-        hc.create()
+    # if os.path.isfile(hop_catalogue) is True:
+    #     # print("file already exists")
+    #     pass
+    # else:
+    #     hc = HaloCatalog(
+    #         data_ds=ds,
+    #         finder_method="hop",
+    #         finder_kwargs={"ptype": "DM", "dm_only": False},
+    #         output_dir=dm_container,
+    #     )
+    #     hc.create()
     # need to read in using yt for virial radius for some reason unknown units in catalogue
-    cata_yt = yt.load(hop_catalogue)
-    cata_yt = cata_yt.all_data()
-    dm_halo_m = np.max(np.array(ds.arr(cata_yt["all", "particle_mass"]).to("Msun")))
-    haloidx = np.argmax(np.array(ds.arr(cata_yt["all", "particle_mass"]).to("Msun")))
-    vir_rad = np.array(ds.arr(cata_yt["all", "virial_radius"]).to("pc"))[haloidx]
-    m_vir.append(dm_halo_m)
-    r_vir.append(vir_rad)
+    # cata_yt = yt.load(hop_catalogue)
+    # cata_yt = cata_yt.all_data()
+    # dm_halo_m = np.max(np.array(ds.arr(cata_yt["all", "particle_mass"]).to("Msun")))
+    # haloidx = np.argmax(np.array(ds.arr(cata_yt["all", "particle_mass"]).to("Msun")))
+    # vir_rad = np.array(ds.arr(cata_yt["all", "virial_radius"]).to("pc"))[haloidx]
+    # m_vir.append(dm_halo_m)
+    # r_vir.append(vir_rad)
 
     # center of the major halo
     # halo_x = ds.arr(cata_yt["all", "particle_position_x"]).to("pc")[haloidx]
