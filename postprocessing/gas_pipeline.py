@@ -264,7 +264,7 @@ if __name__ == "__main__":
             sp1,
             ("index", "radius"),
             ("ramses", "Metallicity"),
-            weight_field=("gas", "density"),
+            weight_field=("gas", "density"),  #!!! try mass weight
             units={("index", "radius"): "pc"},
             override_bins={("index", "radius"): (bins, "pc")},
         )

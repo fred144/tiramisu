@@ -1,4 +1,4 @@
-e"""
+"""
 This shows the pop2 SFR
 """
 
@@ -61,9 +61,11 @@ def plotting_interface(run_logpath, simulation_name, color):
         sfr = np.gradient(total_mass) / (sfr_binwidth_myr * 1e6)
         print(
             "sfr peaks at",
-            t_interp_points[t_interp_points < 550][
-                np.argmax(sfr[t_interp_points < 550])
+            t_interp_points[t_interp_points < 700][
+                np.argmax(sfr[t_interp_points < 700])
             ],
+            "with value",
+            np.max(sfr[t_interp_points < 700]),
         )
         earliest_times.append(t_myr.min())
         latest_times.append(t_myr.max())
@@ -81,23 +83,23 @@ def plotting_interface(run_logpath, simulation_name, color):
             sfr,
             label=simulation_name[i],
             color=color[i],
-            linewidth=1.5,
-            # alpha=0.8,
+            linewidth=1,
+            alpha=0.8,
         )
-        if i == 0:
-            # ax[1].axvspan(465, 485, facecolor=color[i], alpha=0.3)
+        # if i == 0:
+        #     # ax[1].axvspan(465, 485, facecolor=color[i], alpha=0.3)
 
-            # snapshot 374 - 399, VSFE
-            ax[1].axvspan(565, 630, facecolor=color[i], alpha=0.3)  # Myr
-        elif i == 1:
-            # snapshot 333 - 428, high SFE
-            # ax[1].axvspan(445, 465, facecolor=color[i], alpha=0.3)
+        #     # snapshot 374 - 399, VSFE
+        #     ax[1].axvspan(565, 630, facecolor=color[i], alpha=0.3)  # Myr
+        # elif i == 1:
+        #     # snapshot 333 - 428, high SFE
+        #     # ax[1].axvspan(445, 465, facecolor=color[i], alpha=0.3)
 
-            # snapshot 1300 - 1426, high SFE
-            ax[1].axvspan(658, 715, facecolor=color[i], alpha=0.3)
-        elif i == 2:
-            # snapshot 359 - 458, low SFE
-            ax[1].axvspan(416, 480, facecolor=color[i], alpha=0.3)
+        #     # snapshot 1300 - 1426, high SFE
+        #     ax[1].axvspan(658, 715, facecolor=color[i], alpha=0.3)
+        # elif i == 2:
+        #     # snapshot 359 - 458, low SFE
+        #     ax[1].axvspan(416, 480, facecolor=color[i], alpha=0.3)
 
         redshft_ax.plot(t_interp_points, total_mass, linewidth=0)
     ax[0].set(
@@ -106,10 +108,11 @@ def plotting_interface(run_logpath, simulation_name, color):
     )
     ax[0].legend(fontsize=11, loc="lower right", frameon=False)
     ax[1].set(
-        # ylim=(0, 0.12),
+        ylim=(1e-3, 0.2),
         ylabel=r"$\mathrm{SFR} \:\left[ \mathrm{M}_{\odot} \:\mathrm{yr}^{-1}\right]$",
         xlabel=r"time $\left[ \mathrm{ Myr} \right]$",
         xlim=(np.min(earliest_times) - 1, np.max(latest_times)),
+        yscale="log",
     )
     # ax[1].xaxis.get_ticklocs(minor=True)
     ax[1].minorticks_on()

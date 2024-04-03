@@ -83,15 +83,15 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
     """
     fig, ax = plt.subplots(
         1,
-        3,
-        figsize=(9.1, 3),
-        gridspec_kw={"width_ratios": [3, 3, 3]},
+        1,
+        figsize=(4, 4),
+        # gridspec_kw={"width_ratios": [3, 3, 3]},
         dpi=400,
         sharey=True,
         sharex=True,
     )
-    ax = ax.ravel()
-    hist_ax_right = ax[2].inset_axes([1.02, 0, 0.4, 1], sharey=ax[2])
+    # ax = ax.ravel()
+    hist_ax_right = ax.inset_axes([1.02, 0, 0.4, 1], sharey=ax)
     hist_ax_right.set_xlabel(r"$\mathrm{PDF (SFE)}$", fontsize=10)
     hist_ax_right.tick_params(axis="both", labelleft=False, labelsize=6)
     plt.subplots_adjust(wspace=0.0)
@@ -114,6 +114,7 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
         n_hydrogen = log_sfc[:, 8][mask]
         metal_zsun_cloud = log_sfc[:, 9][mask]  # metalicity is normalized to z_sun
         t_form = t_myr_from_z(redshft)
+        delta_tform = t_form - t_form.min()
         print(len(m_sun_cloud))
         if sfe[i] == "constant":
             sfe_val = (
@@ -126,9 +127,10 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
             print("sfe is ether constant or variable")
             raise ValueError
 
-        sfe_scatter = ax[i].scatter(
+        sfe_scatter = ax.scatter(
             m_sun_cloud,
             sfe_val,
+            # c=t_form,
             c=np.log10(n_hydrogen),
             # label=simulation_name[i],
             cmap=cmr.tropical,
@@ -147,56 +149,58 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
             edgecolor=hist_color[i],
             histtype="stepfilled",
             # hatch=hatches[i % 2],
-            alpha=0.3,
+            alpha=0.8,
             linewidth=2,
             density=True,
             orientation="horizontal",
             label=simulation_name[i],
         )
-        ax[i].set(
+        ax.set(
             xscale="log",
             yscale="log",
         )
 
-        ax[i].text(
+        ax.text(
             0.95,
             0.05,
             simulation_name[i],
             ha="right",
             va="bottom",
             color="black",
-            transform=ax[i].transAxes,
+            transform=ax.transAxes,
             # fontsize=10,
         )
 
-        ax[i].set_ylim(bottom=1, top=120)
-        xmin, _ = ax[i].get_xlim()
-        ax[i].axhline(y=80, color="grey", ls="--", zorder=-1)
-        ax[i].axhline(y=10, color="grey", ls="--", zorder=-1)
+        ax.set_ylim(bottom=1, top=120)
+        xmin, _ = ax.get_xlim()
+        ax.axhline(y=70, color="grey", ls="--", zorder=-1)
+        ax.axhline(y=35, color="grey", ls="--", zorder=-1)
 
         if i == 0:
-            ax[i].annotate("$80 \%$", (xmin * 1.2, 60), color="grey")
-            ax[i].annotate("$10 \%$", (xmin * 1.2, 7), color="grey")
+            ax.annotate("$70 \%$", (xmin * 1.2, 75), color="grey")
+            ax.annotate("$35 \%$", (xmin * 1.2, 28), color="grey")
 
-    ax[0].set(
+    ax.set(
         ylabel=r"$\mathrm{SFE}\:\left[\% \right]$",
         xscale="log",
         yscale="log",
     )
-    ax[1].set(xlabel=r"Cloud Mass $\left[\mathrm{M}_{\odot}\right]$")
+    ax.set(xlabel=r"$M_{\rm cloud}\:\left[\mathrm{M}_{\odot}\right]$")
 
-    hist_ax_right.legend(
-        loc="upper center", frameon=False, bbox_to_anchor=(0.5, 1.25), fontsize=8
-    )
+    # hist_ax_right.legend(
+    #     loc="upper center",
+    #     frameon=False,  # fontsize=8  # bbox_to_anchor=(0.5, 1.25),
+    # )
     # hist_ax_right.axhline(y=80, color="grey", ls="--", zorder=-1)
     # hist_ax_right.axhline(y=10, color="grey", ls="--", zorder=-1)
 
-    cbar_ax = ax[0].inset_axes([0, 1.02, 3, 0.05])
+    cbar_ax = ax.inset_axes([0, 1.02, 1.42, 0.05])
     dens_bar = fig.colorbar(sfe_scatter, cax=cbar_ax, pad=0, orientation="horizontal")
 
     dens_bar.set_label(
+        # label=(r"$t_{\rm form}$ [Myr]"),
         label=(r"$\log\:\overline{n_\mathrm{H}}\:\left[\mathrm{cm}^{-3} \right]$"),
-        fontsize=10,
+        # fontsize=10,
         labelpad=6,
     )
     dens_bar.ax.xaxis.set_label_position("top")
@@ -231,28 +235,28 @@ if __name__ == "__main__":
 
     colors = [
         cmap[0],
-        cmap[2],
-        cmap[1],
+        # cmap[2],
+        # cmap[1],
     ]
     runs = [
         "../../../container_tiramisu/sim_log_files/CC-Fiducial",
-        "../../../container_tiramisu/sim_log_files/fs035_ms10",
-        "../../../container_tiramisu/sim_log_files/fs07_refine",
+        # "../../../container_tiramisu/sim_log_files/fs035_ms10",
+        # "../../../container_tiramisu/sim_log_files/fs07_refine",
     ]
     names = [
         "VSFE",
-        "low SFE",
-        "high SFE",
+        # "low SFE",
+        # "high SFE",
     ]
     markers = [
         "o",
-        "o",
-        "o",
+        # "o",
+        # "o",
     ]
     calc_type = [
         "variable",
-        "constant",
-        "constant",
+        # "constant",
+        # "constant",
     ]
 
     plotting_interface(
@@ -262,10 +266,10 @@ if __name__ == "__main__":
         marker=markers,
         sfe=calc_type,
     )
-    # plt.savefig(
-    #     "../../../gdrive_columbia/research/massimo/paper2/SFE.png",
-    #     dpi=300,
-    #     bbox_inches="tight",
-    #     pad_inches=0.05,
-    # )
+    plt.savefig(
+        "../../../gdrive_columbia/research/massimo/paper2/SFE_1panel.png",
+        dpi=300,
+        bbox_inches="tight",
+        pad_inches=0.05,
+    )
     plt.show()

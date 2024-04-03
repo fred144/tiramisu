@@ -135,14 +135,14 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
     latest_redshift = 5
     hatches = ["\\\\\\\\\\", "/////"]
 
-    hist_ax = ax[2].inset_axes([0, -0.42, 1, 0.4], sharex=ax[2])
+    hist_ax = ax[2].inset_axes([0, -0.52, 1, 0.5], sharex=ax[2])
     hist_ax.set_ylabel(
         r"$\mathrm{d} N / {\rm d}\log \:\left({ M_{\rm cloud}}/\rm{M}_{\odot}\right)$",
         loc="bottom",
     )
     hist_ax.sharex(ax[2])
     hist_ax.set(
-        xlabel=r"Cloud Mass $\left[\mathrm{M}_{\odot}\right]$",
+        xlabel=r"$M_{\rm cloud}\:\left[\mathrm{M}_{\odot}\right]$",
         yscale="log",
         ylim=(3, 5e3),
     )
@@ -155,6 +155,7 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
 
         redshft = log_sfc[:, 2]
         t_form = t_myr_from_z(redshft)
+        delta_t_form = t_form - t_form.min()
         mask = redshft > latest_redshift
         redshft = redshft[mask]
         r_pc_cloud = log_sfc[:, 4][mask]
@@ -163,7 +164,7 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
         n_hydrogen = log_sfc[:, 8][mask]
         metal_zsun_cloud = log_sfc[:, 9][mask]  # metalicity is normalized to z_sun
 
-        print(len(m_sun_cloud))
+        print(delta_t_form.max())
         if sfe[i] == "constant":
             sfe_val = (
                 star_formation_efficiency(n_hydrogen, m_sun_cloud, metal_zsun_cloud)
@@ -175,23 +176,25 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
             print("sfe is ether constant or variable")
             raise ValueError
 
+        normalize = matplotlib.colors.Normalize(vmin=250, vmax=685)
         sfe_scatter = ax[i].scatter(
             m_sun_cloud,
             metal_zsun_cloud,
             c=t_form,
             # label=simulation_name[i],
-            cmap=cmr.tropical,
+            cmap=cmr.tropical_r,
             marker=marker[i],
             edgecolors="black",
             linewidth=0.5,
             s=40,
-            alpha=0.7,
+            alpha=0.8,
+            norm=normalize,
         )
 
         metal_ax = ax[i].inset_axes([1.02, 0, 0.4, 1], sharey=ax[i])
 
         metal_ax.tick_params(axis="both", labelleft=False)
-        metal, dn_dlogmetal = log_data_function(metal_zsun_cloud, 25, (1.5e-4, 0.012))
+        metal, dn_dlogmetal = log_data_function(metal_zsun_cloud, 30, (1.5e-4, 0.012))
         metal_ax.plot(
             dn_dlogmetal,
             metal,
@@ -209,7 +212,7 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
         )
         metal_ax.set(xscale="log", xlim=(3, 5e3))
 
-        mass, dn_dlogmass = log_data_function(m_sun_cloud, 25, (2e2, 2e5))
+        mass, dn_dlogmass = log_data_function(m_sun_cloud, 30, (2e2, 2e5))
         hist_ax.plot(
             mass,
             dn_dlogmass,
@@ -251,11 +254,12 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
         ylabel=r"$Z_{\rm cloud}\:\left[\mathrm{Z}_\odot \right]$",
     )
 
-    cbar_ax = ax[0].inset_axes([0, 1.02, 1, 0.05])
+    cbar_ax = ax[0].inset_axes([0, 1.02, 1.42, 0.05])
     dens_bar = fig.colorbar(sfe_scatter, cax=cbar_ax, pad=0, orientation="horizontal")
-
+    cbar_ax.minorticks_on()
     dens_bar.set_label(
-        label=(r"formation time [Myr]"),
+        label=(r"$t_{\rm form}$ [Myr]"),
+        # label=(r"$\log\:\overline{n_\mathrm{H}}\:\left[\mathrm{cm}^{-3} \right]$"),
         fontsize=10,
         labelpad=6,
     )
@@ -302,7 +306,7 @@ if __name__ == "__main__":
         sfe=calc_type,
     )
     plt.savefig(
-        "../../../gdrive_columbia/research/massimo/paper2/CloudMetals.png",
+        "../../../gdrive_columbia/research/massimo/paper2/CloudMetals_v2.png",
         dpi=300,
         bbox_inches="tight",
         pad_inches=0.05,
