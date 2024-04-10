@@ -191,6 +191,7 @@ if __name__ == "__main__":
         # galaxy properties
         sf_region = ds.sphere(galaxy_center, (galaxy_radius, "pc"))
         full_region = ds.sphere(galaxy_center, (end_region, "pc"))
+        vir_region = ds.sphere(galaxy_center, (vir_rad, "pc"))
 
         # let's calculate the different phases by mass in the galaxy or ISM
         cnm = sf_region.exclude_outside(("gas", "temperature"), 0, 100)
@@ -208,29 +209,45 @@ if __name__ == "__main__":
             hot.quantities.total_quantity(("gas", "cell_mass")).in_units("Msun").value
         )
 
+        # mean vir metallicity
+        vir_Mgas = vir_region["gas", "cell_mass"].in_units("Msun").sum().to_value()
+        # for each cell, what is the mass
+        vir_Mgas_cell = vir_region["gas", "cell_mass"].in_units("Msun").to_value()
+        # for each cell, what is the Mmetal/Mgas in each cell
+        vir_Zmetal_cell = vir_region["ramses", "Metallicity"].to_value()
+        vir_Mmetal_cell = vir_Mgas_cell * vir_Zmetal_cell  # metal mass in Msun
+        vir_mean_Z = vir_Mmetal_cell.sum() / vir_Mgas  # average metallicity
+
         # virial radius and outside, "IGM"
         igm = full_region.exclude_below(("index", "radius"), vir_rad, units="pc")
-        igm_mean_Z = igm.mean(("ramses", "Metallicity")) / zsun
-        igm_mean_Z_weighted = igm.quantities["WeightedAverageQuantity"](
-            ("ramses", "Metallicity"), weight=("gas", "mass")
-        )
-        igm_mean_Z_weighted /= zsun
+        # sum of gas in region
+        igm_Mgas = igm["gas", "cell_mass"].in_units("Msun").sum().to_value()
+        # for each cell, what is the mass
+        igm_Mgas_cell = igm["gas", "cell_mass"].in_units("Msun").to_value()
+        # for each cell, what is the Mmetal/Mgas in each cell
+        igm_Zmetal_cell = igm["ramses", "Metallicity"].to_value()
+        igm_Mmetal_cell = igm_Mgas_cell * igm_Zmetal_cell  # metal mass in Msun
+        igm_mean_Z = igm_Mmetal_cell.sum() / igm_Mgas  # average metallicity
 
         # within virial radius, but outside of the galaxy
         cgm = full_region.exclude_outside(
             ("index", "radius"), galaxy_radius, vir_rad, units="pc"
         )
-        cgm_mean_Z = cgm.mean(("ramses", "Metallicity")) / zsun
-        cgm_mean_Z_weighted = cgm.quantities["WeightedAverageQuantity"](
-            ("ramses", "Metallicity"), weight=("gas", "mass")
-        )
-        cgm_mean_Z_weighted /= zsun
+        cgm_Mgas = cgm["gas", "cell_mass"].in_units("Msun").sum().to_value()
+        cgm_Mgas_cell = cgm["gas", "cell_mass"].in_units("Msun").to_value()
+        cgm_Zmetal_cell = cgm["ramses", "Metallicity"].to_value()
+        cgm_Mmetal_cell = cgm_Mgas_cell * cgm_Zmetal_cell  # metal mass in Msun
+        cgm_mean_Z = cgm_Mmetal_cell.sum() / cgm_Mgas  # average metallicity
 
-        sf_region_mean_Z = sf_region.mean(("ramses", "Metallicity")) / zsun
-        sf_region_mean_Z_weighted = sf_region.quantities["WeightedAverageQuantity"](
-            ("ramses", "Metallicity"), weight=("gas", "mass")
+        # 500 pc within the star forming region
+        sf = full_region.exclude_outside(
+            ("index", "radius"), galaxy_radius, vir_rad, units="pc"
         )
-        sf_region_mean_Z_weighted /= zsun
+        sf_Mgas = sf["gas", "cell_mass"].in_units("Msun").sum().to_value()
+        sf_Mgas_cell = sf["gas", "cell_mass"].in_units("Msun").to_value()
+        sf_Zmetal_cell = sf["ramses", "Metallicity"].to_value()
+        sf_Mmetal_cell = sf_Mgas_cell * sf_Zmetal_cell  # metal mass in Msun
+        sf_mean_Z = sf_Mmetal_cell.sum() / sf_Mgas  # average metallicity
 
         # let's construct the radial velocity profile for the halo
         sp0 = ds.sphere(galaxy_center, (end_region, "pc"))
@@ -329,21 +346,11 @@ if __name__ == "__main__":
         f.create_dataset("Header/time", data=t_myr, dtype="f")
         f.create_dataset("Halo/radius", data=vir_rad, dtype="f")
         f.create_dataset("Halo/Mass", data=dm_halo_m, dtype="f")
+        f.create_dataset("Halo/MeanMetallicity", data=vir_mean_Z, dtype="f")
 
-        f.create_dataset("Galaxy/MeanMetallicity", data=sf_region_mean_Z, dtype="f")
-        f.create_dataset(
-            "Galaxy/MeanWeightedMetallicity", data=sf_region_mean_Z_weighted, dtype="f"
-        )
-
+        f.create_dataset("Galaxy/MeanMetallicity", data=sf_mean_Z, dtype="f")
         f.create_dataset("CGM/MeanMetallicity", data=cgm_mean_Z, dtype="f")
-        f.create_dataset(
-            "CGM/MeanWeightedMetallicity", data=cgm_mean_Z_weighted, dtype="f"
-        )
-
         f.create_dataset("IGM/MeanMetallicity", data=igm_mean_Z, dtype="f")
-        f.create_dataset(
-            "IGM/MeanWeightedMetallicity", data=igm_mean_Z_weighted, dtype="f"
-        )
 
         f.create_dataset("Galaxy/ColdNeutralMediumMass", data=cnm_mass, dtype="f")
         f.create_dataset("Galaxy/WarmNeutralMediumMass", data=wnm_mass, dtype="f")

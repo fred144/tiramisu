@@ -27,14 +27,15 @@ def plotting_interface(run_logpath, simulation_name, color):
     sfr_binwidth_myr = 1
 
     fig, ax = plt.subplots(
-        nrows=2,
+        nrows=4,
         ncols=1,
         sharex=True,
-        figsize=(5, 4),
+        figsize=(5, 6),
         dpi=300,
-        gridspec_kw={"height_ratios": [3, 2]},
+        gridspec_kw={"height_ratios": [4, 2, 2, 2]},
     )
     redshft_ax = ax[0].twiny()
+
     plt.subplots_adjust(hspace=0, wspace=0)
 
     earliest_times = []
@@ -78,50 +79,51 @@ def plotting_interface(run_logpath, simulation_name, color):
             linewidth=4,
             # alpha=0.8,
         )
-        ax[1].plot(
+        ax[i + 1].plot(
             t_interp_points,
             sfr,
             label=simulation_name[i],
             color=color[i],
-            linewidth=1,
-            alpha=0.8,
+            linewidth=1.5,
+            alpha=1,
         )
-        # if i == 0:
-        #     # ax[1].axvspan(465, 485, facecolor=color[i], alpha=0.3)
-
-        #     # snapshot 374 - 399, VSFE
-        #     ax[1].axvspan(565, 630, facecolor=color[i], alpha=0.3)  # Myr
-        # elif i == 1:
-        #     # snapshot 333 - 428, high SFE
-        #     # ax[1].axvspan(445, 465, facecolor=color[i], alpha=0.3)
-
-        #     # snapshot 1300 - 1426, high SFE
-        #     ax[1].axvspan(658, 715, facecolor=color[i], alpha=0.3)
-        # elif i == 2:
-        #     # snapshot 359 - 458, low SFE
-        #     ax[1].axvspan(416, 480, facecolor=color[i], alpha=0.3)
+        ax[i + 1].minorticks_on()
+        ax[i + 1].locator_params(axis="y", nbins=4)
 
         redshft_ax.plot(t_interp_points, total_mass, linewidth=0)
+
+    ax[1].set(ylim=(-0.01, 0.14))
+    ax[2].set(ylim=(-0.01 * 0.5, 0.14 * 0.5))
+    ax[3].set(ylim=(-0.01 * 0.2, 0.14 * 0.2))
+
     ax[0].set(
         yscale="log",
         ylabel=r"$\mathrm{\log \:M_{\star}}\: \left[ \mathrm{M}_{\odot} \right] $",
+        ylim=(3e2, 3e6),
     )
     ax[0].legend(fontsize=11, loc="lower right", frameon=False)
-    ax[1].set(
-        ylim=(1e-3, 0.2),
+
+    ax[2].set(
         ylabel=r"$\mathrm{SFR} \:\left[ \mathrm{M}_{\odot} \:\mathrm{yr}^{-1}\right]$",
+    )
+
+    ax[3].set(
         xlabel=r"time $\left[ \mathrm{ Myr} \right]$",
         xlim=(np.min(earliest_times) - 1, np.max(latest_times)),
-        yscale="log",
     )
-    # ax[1].xaxis.get_ticklocs(minor=True)
-    ax[1].minorticks_on()
 
-    redshft_ax.set(xlim=(np.min(earliest_times), np.min(latest_times)), xlabel="$z$")
+    # ax[1].xaxis.get_ticklocs(minor=True)
+    redshft_ax.locator_params(axis="x")
+    redshft_ax.set(
+        xlim=(np.min(earliest_times) - 1, np.max(latest_times)), xlabel="$z$"
+    )
     redshft_ax.set_xticklabels(
         list(np.round(z_from_t_myr(redshft_ax.get_xticks()), 1).astype("str"))
     )
-    ax[1].locator_params(axis="x", nbins=8)
+
+    # event labels
+
+    ax[1].axvspan(465, 485, facecolor="grey", alpha=0.5)
 
     # ax[0].grid(ls="--", which="both")
     # ax[1].grid(ls="--", which="both")
