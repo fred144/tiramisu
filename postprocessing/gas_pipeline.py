@@ -180,9 +180,9 @@ if __name__ == "__main__":
         dm_halo_m = np.max(np.array(ds.arr(cata_yt["all", "particle_mass"]).to("Msun")))
         print("virial radius [pc]", vir_rad)
 
-        x_pos = ad["star", "particle_position_x"]
-        y_pos = ad["star", "particle_position_y"]
-        z_pos = ad["star", "particle_position_z"]
+        # x_pos = ad["star", "particle_position_x"]
+        # y_pos = ad["star", "particle_position_y"]
+        # z_pos = ad["star", "particle_position_z"]
         x_center = np.mean(x_pos)
         y_center = np.mean(y_pos)
         z_center = np.mean(z_pos)
