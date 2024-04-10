@@ -18,9 +18,9 @@ import cmasher as cmr
 
 fpaths, snums = filter_snapshots(
     "/home/fabg/container_tiramisu/post_processed/gas_properties/CC-Fiducial/",
-    304,
+    306,
     466,
-    sampling=2,
+    sampling=1,
     str_snaps=True,
     snapshot_type="pop2_processed",
 )
@@ -29,98 +29,93 @@ metal_profile = []
 times = []
 metal_radii = []
 
-for i, file in enumerate(fpaths):
-    f = h5.File(file, "r")
-    metalbins = f["Profiles/MetalDensityWeighted"][:]
-    metalbins_mask = metalbins > 0
+# for i, file in enumerate(fpaths):
+#     f = h5.File(file, "r")
+#     metalbins = f["Profiles/MetalDensityWeighted"][:]
+#     metalbins_mask = metalbins > 0
 
-    redshift = f["Header/redshift"][()]
-    radius = f["Profiles/Radius"][:][:-1]
-    radius = radius[metalbins_mask]
+#     redshift = f["Header/redshift"][()]
+#     radius = f["Profiles/Radius"][:][:-1]
+#     radius = radius[metalbins_mask]
 
-    metal_profile.append(metalbins[metalbins_mask])
-    metal_radii.append(radius)
-    times.append(f["Header/time"][()])
+#     metal_profile.append(metalbins[metalbins_mask])
+#     metal_radii.append(radius)
+#     times.append(f["Header/time"][()])
 
-    f.close()
+#     f.close()
 
-temp_profile = []
-temp_radii = []
-for i, file in enumerate(fpaths):
-    f = h5.File(file, "r")
-    temp = f["Profiles/TempDensityWeighted"][:]
-    temp_mask = temp > 0
+# temp_profile = []
+# temp_radii = []
+# for i, file in enumerate(fpaths):
+#     f = h5.File(file, "r")
+#     temp = f["Profiles/TempDensityWeighted"][:]
+#     temp_mask = temp > 0
 
-    radius = f["Profiles/Radius"][:][:-1]
-    radius = radius[temp_mask]
+#     radius = f["Profiles/Radius"][:][:-1]
+#     radius = radius[temp_mask]
 
-    temp_profile.append(temp[temp_mask])
-    temp_radii.append(radius)
+#     temp_profile.append(temp[temp_mask])
+#     temp_radii.append(radius)
 
-    f.close()
+#     f.close()
 
-velocity_profile = []
-velocity_radii = []
-for i, file in enumerate(fpaths):
-    f = h5.File(file, "r")
-    velocity = f["Profiles/RadialVelocity"][:]
+# velocity_profile = []
+# velocity_radii = []
+# for i, file in enumerate(fpaths):
+#     f = h5.File(file, "r")
+#     velocity = f["Profiles/RadialVelocity"][:]
 
-    radius = f["Profiles/Radius"][:][:-1]
+#     radius = f["Profiles/Radius"][:][:-1]
 
-    velocity_profile.append(velocity)
-    velocity_radii.append(radius)
+#     velocity_profile.append(velocity)
+#     velocity_radii.append(radius)
 
-    f.close()
+#     f.close()
 
 galaxy_metal = []
 cgm_metal = []
 igm_metal = []
 mean_metal = []
+times = []
 for i, file in enumerate(fpaths):
     f = h5.File(file, "r")
     galaxy_metal.append(f["Galaxy/MeanMetallicity"][()])
     cgm_metal.append(f["CGM/MeanMetallicity"][()])
     igm_metal.append(f["IGM/MeanMetallicity"][()])
-    mean_metal.append(
-        np.mean(
-            [
-                f["Galaxy/MeanMetallicity"][()],
-                f["CGM/MeanMetallicity"][()],
-                f["IGM/MeanMetallicity"][()],
-            ]
-        )
-    )
+    mean_metal.append(f["Halo/MeanMetallicity"][()])
+    times.append(f["Header/time"][()])
     f.close()
 
 
-wnm_mass = []
-hot_mass = []
-cnm_mass = []
+# wnm_mass = []
+# hot_mass = []
+# cnm_mass = []
 
-for i, file in enumerate(fpaths):
-    f = h5.File(file, "r")
-    wnm_mass.append(f["Galaxy/HotGasMass"][()])
-    hot_mass.append(f["Galaxy/ColdNeutralMediumMass"][()])
-    cnm_mass.append(f["Galaxy/WarmNeutralMediumMass"][()])
-    f.close()
+# for i, file in enumerate(fpaths):
+#     f = h5.File(file, "r")
+#     wnm_mass.append(f["Galaxy/HotGasMass"][()])
+#     hot_mass.append(f["Galaxy/ColdNeutralMediumMass"][()])
+#     cnm_mass.append(f["Galaxy/WarmNeutralMediumMass"][()])
+#     f.close()
 # %%
 fig, ax = plt.subplots(1, 1, figsize=(5, 4), dpi=300)
-ax.plot(times, galaxy_metal, label="galaxy")
-ax.plot(times, cgm_metal, label="cgm")
-ax.plot(times, igm_metal, label="igm")
-ax.plot(times, mean_metal, label="mean")
+# ax.plot(times, galaxy_metal, label="galaxy")
+# ax.plot(times, cgm_metal, label="cgm")
+# ax.plot(times, igm_metal, label=r"igm (virrad $<$ r $<$ 10kpc)")
+ax.plot(times, mean_metal, label="virrad $<$ r")
+
 ax.set(ylabel="mean emtallicity (Zsun)", yscale="log", xlabel="time (Myr)")
 ax.legend()
 plt.show()
 
-# %%
-fig, ax = plt.subplots(1, 1, figsize=(5, 4), dpi=300)
-ax.plot(times, wnm_mass, label="wnm")
-ax.plot(times, hot_mass, label="hot")
-ax.plot(times, cnm_mass, label="cnm")
-ax.set(ylabel="mean temperature (K)", xlabel="time (Myr)")
-ax.legend()
-plt.show()
+# # %%
+# fig, ax = plt.subplots(1, 1, figsize=(5, 4), dpi=300)
+# ax.plot(times, wnm_mass, label="wnm")
+# ax.plot(times, hot_mass, label="hot")
+# ax.plot(times, cnm_mass, label="cnm")
+# ax.set(ylabel="mean temperature (K)", xlabel="time (Myr)")
+# ax.legend()
+# plt.show()
 # %%
 
 times = np.array(times)

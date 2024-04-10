@@ -41,6 +41,8 @@ def plotting_interface(run_logpath, simulation_name, color):
     earliest_times = []
     latest_times = []
     max_galsfe = []
+    sfrs = []
+    times = []
 
     for i, r in enumerate(run_logpath):
         print(os.path.join(r, "logSFC"))
@@ -90,7 +92,40 @@ def plotting_interface(run_logpath, simulation_name, color):
         ax[i + 1].minorticks_on()
         ax[i + 1].locator_params(axis="y", nbins=4)
 
-        redshft_ax.plot(t_interp_points, total_mass, linewidth=0)
+        sf_times = t_interp_points[np.argwhere(sfr > 0.001)]
+        # trange = t_interp_points[-1] - t_interp_points[0]
+        print(sf_times.size)
+        print(t_interp_points.size)
+        fduty = sf_times.size / t_interp_points.size
+        # if i == 0:
+        label = r"$f_{{\rm duty}} = {:.2f}$".format(fduty)
+        # else:
+        #     label = r"${:.2f}$".format(fduty)
+
+        ax[i + 1].text(
+            0.02,
+            0.90,
+            label,
+            ha="left",
+            va="top",
+            transform=ax[i + 1].transAxes,
+            fontsize=9,
+        )
+
+        sfrs.append(sfr)
+        times.append(t_interp_points)
+
+        sf_mask = np.argwhere(sfr > 1e-3)
+        sf_times = t_interp_points[sf_mask].flatten()
+        diff_between_peaks = np.diff(sf_times)
+        quiscent_mask = diff_between_peaks > 1
+        quiscent_times = sf_times[1:][quiscent_mask]
+        print(quiscent_times)
+        leftedges = quiscent_times[::2]
+        right_edges = quiscent_times[1::2]
+        # print(quiscent_times[::2])
+        # for q, right in enumerate(right_edges):
+        #     ax[i + 1].axvspan(leftedges[q], right, facecolor="grey", alpha=0.3)
 
     ax[1].set(ylim=(-0.01, 0.14))
     ax[2].set(ylim=(-0.01 * 0.5, 0.14 * 0.5))
@@ -123,11 +158,30 @@ def plotting_interface(run_logpath, simulation_name, color):
 
     # event labels
 
-    ax[1].axvspan(465, 485, facecolor="grey", alpha=0.5)
+    ax[1].axvspan(465, 485, facecolor="grey", alpha=0.3)
+    ax[1].axvspan(565, 585, facecolor="grey", alpha=0.3)
 
+    ax[1].text(
+        465,
+        0.1,
+        "(a)",
+        ha="right",
+        va="center",
+        fontsize=9,
+    )
+
+    ax[1].text(
+        565,
+        0.1,
+        "(b)",
+        ha="right",
+        va="center",
+        fontsize=9,
+    )
     # ax[0].grid(ls="--", which="both")
     # ax[1].grid(ls="--", which="both")
     # ax[2].grid(ls="--", which="both")
+    return sfrs, times
 
 
 if __name__ == "__main__":
@@ -156,7 +210,7 @@ if __name__ == "__main__":
         cmap[2],
     ]
 
-    plotting_interface(
+    sfr, time = plotting_interface(
         run_logpath=runs,
         simulation_name=names,
         color=colors,
@@ -169,3 +223,16 @@ if __name__ == "__main__":
         pad_inches=0.05,
     )
     plt.show()
+    # # %%
+    # x = time[2]
+    # y = sfr[2]
+    # sf_mask = np.argwhere(y > 1e-3)
+    # sf_times = x[sf_mask].flatten()
+    # diff_between_peaks = np.diff(sf_times)
+    # quescent_mask = diff_between_peaks > 10
+    # quiscent_times = sf_times[1:][quescent_mask]
+    # print(quiscent_times)
+
+    # plt.plot(x, y, color="r")
+    # plt.scatter(x[sf_mask], y[sf_mask])
+    # plt.show()

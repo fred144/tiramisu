@@ -57,11 +57,7 @@ if __name__ == "__main__":
 
     if len(sys.argv) != 5:
         print(sys.argv[0], "usage:")
-        print(
-            "{} snapshot_dir start_snap end_snap step render_nickname".format(
-                sys.argv[0]
-            )
-        )
+        print("{} snapshot_dir start_snap end_snap step ".format(sys.argv[0]))
         exit()
     else:
         print("********************************************************************")
@@ -171,6 +167,16 @@ if __name__ == "__main__":
             np.array(ds.arr(cata_yt["all", "particle_mass"]).to("Msun"))
         )  # most massive halo is the central halo
         vir_rad = np.array(ds.arr(cata_yt["all", "virial_radius"]).to("pc"))[haloidx]
+        x_pos = np.array(ds.arr(cata_yt["all", "particle_position_x"]).to("pc"))[
+            haloidx
+        ]
+        y_pos = np.array(ds.arr(cata_yt["all", "particle_position_y"]).to("pc"))[
+            haloidx
+        ]
+        z_pos = np.array(ds.arr(cata_yt["all", "particle_position_z"]).to("pc"))[
+            haloidx
+        ]
+
         dm_halo_m = np.max(np.array(ds.arr(cata_yt["all", "particle_mass"]).to("Msun")))
         print("virial radius [pc]", vir_rad)
 
