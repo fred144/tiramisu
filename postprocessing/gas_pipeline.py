@@ -200,20 +200,20 @@ if __name__ == "__main__":
         vir_region = ds.sphere(galaxy_center, (vir_rad, "pc"))
 
         # let's calculate the different phases by mass in the galaxy or ISM
-        cnm = sf_region.exclude_outside(("gas", "temperature"), 0, 100)
-        cnm_mass = (
-            cnm.quantities.total_quantity(("gas", "cell_mass")).in_units("Msun").value
-        )
+        # cnm = sf_region.exclude_outside(("gas", "temperature"), 0, 100)
+        # cnm_mass = (
+        #     cnm.quantities.total_quantity(("gas", "cell_mass")).in_units("Msun").value
+        # )
 
-        wnm = sf_region.exclude_outside(("gas", "temperature"), 100.001, 5.001e4)
-        wnm_mass = (
-            wnm.quantities.total_quantity(("gas", "cell_mass")).in_units("Msun").value
-        )
+        # wnm = sf_region.exclude_outside(("gas", "temperature"), 100.001, 5.001e4)
+        # wnm_mass = (
+        #     wnm.quantities.total_quantity(("gas", "cell_mass")).in_units("Msun").value
+        # )
 
-        hot = sf_region.exclude_below(("gas", "temperature"), 5.001e4)
-        hot_mass = (
-            hot.quantities.total_quantity(("gas", "cell_mass")).in_units("Msun").value
-        )
+        # hot = sf_region.exclude_below(("gas", "temperature"), 5.001e4)
+        # hot_mass = (
+        #     hot.quantities.total_quantity(("gas", "cell_mass")).in_units("Msun").value
+        # )
 
         # mean vir metallicity
         vir_Mgas = vir_region["gas", "cell_mass"].in_units("Msun").sum().to_value()
@@ -358,9 +358,9 @@ if __name__ == "__main__":
         f.create_dataset("CGM/MeanMetallicity", data=cgm_mean_Z, dtype="f")
         f.create_dataset("IGM/MeanMetallicity", data=igm_mean_Z, dtype="f")
 
-        f.create_dataset("Galaxy/ColdNeutralMediumMass", data=cnm_mass, dtype="f")
-        f.create_dataset("Galaxy/WarmNeutralMediumMass", data=wnm_mass, dtype="f")
-        f.create_dataset("Galaxy/HotGasMass", data=hot_mass, dtype="f")
+        # f.create_dataset("Galaxy/ColdNeutralMediumMass", data=cnm_mass, dtype="f")
+        # f.create_dataset("Galaxy/WarmNeutralMediumMass", data=wnm_mass, dtype="f")
+        # f.create_dataset("Galaxy/HotGasMass", data=hot_mass, dtype="f")
 
         f.create_dataset("Profiles/Radius", data=bins, dtype="f")
         f.create_dataset("Profiles/RadialVelocity", data=radvel_profile, dtype="f")
