@@ -98,10 +98,11 @@ for i, file in enumerate(fpaths):
 #     cnm_mass.append(f["Galaxy/WarmNeutralMediumMass"][()])
 #     f.close()
 # %%
-fig, ax = plt.subplots(1, 1, figsize=(5, 4), dpi=300)
-ax.scatter(times, galaxy_metal, label="galaxy")
-# ax.scatter(times, cgm_metal, label="cgm")
-ax.scatter(times, igm_metal, label=r"igm (virrad $<$ r $<$ 10kpc)")
+fig, ax = plt.subplots(1, 1, figsize=(8, 6), dpi=300)
+ax.plot(times, galaxy_metal, label="galaxy")
+ax.plot(times, mean_metal, label="mean metallcity within rvir")
+ax.plot(times, cgm_metal, label="cgm")
+# ax.scatter(times, igm_metal, label=r"igm (virrad $<$ r $<$ 10kpc)")
 # ax.plot(np.array(times), np.array(mean_metal) / 0.02, label="virrad $<$ r")
 
 ax.set(ylabel="mean emtallicity (Zsun)", yscale="log", xlabel="time (Myr)")

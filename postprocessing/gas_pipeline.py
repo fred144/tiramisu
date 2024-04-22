@@ -61,7 +61,7 @@ if __name__ == "__main__":
         exit()
     else:
         print("********************************************************************")
-        print(" rendering movie ")
+        print("post processing global gas quantitites")
         print("********************************************************************")
 
     datadir = sys.argv[1]
@@ -148,7 +148,6 @@ if __name__ == "__main__":
 
         if os.path.isfile(hop_catalogue) is True:
             print(">> catalogue already exists")
-
         else:
             hc = HaloCatalog(
                 data_ds=ds,
@@ -214,7 +213,7 @@ if __name__ == "__main__":
         hot_mass = (
             hot.quantities.total_quantity(("gas", "cell_mass")).in_units("Msun").value
         )
-        # %%
+
         # mean vir metallicity
         # for each cell, what is the mass
         vir_Mgas = vir_region["gas", "cell_mass"].in_units("Msun").sum().to_value()
@@ -370,5 +369,14 @@ if __name__ == "__main__":
         )
         f.create_dataset(
             "Profiles/TempDensityWeighted", data=temperature_profile, dtype="f"
+        )
+        print(
+            "saved",
+            os.path.join(
+                postprocessed_container,
+                "profiles-{}-{}-myr-z-{}.hdf5".format(
+                    snums[i], save_time, save_redshift
+                ),
+            ),
         )
         f.close()

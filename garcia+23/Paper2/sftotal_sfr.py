@@ -160,6 +160,9 @@ def plotting_interface(run_logpath, simulation_name, color):
 
     ax[1].axvspan(465, 485, facecolor="grey", alpha=0.3)
     ax[1].axvspan(565, 585, facecolor="grey", alpha=0.3)
+    ax[1].axvline(585)
+    ax[2].axvline(678)
+    ax[3].axvline(610)
 
     ax[1].text(
         465,
