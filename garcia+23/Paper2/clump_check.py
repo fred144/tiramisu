@@ -55,96 +55,96 @@ lum_alpha = 1
 
 clumped_dat = np.loadtxt(clumped_cat[0])
 
-# %%
-for bsc_f in sorted(bsc_paths):
-    bscnum = bsc_f.split("/")[-1].split(".")[0].split("_")[-1]
-    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(5, 5), dpi=300)
-    print(bscnum)
-    # ax.scatter(ux, uy, color="grey", s=0.5, alpha=0.05)
-    # ax.scatter(bx, by, color="r", s=0.5, alpha=0.05)
+# # %%
+# for bsc_f in sorted(bsc_paths):
+#     bscnum = bsc_f.split("/")[-1].split(".")[0].split("_")[-1]
+#     fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(5, 5), dpi=300)
+#     print(bscnum)
+#     # ax.scatter(ux, uy, color="grey", s=0.5, alpha=0.05)
+#     # ax.scatter(bx, by, color="r", s=0.5, alpha=0.05)
 
-    ax.imshow(
-        surface_dens,
-        cmap="cmr.amethyst",
-        origin="lower",
-        extent=[-wdth / 2, wdth / 2, -wdth / 2, wdth / 2],
-        norm=LogNorm(vmin=stelllar_range[0], vmax=stelllar_range[1]),
-    )
-    ax.set(xlim=(-wdth / 2, wdth / 2), ylim=(-wdth / 2, wdth / 2))
-    ax.set_facecolor("k")
+#     ax.imshow(
+#         surface_dens,
+#         cmap="cmr.amethyst",
+#         origin="lower",
+#         extent=[-wdth / 2, wdth / 2, -wdth / 2, wdth / 2],
+#         norm=LogNorm(vmin=stelllar_range[0], vmax=stelllar_range[1]),
+#     )
+#     ax.set(xlim=(-wdth / 2, wdth / 2), ylim=(-wdth / 2, wdth / 2))
+#     ax.set_facecolor("k")
 
-    bsc_inset = ax.inset_axes([1.1, 0.5, 0.50, 0.5])
+#     bsc_inset = ax.inset_axes([1.1, 0.5, 0.50, 0.5])
 
-    bsc_dat = np.loadtxt(bsc_f)
-    bsc_x, bsc_y, bsc_z = bsc_dat[:, 3:6].T
+#     bsc_dat = np.loadtxt(bsc_f)
+#     bsc_x, bsc_y, bsc_z = bsc_dat[:, 3:6].T
 
-    # com_x = bsc_x.mean()
-    # com_y = bsc_y.mean()
+#     # com_x = bsc_x.mean()
+#     # com_y = bsc_y.mean()
 
-    catalog_idx = int(np.argwhere(clumped_dat[:, 0] == int(bscnum)))
-    com_x = clumped_dat[:, 1][catalog_idx]
-    com_y = clumped_dat[:, 2][catalog_idx]
+#     catalog_idx = int(np.argwhere(clumped_dat[:, 0] == int(bscnum)))
+#     com_x = clumped_dat[:, 1][catalog_idx]
+#     com_y = clumped_dat[:, 2][catalog_idx]
 
-    sx, sy, sz = clumped_dat[:, 9:12][catalog_idx] * 1e3 * (u.m / u.s)
-    sigma_3d_squared = sx**2 + sy**2 + sz**2  # m/s this is 1D
+#     sx, sy, sz = clumped_dat[:, 9:12][catalog_idx] * 1e3 * (u.m / u.s)
+#     sigma_3d_squared = sx**2 + sy**2 + sz**2  # m/s this is 1D
 
-    r_half = clumped_dat[:, 21][catalog_idx] * u.parsec  # half light radius
-    r = clumped_dat[:, 4][catalog_idx] * u.parsec
-    r_core = clumped_dat[:, 12][catalog_idx] * u.parsec  # pc
+#     r_half = clumped_dat[:, 21][catalog_idx] * u.parsec  # half light radius
+#     r = clumped_dat[:, 4][catalog_idx] * u.parsec
+#     r_core = clumped_dat[:, 12][catalog_idx] * u.parsec  # pc
 
-    total_mass = clumped_dat[:, 8][catalog_idx] * u.Msun
-    half_mass = 0.5 * total_mass
-    m_core = clumped_dat[:, -1][catalog_idx] * u.Msun
+#     total_mass = clumped_dat[:, 8][catalog_idx] * u.Msun
+#     half_mass = 0.5 * total_mass
+#     m_core = clumped_dat[:, -1][catalog_idx] * u.Msun
 
-    ke_avg_perparticle = (1 / 2) * sigma_3d_squared * half_mass.to(u.kg)
+#     ke_avg_perparticle = (1 / 2) * sigma_3d_squared * half_mass.to(u.kg)
 
-    pot_energy = (3 / 5) * (const.G * half_mass.to(u.kg) ** 2) / r_half.to(u.m)
+#     pot_energy = (3 / 5) * (const.G * half_mass.to(u.kg) ** 2) / r_half.to(u.m)
 
-    vir_parameter = 2 * ke_avg_perparticle / pot_energy
+#     vir_parameter = 2 * ke_avg_perparticle / pot_energy
 
-    # vir_parameter = (5 * sigma_3d_squared * r_half.to(u.m)) / (
-    #     const.G * total_mass.to(u.kg)
-    # )
+#     # vir_parameter = (5 * sigma_3d_squared * r_half.to(u.m)) / (
+#     #     const.G * total_mass.to(u.kg)
+#     # )
 
-    bsc_inset.text(
-        0.1,
-        -0.6,
-        r"$M = {:.0f} \: {{\rm M_\odot}}$"
-        "\n"
-        r"$r_{{\rm core}} = {:.2f} \: {{\rm pc}}$"
-        "\n"
-        r"$r_{{\rm half}} = {:.2f} \: {{\rm pc}}$"
-        "\n"
-        r"$\alpha_{{\rm vir}} = {:.2f}$".format(
-            total_mass.value, r_core.value, r_half.value, vir_parameter
-        ),
-        transform=bsc_inset.transAxes,
-    )
+#     bsc_inset.text(
+#         0.1,
+#         -0.6,
+#         r"$M = {:.0f} \: {{\rm M_\odot}}$"
+#         "\n"
+#         r"$r_{{\rm core}} = {:.2f} \: {{\rm pc}}$"
+#         "\n"
+#         r"$r_{{\rm half}} = {:.2f} \: {{\rm pc}}$"
+#         "\n"
+#         r"$\alpha_{{\rm vir}} = {:.2f}$".format(
+#             total_mass.value, r_core.value, r_half.value, vir_parameter
+#         ),
+#         transform=bsc_inset.transAxes,
+#     )
 
-    ax.scatter(com_x, com_y, marker="x", c="red", s=2, alpha=0.5)
+#     ax.scatter(com_x, com_y, marker="x", c="red", s=2, alpha=0.5)
 
-    bsc_inset.scatter(ux, uy, color="grey", s=0.5, alpha=0.05)
-    bsc_inset.scatter(bsc_x, bsc_y, color="r", s=1, alpha=0.2, label="BSC " + bscnum)
-    bsc_inset.set(
-        xlim=(com_x - 20, com_x + 20),
-        ylim=(com_y - 20, com_y + 20),
-    )
-    bsc_inset.set_xticklabels([])
-    bsc_inset.set_yticklabels([])
-    bsc_inset.xaxis.set_ticks_position("none")
-    bsc_inset.yaxis.set_ticks_position("none")
-    bsc_inset.legend(loc="lower right")
+#     bsc_inset.scatter(ux, uy, color="grey", s=0.5, alpha=0.05)
+#     bsc_inset.scatter(bsc_x, bsc_y, color="r", s=1, alpha=0.2, label="BSC " + bscnum)
+#     bsc_inset.set(
+#         xlim=(com_x - 20, com_x + 20),
+#         ylim=(com_y - 20, com_y + 20),
+#     )
+#     bsc_inset.set_xticklabels([])
+#     bsc_inset.set_yticklabels([])
+#     bsc_inset.xaxis.set_ticks_position("none")
+#     bsc_inset.yaxis.set_ticks_position("none")
+#     bsc_inset.legend(loc="lower right")
 
-    rect, lines = ax.indicate_inset_zoom(bsc_inset)
-    rect.set_edgecolor("white")
-    plt.savefig(
-        "../../../container_tiramisu/post_processed/clump_finder_check/BSC_check_300Msunthresh/{}.png".format(
-            bscnum
-        ),
-        bbox_inches="tight",
-        dpi=300,
-    )
-    plt.close()
+#     rect, lines = ax.indicate_inset_zoom(bsc_inset)
+#     rect.set_edgecolor("white")
+#     plt.savefig(
+#         "../../../container_tiramisu/post_processed/clump_finder_check/BSC_check_300Msunthresh/{}.png".format(
+#             bscnum
+#         ),
+#         bbox_inches="tight",
+#         dpi=300,
+#     )
+#     plt.close()
 
 # %%
 
@@ -309,12 +309,18 @@ plt.show()
 # %%
 from scipy.optimize import curve_fit
 from astropy.modeling.models import Sersic1D
+import matplotlib
+import glob
 
 pop2 = "../../../container_tiramisu/post_processed/pop2/CC-Fiducial"
-full_dat = np.loadtxt(os.path.join(pop2, "pop2-00397-588_12-myr-z-8_746.txt"))
+full_dat = np.loadtxt(glob.glob(os.path.join(pop2, "pop2-00465-*"))[0])
 full_mass = full_dat[:, -1]
 starting_point = 0.01
 prof_rad = 200
+
+cmap = matplotlib.colormaps["Set2"]
+cmap = cmap(np.linspace(0, 1, 8))
+color = cmap[0]
 
 
 def sersic(r, i0, r_halflight, n):
@@ -325,7 +331,7 @@ def sersic(r, i0, r_halflight, n):
 
 def surf_dense(x, y, m):
     all_positions = np.vstack((x, y)).T
-    r = np.geomspace(starting_point, prof_rad, num=50, endpoint=True)
+    r = np.geomspace(starting_point, prof_rad, num=20, endpoint=True)
 
     distances = np.sqrt(np.sum(np.square(all_positions), axis=1))
 
@@ -373,12 +379,10 @@ all_bin_ctrsyz, all_sigma_yz = surf_dense(ally_recentered, allz_recentered, full
 
 # popt, pcov = curve_fit(sersic, bin_ctrsyz[fit_mask], sigma_yz[fit_mask])
 
-fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(4, 4), dpi=300)
-ax.plot(bin_ctrsxy, sigma_xy, color="tab:blue", alpha=0.4, lw=3)
-ax.plot(bin_ctrsxz, sigma_xz, color="tab:blue", alpha=0.4, lw=3)
-ax.plot(
-    bin_ctrsyz, sigma_yz, color="tab:blue", label=r"age $<$ 50 Myr", alpha=0.4, lw=3
-)
+fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(5.5, 5), dpi=300)
+ax.plot(bin_ctrsxy, sigma_xy, color=color, lw=3)
+ax.plot(bin_ctrsxz, sigma_xz, color=color, lw=3)
+ax.plot(bin_ctrsyz, sigma_yz, color=color, label=r"age $<$ 50 Myr", lw=3)
 
 # ax.plot(all_bin_ctrsxy, all_sigma_xy, color="tab:red", alpha=0.4, lw=3)
 # ax.plot(all_bin_ctrsxz, all_sigma_xz, color="tab:red", alpha=0.4, lw=3)
@@ -392,8 +396,8 @@ ax.plot(
 # )
 
 
-s1 = Sersic1D(amplitude=90, r_eff=20, n=2)
-r = np.arange(0.1, 50, 0.01)
+s1 = Sersic1D(amplitude=65, r_eff=22, n=2)
+r = np.arange(0.02, 100, 0.01)
 
 ax.plot(r, s1(r), ls="--", lw="3", color="black", label="sersic index = 2")
 
@@ -401,11 +405,32 @@ ax.plot(r, s1(r), ls="--", lw="3", color="black", label="sersic index = 2")
 ax.set(
     xscale="log",
     yscale="log",
-    ylabel=r"Surface Density ${\rm M_\odot pc^{-2}}$",
-    xlabel="Radial Distance (pc)",
+    ylabel=r"Stellar Surface Density $\left[ {\rm M_\odot pc^{-2}} \right]$",
+    xlabel="Radial Distance [pc]",
     xlim=(0.04, 120),
     ylim=(1, 3e4),
 )
-ax.axvspan(0.001, 0.1, alpha=0.2, color="k")
+ax.text(
+    0.05,
+    0.95,
+    r"${{\rm t = {:.0f}\:{{\rm Myr }}}}$".format(658),
+    transform=ax.transAxes,
+    fontsize=10,
+    verticalalignment="top",
+    horizontalalignment="left",
+    clip_on=False,
+)
+
+
+ax.axvspan(0.001, 0.1, alpha=0.2, facecolor="k")
 ax.legend()
+
+plt.savefig(
+    "../../../gdrive_columbia/research/massimo/paper2/bulge_profile.png",
+    dpi=300,
+    bbox_inches="tight",
+    pad_inches=0.05,
+)
+
+
 plt.show()

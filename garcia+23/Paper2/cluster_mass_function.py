@@ -147,7 +147,7 @@ def fit_mfunc(func, xdata, ydata, weights=None):
 
 def plotting_interface(bsc_dirs, pop2_dirs, times, log_sfc, simulation_name, color):
     minimum_bsc_mass = 250  # minimum solar mass
-    maximum_bsc_mass = 1e8
+    maximum_bsc_mass = 2e5
     x_range = (60, 5e6)
     bns = 16
     max_alpha = 10
@@ -162,13 +162,14 @@ def plotting_interface(bsc_dirs, pop2_dirs, times, log_sfc, simulation_name, col
     for n, r in enumerate(bsc_dirs):
         # for the given times, compute the snapshot numbers
         snap_nums, _ = snapshot_from_time(pop2_dirs[n], times)
-        print(snap_nums)
+
         catalog_dirs = take_snapshot(directory=bsc_dirs[n], to_take=snap_nums)
         # print(catalog_dirs)
         logsfc_data = np.loadtxt(os.path.join(log_sfc[n], "logSFC"))
         logsfc_ftime = t_myr_from_z(logsfc_data[:, 2])
         logsfc_formation_mass = logsfc_data[:, 7]
         # log_mask =
+        print(catalog_dirs)
 
         for i, cat in enumerate(catalog_dirs):  # loop over the times
             cat_file = glob.glob(os.path.join(cat, "profiled_*"))[0]
@@ -180,14 +181,19 @@ def plotting_interface(bsc_dirs, pop2_dirs, times, log_sfc, simulation_name, col
                 & (clump_alphas < max_alpha)
                 & (clump_masses < maximum_bsc_mass)
             )
-            clump_masses = clump_masses[mask]
+            bsc_masses = clump_masses[mask]
+            bulge_masses = clump_masses[clump_masses > maximum_bsc_mass]
 
             # central_mass =
             # bsc mass function
             print(i)
             mass_bins, dn_dlogm = log_data_function(
-                clump_masses, bns, x_range, func_type="counts"
+                bsc_masses, bns, x_range, func_type="counts"
             )
+            bulge_mass_bins, bulge_dn_dlogm = log_data_function(
+                bulge_masses, bns, x_range, func_type="counts"
+            )
+
             mass_weight = np.where(mass_bins > 700, 0.01, 100)
             pwr_law_params, mass_bins_theory, dn_dlogm_theory = fit_mfunc(
                 pwr_law, mass_bins, dn_dlogm, weights=mass_weight
@@ -207,7 +213,6 @@ def plotting_interface(bsc_dirs, pop2_dirs, times, log_sfc, simulation_name, col
                 imf_bins,
                 imf_counts,
                 drawstyle="steps-mid",
-                ls="-",
                 alpha=1,
                 lw=2,
                 color=color[n],
@@ -230,9 +235,9 @@ def plotting_interface(bsc_dirs, pop2_dirs, times, log_sfc, simulation_name, col
                 alpha=1,
                 lw=2,
                 color="k",
-                label=r"$ \mu = {:.1f}$, $\Sigma = {:.1f}$".format(
-                    lognrml_parms[1], np.abs(lognrml_parms[2])
-                ),
+                # label=r"$ \mu = {:.1f}$, $\Sigma = {:.1f}$".format(
+                #     lognrml_parms[1], np.abs(lognrml_parms[2])
+                # ),
             )
 
             ax[i].plot(
@@ -260,6 +265,24 @@ def plotting_interface(bsc_dirs, pop2_dirs, times, log_sfc, simulation_name, col
                 label=r"${{\Gamma = {:.1f}}}$".format(pwr_law_params[0]),
             )
 
+            ax[i].plot(
+                bulge_mass_bins,
+                bulge_dn_dlogm,
+                drawstyle="steps-mid",
+                linewidth=2,
+                alpha=1,
+                color="crimson",
+            )
+            ax[i].fill_between(
+                bulge_mass_bins,
+                bulge_dn_dlogm,
+                step="mid",
+                facecolor="none",
+                edgecolor="crimson",
+                hatch=hatches[n % 2],
+                # label=simulation_name[n],
+            )
+
             ax[i].text(
                 0.95,
                 0.95,
@@ -277,10 +300,11 @@ def plotting_interface(bsc_dirs, pop2_dirs, times, log_sfc, simulation_name, col
                 fontsize=8,
                 color="k",
                 backgroundcolor="none",
-                ha="right",
-                va="bottom",
+                # ha="right",
+                # va="bottom",
                 align=False,
-                xvals=(1e3, 1e4),
+                xvals=(1e3, 1e5),
+                yoffsets=0,
             )
 
     ax[0].set(xscale="log", yscale="log", xlim=(80, 8e5), ylim=(6e-1, 500))
@@ -349,7 +373,7 @@ if __name__ == "__main__":
         filter_snapshots(pop2_dirs[0], 304, 466, 1, snapshot_type="pop2_processed"),
     ]
     # print(pop2_files)
-    wanted_times = [495, 555, 591, 659]  # myr
+    wanted_times = [495, 565, 591, 655]  # myr
 
     plotting_interface(
         bsc_dirs=bsc_dirs,

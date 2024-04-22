@@ -55,29 +55,29 @@ if __name__ == "__main__":
         ("gas", "mass"): ((1e-2, "msun"), (1e6, "msun")),
     }
 
-    if len(sys.argv) != 5:
-        print(sys.argv[0], "usage:")
-        print("{} snapshot_dir start_snap end_snap step ".format(sys.argv[0]))
-        exit()
-    else:
-        print("********************************************************************")
-        print(" rendering movie ")
-        print("********************************************************************")
+    # if len(sys.argv) != 5:
+    #     print(sys.argv[0], "usage:")
+    #     print("{} snapshot_dir start_snap end_snap step ".format(sys.argv[0]))
+    #     exit()
+    # else:
+    #     print("********************************************************************")
+    #     print(" rendering movie ")
+    #     print("********************************************************************")
 
-    datadir = sys.argv[1]
-    logsfc_path = os.path.join(sys.argv[1], "logSFC")
-    start_snapshot = int(sys.argv[2])
-    end_snapshot = int(sys.argv[3])
-    step = int(sys.argv[4])
+    # datadir = sys.argv[1]
+    # logsfc_path = os.path.join(sys.argv[1], "logSFC")
+    # start_snapshot = int(sys.argv[2])
+    # end_snapshot = int(sys.argv[3])
+    # step = int(sys.argv[4])
 
-    sim_run = os.path.basename(os.path.normpath(datadir))
-    fpaths, snums = filter_snapshots(
-        datadir,
-        start_snapshot,
-        end_snapshot,
-        sampling=step,
-        str_snaps=True,
-    )
+    # sim_run = os.path.basename(os.path.normpath(datadir))
+    # fpaths, snums = filter_snapshots(
+    #     datadir,
+    #     start_snapshot,
+    #     end_snapshot,
+    #     sampling=step,
+    #     str_snaps=True,
+    # )
 
     # first starburst in the CC-fid run
     # queiscent phase after 1st star burst, before 2nd snap 203 - 370
@@ -86,18 +86,18 @@ if __name__ == "__main__":
 
     # =============================================================================
 
-    # datadir = os.path.expanduser("~/test_data/CC-Fiducial/")
-    # logsfc_path = os.path.expanduser(os.path.join(datadir, "logSFC"))
+    datadir = os.path.expanduser("~/test_data/CC-Fiducial/")
+    logsfc_path = os.path.expanduser(os.path.join(datadir, "logSFC"))
 
-    # fpaths, snums = filter_snapshots(
-    #     datadir,
-    #     370,
-    #     390,
-    #     sampling=1,
-    #     str_snaps=True,
-    #     snapshot_type="ramses_snapshot",
-    # )
-    # render_nickname = "test"
+    fpaths, snums = filter_snapshots(
+        datadir,
+        304,
+        390,
+        sampling=1,
+        str_snaps=True,
+        snapshot_type="ramses_snapshot",
+    )
+    render_nickname = "test"
 
     # =============================================================================
 
@@ -148,7 +148,7 @@ if __name__ == "__main__":
 
         if os.path.isfile(hop_catalogue) is True:
             print(">> catalogue already exists")
-            pass
+
         else:
             hc = HaloCatalog(
                 data_ds=ds,
@@ -176,19 +176,19 @@ if __name__ == "__main__":
         z_pos = np.array(ds.arr(cata_yt["all", "particle_position_z"]).to("pc"))[
             haloidx
         ]
+        halo_center = ds.arr(np.array([x_pos, y_pos, z_pos]), "pc")
 
         dm_halo_m = np.max(np.array(ds.arr(cata_yt["all", "particle_mass"]).to("Msun")))
         print("virial radius [pc]", vir_rad)
 
-        # x_pos = ad["star", "particle_position_x"]
-        # y_pos = ad["star", "particle_position_y"]
-        # z_pos = ad["star", "particle_position_z"]
+        x_pos = ad["star", "particle_position_x"]
+        y_pos = ad["star", "particle_position_y"]
+        z_pos = ad["star", "particle_position_z"]
         x_center = np.mean(x_pos)
         y_center = np.mean(y_pos)
         z_center = np.mean(z_pos)
 
-        galaxy_center = np.array([x_center, y_center, z_center])
-
+        galaxy_center = ds.arr(np.array([x_center, y_center, z_center]), "code_length")
         galaxy_radius = 500  # pc
         mass_hyrogen = 1.6735e-24  # grams
         end_region = 1e4  # "pc"
@@ -200,27 +200,29 @@ if __name__ == "__main__":
         vir_region = ds.sphere(galaxy_center, (vir_rad, "pc"))
 
         # let's calculate the different phases by mass in the galaxy or ISM
-        # cnm = sf_region.exclude_outside(("gas", "temperature"), 0, 100)
-        # cnm_mass = (
-        #     cnm.quantities.total_quantity(("gas", "cell_mass")).in_units("Msun").value
-        # )
+        cnm = sf_region.exclude_outside(("gas", "temperature"), 0, 100)
+        cnm_mass = (
+            cnm.quantities.total_quantity(("gas", "cell_mass")).in_units("Msun").value
+        )
 
-        # wnm = sf_region.exclude_outside(("gas", "temperature"), 100.001, 5.001e4)
-        # wnm_mass = (
-        #     wnm.quantities.total_quantity(("gas", "cell_mass")).in_units("Msun").value
-        # )
+        wnm = sf_region.exclude_outside(("gas", "temperature"), 100.001, 5.001e4)
+        wnm_mass = (
+            wnm.quantities.total_quantity(("gas", "cell_mass")).in_units("Msun").value
+        )
 
-        # hot = sf_region.exclude_below(("gas", "temperature"), 5.001e4)
-        # hot_mass = (
-        #     hot.quantities.total_quantity(("gas", "cell_mass")).in_units("Msun").value
-        # )
-
+        hot = sf_region.exclude_below(("gas", "temperature"), 5.001e4)
+        hot_mass = (
+            hot.quantities.total_quantity(("gas", "cell_mass")).in_units("Msun").value
+        )
+        # %%
         # mean vir metallicity
-        vir_Mgas = vir_region["gas", "cell_mass"].in_units("Msun").sum().to_value()
         # for each cell, what is the mass
-        vir_Mgas_cell = vir_region["gas", "cell_mass"].in_units("Msun").to_value()
+        vir_Mgas = vir_region["gas", "cell_mass"].in_units("Msun").sum().to_value()
+
         # for each cell, what is the Mmetal/Mgas in each cell
-        vir_Zmetal_cell = vir_region["ramses", "Metallicity"].to_value()
+        vir_Mgas_cell = vir_region["gas", "cell_mass"].in_units("Msun").to_value()
+
+        vir_Zmetal_cell = vir_region["ramses", "Metallicity"].to_value() / zsun
         vir_Mmetal_cell = vir_Mgas_cell * vir_Zmetal_cell  # metal mass in Msun
         vir_mean_Z = vir_Mmetal_cell.sum() / vir_Mgas  # average metallicity
 
@@ -231,7 +233,7 @@ if __name__ == "__main__":
         # for each cell, what is the mass
         igm_Mgas_cell = igm["gas", "cell_mass"].in_units("Msun").to_value()
         # for each cell, what is the Mmetal/Mgas in each cell
-        igm_Zmetal_cell = igm["ramses", "Metallicity"].to_value()
+        igm_Zmetal_cell = igm["ramses", "Metallicity"].to_value() / zsun
         igm_Mmetal_cell = igm_Mgas_cell * igm_Zmetal_cell  # metal mass in Msun
         igm_mean_Z = igm_Mmetal_cell.sum() / igm_Mgas  # average metallicity
 
@@ -251,7 +253,7 @@ if __name__ == "__main__":
         )
         sf_Mgas = sf["gas", "cell_mass"].in_units("Msun").sum().to_value()
         sf_Mgas_cell = sf["gas", "cell_mass"].in_units("Msun").to_value()
-        sf_Zmetal_cell = sf["ramses", "Metallicity"].to_value()
+        sf_Zmetal_cell = sf["ramses", "Metallicity"].to_value() / zsun
         sf_Mmetal_cell = sf_Mgas_cell * sf_Zmetal_cell  # metal mass in Msun
         sf_mean_Z = sf_Mmetal_cell.sum() / sf_Mgas  # average metallicity
 
@@ -358,9 +360,9 @@ if __name__ == "__main__":
         f.create_dataset("CGM/MeanMetallicity", data=cgm_mean_Z, dtype="f")
         f.create_dataset("IGM/MeanMetallicity", data=igm_mean_Z, dtype="f")
 
-        # f.create_dataset("Galaxy/ColdNeutralMediumMass", data=cnm_mass, dtype="f")
-        # f.create_dataset("Galaxy/WarmNeutralMediumMass", data=wnm_mass, dtype="f")
-        # f.create_dataset("Galaxy/HotGasMass", data=hot_mass, dtype="f")
+        f.create_dataset("Galaxy/ColdNeutralMediumMass", data=cnm_mass, dtype="f")
+        f.create_dataset("Galaxy/WarmNeutralMediumMass", data=wnm_mass, dtype="f")
+        f.create_dataset("Galaxy/HotGasMass", data=hot_mass, dtype="f")
 
         f.create_dataset("Profiles/Radius", data=bins, dtype="f")
         f.create_dataset("Profiles/RadialVelocity", data=radvel_profile, dtype="f")

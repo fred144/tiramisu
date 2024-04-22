@@ -29,48 +29,48 @@ metal_profile = []
 times = []
 metal_radii = []
 
-# for i, file in enumerate(fpaths):
-#     f = h5.File(file, "r")
-#     metalbins = f["Profiles/MetalDensityWeighted"][:]
-#     metalbins_mask = metalbins > 0
+for i, file in enumerate(fpaths):
+    f = h5.File(file, "r")
+    metalbins = f["Profiles/MetalDensityWeighted"][:]
+    metalbins_mask = metalbins > 0
 
-#     redshift = f["Header/redshift"][()]
-#     radius = f["Profiles/Radius"][:][:-1]
-#     radius = radius[metalbins_mask]
+    redshift = f["Header/redshift"][()]
+    radius = f["Profiles/Radius"][:][:-1]
+    radius = radius[metalbins_mask]
 
-#     metal_profile.append(metalbins[metalbins_mask])
-#     metal_radii.append(radius)
-#     times.append(f["Header/time"][()])
+    metal_profile.append(metalbins[metalbins_mask])
+    metal_radii.append(radius)
+    times.append(f["Header/time"][()])
 
-#     f.close()
+    f.close()
 
-# temp_profile = []
-# temp_radii = []
-# for i, file in enumerate(fpaths):
-#     f = h5.File(file, "r")
-#     temp = f["Profiles/TempDensityWeighted"][:]
-#     temp_mask = temp > 0
+temp_profile = []
+temp_radii = []
+for i, file in enumerate(fpaths):
+    f = h5.File(file, "r")
+    temp = f["Profiles/TempDensityWeighted"][:]
+    temp_mask = temp > 0
 
-#     radius = f["Profiles/Radius"][:][:-1]
-#     radius = radius[temp_mask]
+    radius = f["Profiles/Radius"][:][:-1]
+    radius = radius[temp_mask]
 
-#     temp_profile.append(temp[temp_mask])
-#     temp_radii.append(radius)
+    temp_profile.append(temp[temp_mask])
+    temp_radii.append(radius)
 
-#     f.close()
+    f.close()
 
-# velocity_profile = []
-# velocity_radii = []
-# for i, file in enumerate(fpaths):
-#     f = h5.File(file, "r")
-#     velocity = f["Profiles/RadialVelocity"][:]
+velocity_profile = []
+velocity_radii = []
+for i, file in enumerate(fpaths):
+    f = h5.File(file, "r")
+    velocity = f["Profiles/RadialVelocity"][:]
 
-#     radius = f["Profiles/Radius"][:][:-1]
+    radius = f["Profiles/Radius"][:][:-1]
 
-#     velocity_profile.append(velocity)
-#     velocity_radii.append(radius)
+    velocity_profile.append(velocity)
+    velocity_radii.append(radius)
 
-#     f.close()
+    f.close()
 
 galaxy_metal = []
 cgm_metal = []
@@ -99,13 +99,14 @@ for i, file in enumerate(fpaths):
 #     f.close()
 # %%
 fig, ax = plt.subplots(1, 1, figsize=(5, 4), dpi=300)
-# ax.plot(times, galaxy_metal, label="galaxy")
-# ax.plot(times, cgm_metal, label="cgm")
-# ax.plot(times, igm_metal, label=r"igm (virrad $<$ r $<$ 10kpc)")
-ax.plot(times, mean_metal, label="virrad $<$ r")
+ax.scatter(times, galaxy_metal, label="galaxy")
+# ax.scatter(times, cgm_metal, label="cgm")
+ax.scatter(times, igm_metal, label=r"igm (virrad $<$ r $<$ 10kpc)")
+# ax.plot(np.array(times), np.array(mean_metal) / 0.02, label="virrad $<$ r")
 
 ax.set(ylabel="mean emtallicity (Zsun)", yscale="log", xlabel="time (Myr)")
 ax.legend()
+# ax.set(ylim=(1e-4, 1e-2))
 plt.show()
 
 # # %%
