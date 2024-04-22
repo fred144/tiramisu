@@ -55,29 +55,29 @@ if __name__ == "__main__":
         ("gas", "mass"): ((1e-2, "msun"), (1e6, "msun")),
     }
 
-    # if len(sys.argv) != 5:
-    #     print(sys.argv[0], "usage:")
-    #     print("{} snapshot_dir start_snap end_snap step ".format(sys.argv[0]))
-    #     exit()
-    # else:
-    #     print("********************************************************************")
-    #     print(" rendering movie ")
-    #     print("********************************************************************")
+    if len(sys.argv) != 5:
+        print(sys.argv[0], "usage:")
+        print("{} snapshot_dir start_snap end_snap step ".format(sys.argv[0]))
+        exit()
+    else:
+        print("********************************************************************")
+        print(" rendering movie ")
+        print("********************************************************************")
 
-    # datadir = sys.argv[1]
-    # logsfc_path = os.path.join(sys.argv[1], "logSFC")
-    # start_snapshot = int(sys.argv[2])
-    # end_snapshot = int(sys.argv[3])
-    # step = int(sys.argv[4])
+    datadir = sys.argv[1]
+    logsfc_path = os.path.join(sys.argv[1], "logSFC")
+    start_snapshot = int(sys.argv[2])
+    end_snapshot = int(sys.argv[3])
+    step = int(sys.argv[4])
 
-    # sim_run = os.path.basename(os.path.normpath(datadir))
-    # fpaths, snums = filter_snapshots(
-    #     datadir,
-    #     start_snapshot,
-    #     end_snapshot,
-    #     sampling=step,
-    #     str_snaps=True,
-    # )
+    sim_run = os.path.basename(os.path.normpath(datadir))
+    fpaths, snums = filter_snapshots(
+        datadir,
+        start_snapshot,
+        end_snapshot,
+        sampling=step,
+        str_snaps=True,
+    )
 
     # first starburst in the CC-fid run
     # queiscent phase after 1st star burst, before 2nd snap 203 - 370
@@ -86,18 +86,18 @@ if __name__ == "__main__":
 
     # =============================================================================
 
-    datadir = os.path.expanduser("~/test_data/CC-Fiducial/")
-    logsfc_path = os.path.expanduser(os.path.join(datadir, "logSFC"))
+    # datadir = os.path.expanduser("~/test_data/CC-Fiducial/")
+    # logsfc_path = os.path.expanduser(os.path.join(datadir, "logSFC"))
 
-    fpaths, snums = filter_snapshots(
-        datadir,
-        304,
-        390,
-        sampling=1,
-        str_snaps=True,
-        snapshot_type="ramses_snapshot",
-    )
-    render_nickname = "test"
+    # fpaths, snums = filter_snapshots(
+    #     datadir,
+    #     304,
+    #     390,
+    #     sampling=1,
+    #     str_snaps=True,
+    #     snapshot_type="ramses_snapshot",
+    # )
+    # render_nickname = "test"
 
     # =============================================================================
 
@@ -218,10 +218,8 @@ if __name__ == "__main__":
         # mean vir metallicity
         # for each cell, what is the mass
         vir_Mgas = vir_region["gas", "cell_mass"].in_units("Msun").sum().to_value()
-
         # for each cell, what is the Mmetal/Mgas in each cell
         vir_Mgas_cell = vir_region["gas", "cell_mass"].in_units("Msun").to_value()
-
         vir_Zmetal_cell = vir_region["ramses", "Metallicity"].to_value() / zsun
         vir_Mmetal_cell = vir_Mgas_cell * vir_Zmetal_cell  # metal mass in Msun
         vir_mean_Z = vir_Mmetal_cell.sum() / vir_Mgas  # average metallicity
@@ -243,7 +241,7 @@ if __name__ == "__main__":
         )
         cgm_Mgas = cgm["gas", "cell_mass"].in_units("Msun").sum().to_value()
         cgm_Mgas_cell = cgm["gas", "cell_mass"].in_units("Msun").to_value()
-        cgm_Zmetal_cell = cgm["ramses", "Metallicity"].to_value()
+        cgm_Zmetal_cell = cgm["ramses", "Metallicity"].to_value() / zsun
         cgm_Mmetal_cell = cgm_Mgas_cell * cgm_Zmetal_cell  # metal mass in Msun
         cgm_mean_Z = cgm_Mmetal_cell.sum() / cgm_Mgas  # average metallicity
 
