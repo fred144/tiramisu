@@ -55,29 +55,29 @@ if __name__ == "__main__":
         ("gas", "mass"): ((1e-2, "msun"), (1e6, "msun")),
     }
 
-    if len(sys.argv) != 5:
-        print(sys.argv[0], "usage:")
-        print("{} snapshot_dir start_snap end_snap step ".format(sys.argv[0]))
-        exit()
-    else:
-        print("********************************************************************")
-        print("post processing global gas quantitites")
-        print("********************************************************************")
+    # if len(sys.argv) != 5:
+    #     print(sys.argv[0], "usage:")
+    #     print("{} snapshot_dir start_snap end_snap step ".format(sys.argv[0]))
+    #     exit()
+    # else:
+    #     print("********************************************************************")
+    #     print("post processing global gas quantitites")
+    #     print("********************************************************************")
 
-    datadir = sys.argv[1]
-    logsfc_path = os.path.join(sys.argv[1], "logSFC")
-    start_snapshot = int(sys.argv[2])
-    end_snapshot = int(sys.argv[3])
-    step = int(sys.argv[4])
+    # datadir = sys.argv[1]
+    # logsfc_path = os.path.join(sys.argv[1], "logSFC")
+    # start_snapshot = int(sys.argv[2])
+    # end_snapshot = int(sys.argv[3])
+    # step = int(sys.argv[4])
 
-    sim_run = os.path.basename(os.path.normpath(datadir))
-    fpaths, snums = filter_snapshots(
-        datadir,
-        start_snapshot,
-        end_snapshot,
-        sampling=step,
-        str_snaps=True,
-    )
+    # sim_run = os.path.basename(os.path.normpath(datadir))
+    # fpaths, snums = filter_snapshots(
+    #     datadir,
+    #     start_snapshot,
+    #     end_snapshot,
+    #     sampling=step,
+    #     str_snaps=True,
+    # )
 
     # first starburst in the CC-fid run
     # queiscent phase after 1st star burst, before 2nd snap 203 - 370
@@ -86,18 +86,17 @@ if __name__ == "__main__":
 
     # =============================================================================
 
-    # datadir = os.path.expanduser("~/test_data/CC-Fiducial/")
-    # logsfc_path = os.path.expanduser(os.path.join(datadir, "logSFC"))
+    datadir = os.path.expanduser("~/test_data/CC-Fiducial/")
+    logsfc_path = os.path.expanduser(os.path.join(datadir, "logSFC"))
 
-    # fpaths, snums = filter_snapshots(
-    #     datadir,
-    #     304,
-    #     390,
-    #     sampling=1,
-    #     str_snaps=True,
-    #     snapshot_type="ramses_snapshot",
-    # )
-    # render_nickname = "test"
+    fpaths, snums = filter_snapshots(
+        datadir,
+        304,
+        390,
+        sampling=1,
+        str_snaps=True,
+        snapshot_type="ramses_snapshot",
+    )
 
     # =============================================================================
 
@@ -148,6 +147,7 @@ if __name__ == "__main__":
 
         if os.path.isfile(hop_catalogue) is True:
             print(">> catalogue already exists")
+            print(hop_catalogue)
         else:
             hc = HaloCatalog(
                 data_ds=ds,
@@ -187,7 +187,9 @@ if __name__ == "__main__":
         y_center = np.mean(y_pos)
         z_center = np.mean(z_pos)
 
-        galaxy_center = ds.arr(np.array([x_center, y_center, z_center]), "code_length")
+        galaxy_center = ds.arr(
+            np.array([x_center, y_center, z_center]), "code_length"
+        ).in_units("pc")
         galaxy_radius = 500  # pc
         mass_hyrogen = 1.6735e-24  # grams
         end_region = 1e4  # "pc"
@@ -197,6 +199,18 @@ if __name__ == "__main__":
         sf_region = ds.sphere(galaxy_center, (galaxy_radius, "pc"))
         full_region = ds.sphere(galaxy_center, (end_region, "pc"))
         vir_region = ds.sphere(galaxy_center, (vir_rad, "pc"))
+
+        #                       make region cuts
+
+        # within virial radius, but outside of the galaxy
+        cgm = full_region.exclude_outside(
+            ("index", "radius"), galaxy_radius, vir_rad, units="pc"
+        )
+
+        # 500 pc within the star forming region
+        # sf = full_region.exclude_outside(
+        #     ("index", "radius"), galaxy_radius, vir_rad, units="pc"
+        # )
 
         # let's calculate the different phases by mass in the galaxy or ISM
         cnm = sf_region.exclude_outside(("gas", "temperature"), 0, 100)
@@ -234,23 +248,15 @@ if __name__ == "__main__":
         igm_Mmetal_cell = igm_Mgas_cell * igm_Zmetal_cell  # metal mass in Msun
         igm_mean_Z = igm_Mmetal_cell.sum() / igm_Mgas  # average metallicity
 
-        # within virial radius, but outside of the galaxy
-        cgm = full_region.exclude_outside(
-            ("index", "radius"), galaxy_radius, vir_rad, units="pc"
-        )
         cgm_Mgas = cgm["gas", "cell_mass"].in_units("Msun").sum().to_value()
         cgm_Mgas_cell = cgm["gas", "cell_mass"].in_units("Msun").to_value()
         cgm_Zmetal_cell = cgm["ramses", "Metallicity"].to_value() / zsun
         cgm_Mmetal_cell = cgm_Mgas_cell * cgm_Zmetal_cell  # metal mass in Msun
         cgm_mean_Z = cgm_Mmetal_cell.sum() / cgm_Mgas  # average metallicity
 
-        # 500 pc within the star forming region
-        sf = full_region.exclude_outside(
-            ("index", "radius"), galaxy_radius, vir_rad, units="pc"
-        )
-        sf_Mgas = sf["gas", "cell_mass"].in_units("Msun").sum().to_value()
-        sf_Mgas_cell = sf["gas", "cell_mass"].in_units("Msun").to_value()
-        sf_Zmetal_cell = sf["ramses", "Metallicity"].to_value() / zsun
+        sf_Mgas = sf_region["gas", "cell_mass"].in_units("Msun").sum().to_value()
+        sf_Mgas_cell = sf_region["gas", "cell_mass"].in_units("Msun").to_value()
+        sf_Zmetal_cell = sf_region["ramses", "Metallicity"].to_value() / zsun
         sf_Mmetal_cell = sf_Mgas_cell * sf_Zmetal_cell  # metal mass in Msun
         sf_mean_Z = sf_Mmetal_cell.sum() / sf_Mgas  # average metallicity
 

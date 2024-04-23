@@ -19,6 +19,8 @@ import matplotlib.patches as patches
 from tools.check_path import check_path
 import cmasher as cmr
 from matplotlib.ticker import FormatStrFormatter
+from matplotlib import ticker
+from matplotlib.ticker import LogFormatter
 
 yt.enable_parallelism()
 cell_fields, epf = ram_fields()
@@ -36,8 +38,8 @@ plt.rcParams.update(
         "xtick.labelsize": 10,
         "ytick.labelsize": 10,
         "font.size": 11,
-        "xtick.major.size": 8,
-        "ytick.major.size": 8,
+        "xtick.major.size": 6,
+        "ytick.major.size": 6,
         "xtick.minor.size": 4,
         "ytick.minor.size": 4,
         "xtick.color": "white",
@@ -90,72 +92,16 @@ yt.add_field(
 )
 
 
-# if len(sys.argv) != 6:
-#     print(sys.argv[0], "usage:")
-#     print(
-#         "{} snapshot_dir start_snap end_snap step render_nickname".format(
-#             sys.argv[0]
-#         )
-#     )
-#     exit()
-# else:
-#     print("********************************************************************")
-#     print(" rendering gas properties movie ")
-#     print("********************************************************************")
-
-# datadir = sys.argv[1]
-# # logsfc_path = sys.argv[2]
-# start_snapshot = int(sys.argv[2])
-# end_snapshot = int(sys.argv[3])
-# step = int(sys.argv[4])
-# render_nickname = sys.argv[5]
-
-# sim_run = os.path.basename(os.path.normpath(datadir))
-# fpaths, snums = filter_snapshots(
-#     datadir,
-#     start_snapshot,
-#     end_snapshot,
-#     sampling=step,
-#     str_snaps=True,
-#     snapshot_type="ramses_snapshot",
-# )
-
-# datadir = os.path.expanduser("~/test_data/CC-Fiducial/")
-
-# fpaths, _ = filter_snapshots(
-#     datadir,
-#     388,
-#     388,
-#     sampling=1,
-#     str_snaps=True,
-#     snapshot_type="ramses_snapshot",
-# )
-# render_nickname = "test"
-# =============================================================================
-#                         key times
-# =============================================================================
-
-# 70 % sfe, first starburst peaks at 455.4 Myr (snap_0381)
-# second starburst peaks at 672.45 Myr (snap_1366)
-
-# 35 % sfe, first starburst peaks at 422.4 Myr (snap_384)
-
-# variable sfe, second starburst peaks at 578.8 Myr (snap_388)
-
-# =============================================================================
-#                         timelapse parameters
-# =============================================================================
-
-pw = 500  # plot width on one side in pc
+pw = 1000  # plot width on one side in pc
 r_sf = 500  # radii for sf in pc
 gas_res = 1000  # resolution of the fixed resolution buffer
 star_bins = 2000
 pxl_size = (pw / star_bins) ** 2
-dens_norm = LogNorm(0.05, 5e4)
-temp_norm = LogNorm(2e4, 2e7)
+dens_norm = LogNorm(0.002, 2e4)
+temp_norm = LogNorm(2e3, 8e6)
 met_norm = LogNorm(9e-4, 5)
 vrad_norm = colors.SymLogNorm(linthresh=0.1, linscale=1, vmin=-95, vmax=95)
-stellar_dens_norm = LogNorm(1, 2e4)
+stellar_dens_norm = LogNorm(2, 2e4)
 
 zsun = 0.02
 m_proton = 1.67e-24
@@ -169,20 +115,9 @@ vrad_cmap = cmr.amethyst
 temp_cmap = "inferno"
 metal_cmap = cmr.bubblegum
 
-# run save
-# sim_run = os.path.basename(os.path.normpath(datadir))
-# render_container = os.path.join(
-#     "..",
-#     "..",
-#     "container_tiramisu",
-#     "renders",
-#     sim_run,
-#     render_nickname,
-# )
-# check_path(render_container)
 
 snaps_cc, snap_strings_cc = filter_snapshots(
-    os.path.expanduser("~/test_data/CC-Fiducial/"), 396, 396, sampling=1, str_snaps=True
+    os.path.expanduser("~/test_data/CC-Fiducial/"), 400, 400, sampling=1, str_snaps=True
 )
 snaps_70, snap_strings_70 = filter_snapshots(
     os.path.expanduser("~/test_data/fs07_refine/"),
@@ -333,7 +268,7 @@ for i, s in enumerate(snaps):
         # mess around with the figure size
         vax = ax.inset_axes([1.02, 0, 1, 1])
         tax = ax.inset_axes([2.04, 0, 1, 1])
-        mex = ax.inset_axes([3.08, 0, 1, 1])
+        mex = ax.inset_axes([3.06, 0, 1, 1])
         axes = [ax, vax, tax, mex]
 
         dens = vax.imshow(
@@ -426,7 +361,7 @@ for i, s in enumerate(snaps):
                 edgecolor="white",
                 facecolor="white",
             )
-            ax.text(
+            vax.text(
                 0,
                 -pw / 2 * 0.90,
                 r"$\mathrm{{{:.0f}\:pc}}$".format(((pw / 2) * xy_r) / 1.5),
@@ -434,14 +369,27 @@ for i, s in enumerate(snaps):
                 va="center",
                 color="white",
             )
-            ax.add_patch(scale)
+            vax.add_patch(scale)
+
         if i == 2:
+            formatter = LogFormatter(10, labelOnlyBase=False)
             dens_cbar_ax = vax.inset_axes([0, -0.05, 1, 0.04])
             dens_cbar_ax.yaxis.set_minor_formatter(FormatStrFormatter("%.1f"))
-            dens_cbar = fig.colorbar(dens, cax=dens_cbar_ax, orientation="horizontal")
-            dens_cbar_ax.set_xlabel(
-                r"$\mathrm{n_{\rm H}}\:\mathrm{\left[cm^{-3}\right]}$"
+            dens_cbar = fig.colorbar(
+                dens,
+                cax=dens_cbar_ax,
+                orientation="horizontal",
+                format=formatter,
+                ticks=[0.1, 1, 10, 100, 1000],
             )
+            dens_cbar_ax.set_xlabel(
+                r"$\mathrm{\:n_{\rm H}}\:\mathrm{\left[cm^{-3}\right]}$"
+            )
+            dens_cbar_ax.yaxis.set_major_formatter("$10^{{{x:.0f}}}$")
+
+            # tick_locator = ticker.MaxNLocator(nbins=10)
+            # dens_cbar.locator = tick_locator
+            # dens_cbar.update_ticks()
 
             vrad_cbar_ax = ax.inset_axes([0, -0.05, 1, 0.04])
 

@@ -249,7 +249,7 @@ from pytreegrav import Accel, Potential
 
 pop2 = "../../../container_tiramisu/post_processed/pop2/CC-Fiducial"
 full_dat = np.loadtxt(os.path.join(pop2, "pop2-00397-588_12-myr-z-8_746.txt"))
-
+allx, ally, allz = full_dat[:, 4:7].T
 pots = Potential(big_bsc[:, 3:6], big_bsc[:, -1], method="bruteforce")
 minimum_u_xyz_pos = np.argmin(pots)
 
@@ -275,6 +275,16 @@ age_1 = big_ages < 50  # myr
 age_2 = (big_ages >= 50) & (big_ages < 150)
 age_3 = big_ages > 150
 
+
+ax.scatter(
+    ally,
+    allz,
+    s=1,
+    alpha=0.01,
+    color="grey",
+    label=r"age $\le$ 50 Myr",
+)
+
 ax.scatter(
     bigy[age_1],
     bigz[age_1],
@@ -290,7 +300,7 @@ ax.scatter(
     s=2,
     alpha=0.3,
     color="green",
-    label="50 < age < 150 Myr",
+    label="50 $<$ age $<$ 150 Myr",
 )
 ax.scatter(
     bigy[age_3],
@@ -298,7 +308,7 @@ ax.scatter(
     s=2,
     alpha=0.3,
     color="red",
-    label="age > 150 Myr",
+    label="age $>$ 150 Myr",
 )
 
 ax.scatter(min_y, min_z, c="magenta", s=10, label="minimum potential")
@@ -313,14 +323,19 @@ import matplotlib
 import glob
 
 pop2 = "../../../container_tiramisu/post_processed/pop2/CC-Fiducial"
-full_dat = np.loadtxt(glob.glob(os.path.join(pop2, "pop2-00465-*"))[0])
-full_mass = full_dat[:, -1]
+full_dat = np.loadtxt(glob.glob(os.path.join(pop2, "pop2-00397-*"))[0])
+tmyr, redshift = full_dat[0:2, 0]
+all_pop2_mass = full_dat[:, -1]
+all_ages = full_dat[:, 2]
 starting_point = 0.01
 prof_rad = 200
-
+pids = full_dat[:, 1]
 cmap = matplotlib.colormaps["Set2"]
 cmap = cmap(np.linspace(0, 1, 8))
 color = cmap[0]
+
+age_mask = all_ages < 50
+bulg_particles = pids[age_mask]
 
 
 def sersic(r, i0, r_halflight, n):
@@ -351,31 +366,32 @@ def surf_dense(x, y, m):
 
 
 allx, ally, allz = full_dat[:, 4:7].T
-all_ages = full_dat[:, 2]
 
-age_mask = all_ages < 50
 
 allx_recentered = allx - fof_x
 ally_recentered = ally - fof_y
 allz_recentered = allz - fof_z
 
 bin_ctrsxy, sigma_xy = surf_dense(
-    allx_recentered[age_mask], ally_recentered[age_mask], full_mass[age_mask]
+    allx_recentered[age_mask], ally_recentered[age_mask], all_pop2_mass[age_mask]
 )
 bin_ctrsxz, sigma_xz = surf_dense(
-    allx_recentered[age_mask], allz_recentered[age_mask], full_mass[age_mask]
+    allx_recentered[age_mask], allz_recentered[age_mask], all_pop2_mass[age_mask]
 )
 bin_ctrsyz, sigma_yz = surf_dense(
-    ally_recentered[age_mask], allz_recentered[age_mask], full_mass[age_mask]
+    ally_recentered[age_mask], allz_recentered[age_mask], all_pop2_mass[age_mask]
 )
 
-fit_mask = sigma_yz > 0.1
-
-
 # without the mask
-all_bin_ctrsxy, all_sigma_xy = surf_dense(allx_recentered, ally_recentered, full_mass)
-all_bin_ctrsxz, all_sigma_xz = surf_dense(allx_recentered, allz_recentered, full_mass)
-all_bin_ctrsyz, all_sigma_yz = surf_dense(ally_recentered, allz_recentered, full_mass)
+all_bin_ctrsxy, all_sigma_xy = surf_dense(
+    allx_recentered, ally_recentered, all_pop2_mass
+)
+all_bin_ctrsxz, all_sigma_xz = surf_dense(
+    allx_recentered, allz_recentered, all_pop2_mass
+)
+all_bin_ctrsyz, all_sigma_yz = surf_dense(
+    ally_recentered, allz_recentered, all_pop2_mass
+)
 
 # popt, pcov = curve_fit(sersic, bin_ctrsyz[fit_mask], sigma_yz[fit_mask])
 
@@ -413,7 +429,7 @@ ax.set(
 ax.text(
     0.05,
     0.95,
-    r"${{\rm t = {:.0f}\:{{\rm Myr }}}}$".format(658),
+    r"${{\rm t = {:.0f}\:{{\rm Myr }}}}$".format(tmyr),
     transform=ax.transAxes,
     fontsize=10,
     verticalalignment="top",

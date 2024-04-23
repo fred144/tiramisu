@@ -160,27 +160,25 @@ def plotting_interface(run_logpath, simulation_name, color):
 
     ax[1].axvspan(465, 485, facecolor="grey", alpha=0.3)
     ax[1].axvspan(565, 585, facecolor="grey", alpha=0.3)
-    ax[1].axvline(585)
-    ax[2].axvline(678)
-    ax[3].axvline(610)
+    ax[1].text(465, 0.1, "(a)", ha="right", va="center", fontsize=9)
+    ax[1].text(565, 0.1, "(b)", ha="right", va="center", fontsize=9)
 
-    ax[1].text(
-        465,
-        0.1,
-        "(a)",
-        ha="right",
-        va="center",
-        fontsize=9,
-    )
+    # ax[1].axvline(585)
+    ax[2].axvspan(440, 470, facecolor="grey", alpha=0.3)
+    ax[2].axvspan(660, 678, facecolor="grey", alpha=0.3)
+    ax[2].text(440, 0.05, "(a)", ha="right", va="center", fontsize=9)
+    ax[2].text(660, 0.05, "(b)", ha="right", va="center", fontsize=9)
 
-    ax[1].text(
-        565,
-        0.1,
-        "(b)",
-        ha="right",
-        va="center",
-        fontsize=9,
-    )
+    ax[3].axvspan(410, 440, facecolor="grey", alpha=0.3)
+    ax[3].axvspan(480, 500, facecolor="grey", alpha=0.3)
+    ax[3].axvspan(540, 560, facecolor="grey", alpha=0.3)
+    ax[3].axvspan(590, 610, facecolor="grey", alpha=0.3)
+    ax[3].text(405, 0.01, "(a)", ha="right", va="center", fontsize=9)
+    ax[3].text(475, 0.01, "(b)", ha="right", va="center", fontsize=9)
+    ax[3].text(535, 0.01, "(c)", ha="right", va="center", fontsize=9)
+    ax[3].text(585, 0.01, "(d)", ha="right", va="center", fontsize=9)
+    # ax[3].axvspan(660, 678, facecolor="grey", alpha=0.3)
+
     # ax[0].grid(ls="--", which="both")
     # ax[1].grid(ls="--", which="both")
     # ax[2].grid(ls="--", which="both")
