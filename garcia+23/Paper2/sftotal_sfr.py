@@ -133,7 +133,7 @@ def plotting_interface(run_logpath, simulation_name, color):
 
     ax[0].set(
         yscale="log",
-        ylabel=r"$\mathrm{\log \:M_{\star}}\: \left[ \mathrm{M}_{\odot} \right] $",
+        ylabel=r"$\mathrm{M_{\star}}\: \left[ \mathrm{M}_{\odot} \right] $",
         ylim=(3e2, 3e6),
     )
     ax[0].legend(fontsize=11, loc="lower right", frameon=False)

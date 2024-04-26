@@ -24,4 +24,4 @@ DIR="/scratch/zt1/project/ricotti-prj/user/fgarcia4/sim_data/cluster_evolution/f
 # cd /scratch/zt1/project/ricotti-prj/user/fgarcia4/globclustevo/visuals/
 # SCRIPT = "./low-sfe.py"
 # number of cores specified above
-mpirun -n 1 python3 $SCRIPT $DIR 200 1606 1 2>&1 
+tmpirun -n 1 python3 $SCRIPT $DIR 200 1606 1 2>&1 

@@ -115,17 +115,17 @@ if __name__ == "__main__":
         snapshot_type="ramses_snapshot",
     )
 
-    # datadir = os.path.expanduser("~/test_data/CC-Fiducial//")
-    # logsfc_path = os.path.join("datadir", "logSFC")
-    # fpaths, snums = filter_snapshots(
-    #     datadir,
-    #     388,
-    #     388,
-    #     sampling=1,
-    #     str_snaps=True,
-    #     snapshot_type="ramses_snapshot",
-    # )
-    # render_nickname = "test"
+    datadir = os.path.expanduser("~/test_data/CC-Fiducial//")
+    logsfc_path = os.path.join("datadir", "logSFC")
+    fpaths, snums = filter_snapshots(
+        datadir,
+        388,
+        388,
+        sampling=1,
+        str_snaps=True,
+        snapshot_type="ramses_snapshot",
+    )
+    render_nickname = "test"
 
     # =============================================================================
     #                         timelapse paramaters

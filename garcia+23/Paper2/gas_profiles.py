@@ -90,7 +90,7 @@ def read_mean_metallicities(path, start, stop, step=1):
         times.append(f["Header/time"][()])
         f.close()
 
-    return times, mean_metal, cgm_metal
+    return times, cgm_metal, galaxy_metal, mean_metal
 
 
 def read_cloud_properties(logsfc_path):
@@ -114,7 +114,7 @@ def read_cloud_properties(logsfc_path):
 #     f.close()
 # %%
 
-cc_times, cc_halo_metal, cc_cgm_metal = read_mean_metallicities(
+cc_times, cc_halo_metal, cc_cgm_metal, cc_vir_metal = read_mean_metallicities(
     "/home/fabg/container_tiramisu/post_processed/gas_properties/CC-Fiducial/",
     306,
     466,
@@ -125,7 +125,7 @@ t_myr, cloud_metal = read_cloud_properties(
 )
 
 
-f70_times, f70_halo_metal, f70_cgm_metal = read_mean_metallicities(
+f70_times, f70_halo_metal, f70_cgm_metal, f70_vir_metal = read_mean_metallicities(
     "/home/fabg/container_tiramisu/post_processed/gas_properties/fs07_refine/",
     115,
     1570,
@@ -140,11 +140,11 @@ cmap = cmap(np.linspace(0, 1, 8))
 vsfe_clr = cmap[0]
 
 fig, ax = plt.subplots(1, 1, figsize=(5, 4), dpi=300)
-ax.plot(cc_times, cc_cgm_metal, label="CGM", color="k", lw=2)
-ax.plot(cc_times, cc_halo_metal, label="Halo", color="k", ls="--", lw=2)
-
-ax.plot(f70_times, f70_cgm_metal, label="CGM", color=cmap[1], lw=2)
-ax.plot(f70_times, f70_halo_metal, label="Halo", color=cmap[1], ls="--", lw=2)
+ax.plot(cc_times, cc_cgm_metal, label="SF region", color="k", lw=2)
+ax.plot(cc_times, cc_halo_metal, label="CGM", color="k", ls="--", lw=2)
+ax.plot(cc_times, cc_vir_metal, label="virial", color=vsfe_clr, ls="--", lw=2)
+# ax.plot(f70_times, f70_cgm_metal, label="CGM", color=, lw=2)
+# ax.plot(f70_times, f70_halo_metal, label="CGM", color=cmap[1], ls="--", lw=2)
 
 # ax.plot(times, cgm_metal, label="cgm")
 # ax.scatter(times, igm_metal, label=r"igm (virrad $<$ r $<$ 10kpc)")
@@ -152,11 +152,12 @@ ax.plot(f70_times, f70_halo_metal, label="Halo", color=cmap[1], ls="--", lw=2)
 
 
 ax.scatter(t_myr, cloud_metal, alpha=0.1, s=10, c=vsfe_clr, marker="o")
-ax.scatter(f70_t_myr, f70_cloud_metal, alpha=0.1, s=10, c=cmap[1], marker="o")
+# ax.scatter(f70_t_myr, f70_cloud_metal, alpha=0.1, s=10, c=cmap[1], marker="o")
 ax.set(
     ylabel=r"Mean Metallicity ($\mathrm{Z_\odot}$)", yscale="log", xlabel="time (Myr)"
 )
-# ax.axvline(x=588)
+ax.axvline(x=590)
+ax.axvline(x=575)
 ax.legend()
 ax.set(ylim=(1e-4, 2e-2))
 ax.set(xlim=(425, 670), ylim=(5e-4, 3e-2))

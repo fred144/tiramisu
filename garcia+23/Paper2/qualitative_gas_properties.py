@@ -71,6 +71,7 @@ def _my_radial_velocity(field, data):
     xv = data["gas", "velocity_x"] - bv[0]
     yv = data["gas", "velocity_y"] - bv[1]
     zv = data["gas", "velocity_z"] - bv[2]
+    # what is supplied as center to the plotting routine
     center = data.get_field_parameter("center")
     x_hat = data["gas", "x"] - center[0]
     y_hat = data["gas", "y"] - center[1]
@@ -92,15 +93,15 @@ yt.add_field(
 )
 
 
-pw = 1000  # plot width on one side in pc
+pw = 1000  # plot width on vertical side in pc
 r_sf = 500  # radii for sf in pc
 gas_res = 1000  # resolution of the fixed resolution buffer
 star_bins = 2000
 pxl_size = (pw / star_bins) ** 2
-dens_norm = LogNorm(0.002, 2e4)
+dens_norm = LogNorm(0.001, 1e4)
 temp_norm = LogNorm(2e3, 8e6)
 met_norm = LogNorm(9e-4, 5)
-vrad_norm = colors.SymLogNorm(linthresh=0.1, linscale=1, vmin=-95, vmax=95)
+vrad_norm = colors.SymLogNorm(linthresh=10, linscale=1, vmin=-4e3, vmax=4e3)
 stellar_dens_norm = LogNorm(2, 2e4)
 
 zsun = 0.02
@@ -111,7 +112,7 @@ x, y = (9.5, 14)
 xy_r = x / y
 img_extent = [-pw / 2, pw / 2, -pw / 2, pw / 2]
 dens_cmap = "cubehelix"
-vrad_cmap = cmr.amethyst
+vrad_cmap = cmr.wildfire
 temp_cmap = "inferno"
 metal_cmap = cmr.bubblegum
 
@@ -233,14 +234,14 @@ for i, s in enumerate(snaps):
         #     log=False,
         # )
 
-        stellar_mass_dens, _, _ = np.histogram2d(
-            pop2_xyz[:, 0],
-            pop2_xyz[:, 1],
-            bins=star_bins,
-            weights=pop2_masses,
-            range=[[-pw / 2, pw / 2], [-pw / 2, pw / 2]],
-        )
-        stellar_mass_dens = stellar_mass_dens.T / pxl_size  # Msun / pc^2
+        # stellar_mass_dens, _, _ = np.histogram2d(
+        #     pop2_xyz[:, 0],
+        #     pop2_xyz[:, 1],
+        #     bins=star_bins,
+        #     weights=pop2_masses,
+        #     range=[[-pw / 2, pw / 2], [-pw / 2, pw / 2]],
+        # )
+        # stellar_mass_dens = stellar_mass_dens.T / pxl_size  # Msun / pc^2
 
         # to define the radial velocity, we define a region around the origin (star CoM)
 
@@ -250,8 +251,8 @@ for i, s in enumerate(snaps):
 
         data_fields = [
             ("gas", "density"),
-            # ("gas", "my_radial_velocity"),
             ("gas", "pressure"),
+            ("gas", "my_radial_velocity"),
             ("ramses", "Metallicity"),
         ]
         prjctns = []
@@ -266,12 +267,12 @@ for i, s in enumerate(snaps):
 
         # defining inset axes makes the aspect ratio more consistent and not have to
         # mess around with the figure size
-        vax = ax.inset_axes([1.02, 0, 1, 1])
-        tax = ax.inset_axes([2.04, 0, 1, 1])
-        mex = ax.inset_axes([3.06, 0, 1, 1])
-        axes = [ax, vax, tax, mex]
+        tax = ax.inset_axes([1.02, 0, 1, 1])  # density axis
+        vax = ax.inset_axes([2.04, 0, 1, 1])  # velocitu axis
+        mex = ax.inset_axes([3.06, 0, 1, 1])  # metallicitiy axis
 
-        dens = vax.imshow(
+        axes = [ax, tax, vax, mex]
+        dens = ax.imshow(
             np.array(ds.arr(prjctns[0], "g/cm**3")) / m_proton,
             cmap=dens_cmap,
             interpolation="gaussian",
@@ -279,24 +280,6 @@ for i, s in enumerate(snaps):
             extent=img_extent,
             norm=dens_norm,
         )
-        # vrad = vax.imshow(
-        #     prjctns[1],
-        #     cmap=vrad_cmap,
-        #     interpolation="gaussian",
-        #     origin="lower",
-        #     extent=img_extent,
-        #     norm=vrad_norm,
-        # )
-        # vax.scatter(0, 0, marker="x", color="white", s=30)
-
-        sigma = ax.imshow(
-            stellar_mass_dens,
-            cmap=vrad_cmap,
-            origin="lower",
-            extent=img_extent,
-            norm=stellar_dens_norm,
-        )
-        ax.set_facecolor("black")
 
         temp = tax.imshow(
             ds.arr(prjctns[1], "dyn/cm**2").in_units("erg/cm**3").value / k_boltz,
@@ -306,8 +289,28 @@ for i, s in enumerate(snaps):
             extent=img_extent,
             norm=temp_norm,
         )
+
+        # dax.scatter(0, 0, marker="x", color="white", s=30)
+
+        # sigma = ax.imshow(
+        #     stellar_mass_dens,
+        #     cmap=vrad_cmap,
+        #     origin="lower",
+        #     extent=img_extent,
+        #     norm=stellar_dens_norm,
+        # )
+        # ax.set_facecolor("black")
+
+        vrad = vax.imshow(
+            prjctns[2],
+            cmap=vrad_cmap,
+            interpolation="gaussian",
+            origin="lower",
+            extent=img_extent,
+            norm=vrad_norm,
+        )
         metal = mex.imshow(
-            prjctns[2] / zsun,
+            prjctns[3] / zsun,
             cmap=metal_cmap,
             interpolation="gaussian",
             origin="lower",
@@ -315,13 +318,21 @@ for i, s in enumerate(snaps):
             norm=met_norm,
         )
 
-        for a in axes:
-            a.set(
-                ylim=(-pw / 2, pw / 2),
-                xlim=(xy_r * -pw / 2, xy_r * pw / 2),
-                xticklabels=[],
-                yticklabels=[],
-            )
+        for ai, a in enumerate(axes):
+            if ai == 0:
+                a.set(
+                    ylim=(-pw / 2, pw / 2),
+                    xlim=(xy_r * -pw / 2, xy_r * pw / 2),
+                    xticklabels=[],
+                    yticklabels=[],
+                )
+            else:
+                a.set(
+                    ylim=(-pw / 2, pw / 2),
+                    xlim=(xy_r * -pw / 2, xy_r * pw / 2),
+                    xticklabels=[],
+                    yticklabels=[],
+                )
             a.spines["bottom"].set_color("black")
             a.spines["top"].set_color("black")
             a.spines["left"].set_color("black")
@@ -361,7 +372,7 @@ for i, s in enumerate(snaps):
                 edgecolor="white",
                 facecolor="white",
             )
-            vax.text(
+            ax.text(
                 0,
                 -pw / 2 * 0.90,
                 r"$\mathrm{{{:.0f}\:pc}}$".format(((pw / 2) * xy_r) / 1.5),
@@ -369,11 +380,12 @@ for i, s in enumerate(snaps):
                 va="center",
                 color="white",
             )
-            vax.add_patch(scale)
+            ax.add_patch(scale)
 
         if i == 2:
             formatter = LogFormatter(10, labelOnlyBase=False)
-            dens_cbar_ax = vax.inset_axes([0, -0.05, 1, 0.04])
+
+            dens_cbar_ax = ax.inset_axes([0, -0.05, 1, 0.04])
             dens_cbar_ax.yaxis.set_minor_formatter(FormatStrFormatter("%.1f"))
             dens_cbar = fig.colorbar(
                 dens,
@@ -382,34 +394,32 @@ for i, s in enumerate(snaps):
                 format=formatter,
                 ticks=[0.1, 1, 10, 100, 1000],
             )
-            dens_cbar_ax.set_xlabel(
-                r"$\mathrm{\:n_{\rm H}}\:\mathrm{\left[cm^{-3}\right]}$"
-            )
+            dens_cbar_ax.set_xlabel(r"$n_{\rm H}\:\mathrm{\left[cm^{-3}\right]}$")
             dens_cbar_ax.yaxis.set_major_formatter("$10^{{{x:.0f}}}$")
 
             # tick_locator = ticker.MaxNLocator(nbins=10)
             # dens_cbar.locator = tick_locator
             # dens_cbar.update_ticks()
 
-            vrad_cbar_ax = ax.inset_axes([0, -0.05, 1, 0.04])
-
-            vrad_cbar = fig.colorbar(sigma, cax=vrad_cbar_ax, orientation="horizontal")
+            vrad_cbar_ax = vax.inset_axes([0, -0.05, 1, 0.04])
+            vrad_cbar = fig.colorbar(vrad, cax=vrad_cbar_ax, orientation="horizontal")
             vrad_cbar_ax.set_xlabel(
-                # r"$\mathrm{Radial\:Velocity}\:\left[\mathrm{km\:s}^{-1}\right]$"
-                r"$\Sigma_{\rm PopII}\:\mathrm{\left[M_\odot\:pc^{-2}\right]}$"
+                r"$\mathrm{radial\:velocity}\:\left[\mathrm{km\:s}^{-1}\right]$"
+                # r"$\Sigma_{\rm PopII}\:\mathrm{\left[M_\odot\:pc^{-2}\right]}$"
             )
 
+            # now temperature cbar
             temp_cbar_ax = tax.inset_axes([0, -0.05, 1, 0.04])
-
             temp_cbar = fig.colorbar(temp, cax=temp_cbar_ax, orientation="horizontal")
             temp_cbar_ax.set_xlabel(r"$P/ k_{\rm B}\:\left[\mathrm{K\:cm^{-3}}\right]$")
 
+            # metallicity
             metal_cbar_ax = mex.inset_axes([0, -0.05, 1, 0.04])
             metal_cbar = fig.colorbar(
                 metal, cax=metal_cbar_ax, orientation="horizontal"
             )
             metal_cbar_ax.set_xlabel(
-                r"$\mathrm{Metallicity}\:\left[\mathrm{Z_\odot}\right]$"
+                r"$\mathrm{metallicity}\:\left[\mathrm{Z_\odot}\right]$"
             )
 
 

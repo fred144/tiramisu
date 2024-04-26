@@ -228,10 +228,10 @@ ax.set(yscale="log", ylabel="Number of PopII Stars", xlabel="Age (Myr)")
 plt.show()
 
 
-# %% surface density profile with cutoff at virial radius
+# %% surface density profile with cutoff at virial radius of the clump
 
 fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(5, 5), dpi=300)
-ax.plot(big_profile[:, 0], big_profile[:, 1])
+ax.plot(big_profile[:, 0], big_profile[:, 1], label="bulge clump")
 # ax.plot(big_profile[:, 0] ** (1 / 4), big_profile[:, 1])
 # ax.plot(np.linspace(0.01, 15, 100), np.linspace(0.01, 15, 100) ** -(1 / 4))
 ax.set(
@@ -241,6 +241,7 @@ ax.set(
     xlabel="Radial Distance (pc)",
     # xlim=(0.1, 12),
 )
+ax.legend()
 plt.show()
 
 # %% profiling without the cutoff
@@ -264,10 +265,11 @@ avg_z = np.mean(bigz)
 # name of BSC
 bsc = 34
 catalog_idx = int(np.argwhere(clumped_dat[:, 0] == int(bsc)))
-fof_x = clumped_dat[:, 1][catalog_idx]
-fof_y = clumped_dat[:, 2][catalog_idx]
-fof_z = clumped_dat[:, 3][catalog_idx]
 
+# get's the center of the bulge
+bsc_x = clumped_dat[:, 1][catalog_idx]
+bsc_y = clumped_dat[:, 2][catalog_idx]
+bsc_z = clumped_dat[:, 3][catalog_idx]
 
 fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(5, 5), dpi=300)
 
@@ -313,7 +315,7 @@ ax.scatter(
 
 ax.scatter(min_y, min_z, c="magenta", s=10, label="minimum potential")
 ax.scatter(avg_y, avg_z, c="cyan", s=10, label="centroid")
-ax.scatter(fof_y, fof_z, c="k", s=10, label="fof")
+ax.scatter(bsc_y, bsc_z, c="k", s=10, label="fof")
 ax.legend(ncols=2)
 plt.show()
 # %%
@@ -322,131 +324,152 @@ from astropy.modeling.models import Sersic1D
 import matplotlib
 import glob
 
-pop2 = "../../../container_tiramisu/post_processed/pop2/CC-Fiducial"
-full_dat = np.loadtxt(glob.glob(os.path.join(pop2, "pop2-00397-*"))[0])
-tmyr, redshift = full_dat[0:2, 0]
-all_pop2_mass = full_dat[:, -1]
-all_ages = full_dat[:, 2]
-starting_point = 0.01
-prof_rad = 200
-pids = full_dat[:, 1]
-cmap = matplotlib.colormaps["Set2"]
-cmap = cmap(np.linspace(0, 1, 8))
-color = cmap[0]
+for i in range(397, 405):
+    path = "../../../container_tiramisu/post_processed/bsc_catalogues/CC-Fiducial"
 
-age_mask = all_ages < 50
-bulg_particles = pids[age_mask]
+    snapshot = "info_00{:}".format(i)
+    clumped_cat = glob.glob(os.path.join(os.path.join(path, snapshot), "profiled*.txt"))
+    clumped_dat = np.loadtxt(clumped_cat[0])
+    clump_masses = clumped_dat[:, 8]
+    # the bulge is the most massive
+    bulge_id = clumped_dat[:, 0][np.argmax(clump_masses)]
 
+    bulge_group_x = clumped_dat[:, 1][np.argmax(clump_masses)]
+    bulge_group_y = clumped_dat[:, 2][np.argmax(clump_masses)]
+    bulge_group_z = clumped_dat[:, 3][np.argmax(clump_masses)]
 
-def sersic(r, i0, r_halflight, n):
-    b = 1.9992 * n - 0.3271
-    intensity = i0 * np.exp(-b * ((r / r_halflight) ** (1 / n) - 1))
-    return intensity
+    pop2 = "../../../container_tiramisu/post_processed/pop2/CC-Fiducial"
+    full_dat = np.loadtxt(glob.glob(os.path.join(pop2, "pop2-00{:}-*").format(i))[0])
+    tmyr, redshift = full_dat[0:2, 0]
+    all_pop2_mass = full_dat[:, -1]
+    all_ages = full_dat[:, 2]
+    creation_time = tmyr - all_ages
 
+    starting_point = 0.01
+    prof_rad = 200
+    pids = full_dat[:, 1]
+    cmap = matplotlib.colormaps["Set2"]
+    cmap = cmap(np.linspace(0, 1, 8))
+    color = cmap[0]
 
-def surf_dense(x, y, m):
-    all_positions = np.vstack((x, y)).T
-    r = np.geomspace(starting_point, prof_rad, num=20, endpoint=True)
+    age_mask = (creation_time > 575) & (
+        creation_time < 588
+    )  # all_ages < 10  # newly made
+    bulg_particles = pids[age_mask]
 
-    distances = np.sqrt(np.sum(np.square(all_positions), axis=1))
+    def surf_dense(x, y, m):
+        all_positions = np.vstack((x, y)).T
+        r = np.geomspace(starting_point, prof_rad, num=20, endpoint=True)
 
-    mass_per_bin, bin_edges = np.histogram(distances, bins=r, weights=m)
-    mask = mass_per_bin > 0
-    mass_per_bin = mass_per_bin[mask]
+        distances = np.sqrt(np.sum(np.square(all_positions), axis=1))
 
-    # getting bin properties
-    right_edges = bin_edges[1:]
-    left_edges = bin_edges[:-1]
-    bin_ctrs = 0.5 * (left_edges + right_edges)[mask]
+        mass_per_bin, bin_edges = np.histogram(distances, bins=r, weights=m)
+        mask = mass_per_bin > 0
+        mass_per_bin = mass_per_bin[mask]
 
-    ring_areas = np.pi * (right_edges**2 - left_edges**2)[mask]
-    surf_mass_density = mass_per_bin / ring_areas
+        # getting bin properties
+        right_edges = bin_edges[1:]
+        left_edges = bin_edges[:-1]
+        bin_ctrs = 0.5 * (left_edges + right_edges)[mask]
 
-    return bin_ctrs, surf_mass_density
+        ring_areas = np.pi * (right_edges**2 - left_edges**2)[mask]
+        surf_mass_density = mass_per_bin / ring_areas
 
+        return bin_ctrs, surf_mass_density
 
-allx, ally, allz = full_dat[:, 4:7].T
+    allx, ally, allz = full_dat[:, 4:7].T
 
+    allx_recentered = allx - bulge_group_x
+    ally_recentered = ally - bulge_group_y
+    allz_recentered = allz - bulge_group_z
 
-allx_recentered = allx - fof_x
-ally_recentered = ally - fof_y
-allz_recentered = allz - fof_z
+    bin_ctrsxy, sigma_xy = surf_dense(
+        allx_recentered[age_mask], ally_recentered[age_mask], all_pop2_mass[age_mask]
+    )
+    bin_ctrsxz, sigma_xz = surf_dense(
+        allx_recentered[age_mask], allz_recentered[age_mask], all_pop2_mass[age_mask]
+    )
+    bin_ctrsyz, sigma_yz = surf_dense(
+        ally_recentered[age_mask], allz_recentered[age_mask], all_pop2_mass[age_mask]
+    )
 
-bin_ctrsxy, sigma_xy = surf_dense(
-    allx_recentered[age_mask], ally_recentered[age_mask], all_pop2_mass[age_mask]
-)
-bin_ctrsxz, sigma_xz = surf_dense(
-    allx_recentered[age_mask], allz_recentered[age_mask], all_pop2_mass[age_mask]
-)
-bin_ctrsyz, sigma_yz = surf_dense(
-    ally_recentered[age_mask], allz_recentered[age_mask], all_pop2_mass[age_mask]
-)
+    # without the mask
+    # all_bin_ctrsxy, all_sigma_xy = surf_dense(
+    #     allx_recentered, ally_recentered, all_pop2_mass
+    # )
+    # all_bin_ctrsxz, all_sigma_xz = surf_dense(
+    #     allx_recentered, allz_recentered, all_pop2_mass
+    # )
+    # all_bin_ctrsyz, all_sigma_yz = surf_dense(
+    #     ally_recentered, allz_recentered, all_pop2_mass
+    # )
 
-# without the mask
-all_bin_ctrsxy, all_sigma_xy = surf_dense(
-    allx_recentered, ally_recentered, all_pop2_mass
-)
-all_bin_ctrsxz, all_sigma_xz = surf_dense(
-    allx_recentered, allz_recentered, all_pop2_mass
-)
-all_bin_ctrsyz, all_sigma_yz = surf_dense(
-    ally_recentered, allz_recentered, all_pop2_mass
-)
+    # popt, pcov = curve_fit(sersic, bin_ctrsyz[fit_mask], sigma_yz[fit_mask])
 
-# popt, pcov = curve_fit(sersic, bin_ctrsyz[fit_mask], sigma_yz[fit_mask])
+    fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(9, 4), dpi=300)
+    ax[0].scatter(bin_ctrsxy, sigma_xy, color=color)
+    ax[0].scatter(bin_ctrsxz, sigma_xz, color=color)
+    ax[0].scatter(
+        bin_ctrsyz, sigma_yz, color=color, label=r"$t_{\rm form} > 577 \: {\rm Myr}$"
+    )
 
-fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(5.5, 5), dpi=300)
-ax.plot(bin_ctrsxy, sigma_xy, color=color, lw=3)
-ax.plot(bin_ctrsxz, sigma_xz, color=color, lw=3)
-ax.plot(bin_ctrsyz, sigma_yz, color=color, label=r"age $<$ 50 Myr", lw=3)
+    # ax[0].plot(all_bin_ctrsxy, all_sigma_xy, color="tab:red", alpha=0.4, lw=3)
+    # ax[0].plot(all_bin_ctrsxz, all_sigma_xz, color="tab:red", alpha=0.4, lw=3)
+    # ax[0].plot(all_bin_ctrsyz, all_sigma_yz, color="tab:red", label=r"all", alpha=0.4, lw=3)
 
-# ax.plot(all_bin_ctrsxy, all_sigma_xy, color="tab:red", alpha=0.4, lw=3)
-# ax.plot(all_bin_ctrsxz, all_sigma_xz, color="tab:red", alpha=0.4, lw=3)
-# ax.plot(all_bin_ctrsyz, all_sigma_yz, color="tab:red", label=r"all", alpha=0.4, lw=3)
+    # ax.plot(
+    #     big_profile[:, 0],
+    #     big_profile[:, 1],
+    #     color="k",
+    #     label=r"$R_{\rm vir}$ cutoff",
+    # )
 
-# ax.plot(
-#     big_profile[:, 0],
-#     big_profile[:, 1],
-#     color="k",
-#     label=r"$R_{\rm vir}$ cutoff",
-# )
+    def sersic(r, i0, r_halflight, n, b):
+        intensity = i0 * np.exp(-b * ((r / r_halflight) ** (1 / n) - 1))
+        return intensity
 
+    s1 = Sersic1D(amplitude=55, r_eff=18, n=2)
+    r = np.arange(0.02, 100, 0.01)
 
-s1 = Sersic1D(amplitude=65, r_eff=22, n=2)
-r = np.arange(0.02, 100, 0.01)
+    test_prof = sersic(r, 8e2, 1.5, 2, 1)
 
-ax.plot(r, s1(r), ls="--", lw="3", color="black", label="sersic index = 2")
+    # popt, pcov = curve_fit(sersic, bin_ctrsxy, sigma_xy, p0=[8e2, 1.5, 2, 1])
 
+    ax[0].plot(r, s1(r), ls="--", lw="3", color="black", label="sersic index = 2")
+    # ax[0].plot(r, test_prof)
 
-ax.set(
-    xscale="log",
-    yscale="log",
-    ylabel=r"Stellar Surface Density $\left[ {\rm M_\odot pc^{-2}} \right]$",
-    xlabel="Radial Distance [pc]",
-    xlim=(0.04, 120),
-    ylim=(1, 3e4),
-)
-ax.text(
-    0.05,
-    0.95,
-    r"${{\rm t = {:.0f}\:{{\rm Myr }}}}$".format(tmyr),
-    transform=ax.transAxes,
-    fontsize=10,
-    verticalalignment="top",
-    horizontalalignment="left",
-    clip_on=False,
-)
+    ax[0].set(
+        xscale="log",
+        yscale="log",
+        ylabel=r"Stellar Surface Density $\left[ {\rm M_\odot pc^{-2}} \right]$",
+        xlabel="Radial Distance [pc]",
+        xlim=(0.04, 120),
+        ylim=(1, 3e4),
+    )
+    ax[0].text(
+        0.05,
+        0.95,
+        r"${{\rm t = {:.0f}\:{{\rm Myr }}}}$".format(tmyr),
+        transform=ax[0].transAxes,
+        fontsize=10,
+        verticalalignment="top",
+        horizontalalignment="left",
+        clip_on=False,
+    )
 
+    ax[0].axvspan(0.001, 0.1, alpha=0.2, facecolor="k")
+    ax[0].legend()
 
-ax.axvspan(0.001, 0.1, alpha=0.2, facecolor="k")
-ax.legend()
+    ax[1].scatter(allx[~age_mask], ally[~age_mask], s=1, alpha=0.01, color="grey")
+    ax[1].scatter(allx[age_mask], ally[age_mask], s=1, alpha=0.01, color="red")
+    ax[1].scatter(bulge_group_x, bulge_group_y, s=10, color="green")
+    ax[1].set(ylim=(-200, 200), xlim=(-200, 200))
 
-plt.savefig(
-    "../../../gdrive_columbia/research/massimo/paper2/bulge_profile.png",
-    dpi=300,
-    bbox_inches="tight",
-    pad_inches=0.05,
-)
+    plt.savefig(
+        "../../../gdrive_columbia/research/massimo/paper2/bulge_profile.png",
+        dpi=300,
+        bbox_inches="tight",
+        pad_inches=0.05,
+    )
 
-
-plt.show()
+    plt.show()
