@@ -42,17 +42,6 @@ def _my_radial_velocity(field, data):
     else:
         bv = data.ds.arr(np.zeros(3), "km/s")
 
-    # x_pos = np.array(data["star", "particle_position_x"])
-    # y_pos = np.array(data["star", "particle_position_y"])
-    # z_pos = np.array(data["star", "particle_position_z"])
-
-    # ctr_at_code = np.array([np.mean(x_pos), np.mean(y_pos), np.mean(z_pos)])
-
-    # sfregion = data.sphere(ctr_at_code, (r_sf, "pc"))
-    # bulk_vel = sfregion.quantities.bulk_velocity()
-    # # sfregion.set_field_parameter("bulk_velocity", bulk_vel)
-    # bv = bulk_vel.in_units("km/s")
-
     xv = data["gas", "velocity_x"] - bv[0]
     yv = data["gas", "velocity_y"] - bv[1]
     zv = data["gas", "velocity_z"] - bv[2]
@@ -76,7 +65,6 @@ yt.add_field(
     take_log=False,
     validators=[
         ValidateParameter(["center", "bulk_velocity"]),
-        ValidateParameter(["gas", "velocity_x"]),
     ],
 )
 
@@ -248,34 +236,38 @@ if __name__ == "__main__":
         bins = np.geomspace(1, end_region, 60, endpoint=True)
 
         # galaxy properties
-        sf_region = ds.sphere(galaxy_center, (galaxy_radius, "pc"))
-        full_region = ds.sphere(galaxy_center, (end_region, "pc"))
-        vir_region = ds.sphere(galaxy_center, (vir_rad, "pc"))
+        sf_region = ds.sphere(galaxy_center, (galaxy_radius, "pc"))  # 500 pc region
+        full_region = ds.sphere(galaxy_center, (end_region, "pc"))  # 10 kpc region
+        vir_region = ds.sphere(galaxy_center, (vir_rad, "pc"))  # vir radius, usual 2kpc
 
         #                       make region cuts
-        shell_thicknes = ds.arr(50, "pc")
+        try:
+            shell_thicknes = ds.arr(50, "pc")
 
-        # SF region + 50 pc to calculate the quantities
-        spherical_shell = full_region.exclude_outside(
-            ("index", "radius"),
-            galaxy_radius,
-            galaxy_radius + shell_thicknes.value,
-            # vir_rad * 0.20,
-            # vir_rad * 0.25,
-            units="pc",
-        )
-        vrads = spherical_shell["radial_velocity"].to("km/s")
-        outwards_mask = vrads > 0
-        v_out = vrads[outwards_mask]
+            # SF region + 50 pc to calculate the quantities
+            spherical_shell = full_region.exclude_outside(
+                ("index", "radius"),
+                galaxy_radius,
+                galaxy_radius + shell_thicknes.value,
+                # vir_rad * 0.20,
+                # vir_rad * 0.25,
+                units="pc",
+            )
+            vrads = spherical_shell["radial_velocity"].to("km/s")
+            outwards_mask = vrads > 0
+            v_out = vrads[outwards_mask]
 
-        # mass of each gas cell in the shell
-        mass_of_gas = spherical_shell["gas", "cell_mass"].in_units("Msun")
+            # mass of each gas cell in the shell
+            mass_of_gas = spherical_shell["gas", "cell_mass"].in_units("Msun")
 
-        # metal abundance in the shells
-        shell_metal = spherical_shell["ramses", "Metallicity"] / zsun
+            # metal abundance in the shells
+            shell_metal = spherical_shell["ramses", "Metallicity"] / zsun
 
-        # mass in metals in the shells
-        mass_of_metals = mass_of_gas * shell_metal
+            # mass in metals in the shells
+            mass_of_metals = mass_of_gas * shell_metal
+        except:
+            print("having trouble making regon cuts, skipping")
+            continue
 
         # metals going out
         metal_out = mass_of_metals[outwards_mask]
