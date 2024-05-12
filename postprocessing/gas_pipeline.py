@@ -28,12 +28,57 @@ from tools import plotstyle
 from tools.fscanner import filter_snapshots
 from tools.ram_fields import ram_fields
 import cmasher as cmr
+from yt.fields.api import ValidateParameter
 
 mylog.setLevel(40)
 warnings.simplefilter(action="ignore", category=RuntimeWarning)
 processor_number = 0
 cell_fields, epf = ram_fields()
 
+
+def _my_radial_velocity(field, data):
+    if data.has_field_parameter("bulk_velocity"):
+        bv = data.get_field_parameter("bulk_velocity").in_units("km/s")
+    else:
+        bv = data.ds.arr(np.zeros(3), "km/s")
+
+    # x_pos = np.array(data["star", "particle_position_x"])
+    # y_pos = np.array(data["star", "particle_position_y"])
+    # z_pos = np.array(data["star", "particle_position_z"])
+
+    # ctr_at_code = np.array([np.mean(x_pos), np.mean(y_pos), np.mean(z_pos)])
+
+    # sfregion = data.sphere(ctr_at_code, (r_sf, "pc"))
+    # bulk_vel = sfregion.quantities.bulk_velocity()
+    # # sfregion.set_field_parameter("bulk_velocity", bulk_vel)
+    # bv = bulk_vel.in_units("km/s")
+
+    xv = data["gas", "velocity_x"] - bv[0]
+    yv = data["gas", "velocity_y"] - bv[1]
+    zv = data["gas", "velocity_z"] - bv[2]
+    # what is supplied as center to the plotting routine
+    center = data.get_field_parameter("center")
+    x_hat = data["gas", "x"] - center[0]
+    y_hat = data["gas", "y"] - center[1]
+    z_hat = data["gas", "z"] - center[2]
+    r = np.sqrt(x_hat * x_hat + y_hat * y_hat + z_hat * z_hat)
+    x_hat /= r
+    y_hat /= r
+    z_hat /= r
+    return xv * x_hat + yv * y_hat + zv * z_hat
+
+
+yt.add_field(
+    ("gas", "my_radial_velocity"),
+    function=_my_radial_velocity,
+    sampling_type="cell",
+    units="km/s",
+    take_log=False,
+    validators=[
+        ValidateParameter(["center", "bulk_velocity"]),
+        ValidateParameter(["gas", "velocity_x"]),
+    ],
+)
 
 if __name__ == "__main__":
     m_h = 1.6735e-24  # grams
@@ -92,8 +137,8 @@ if __name__ == "__main__":
     # fpaths, snums = filter_snapshots(
     #     datadir,
     #     304,
-    #     390,
-    #     sampling=1,
+    #     412,
+    #     sampling=2,
     #     str_snaps=True,
     #     snapshot_type="ramses_snapshot",
     # )
@@ -159,26 +204,30 @@ if __name__ == "__main__":
 
         # need to read in using yt for virial radius for
         # some reason unknown units in catalogue
-        cata_yt = yt.load(hop_catalogue)
-        cata_yt = cata_yt.all_data()
-        dm_halo_m = np.max(np.array(ds.arr(cata_yt["all", "particle_mass"]).to("Msun")))
-        haloidx = np.argmax(
-            np.array(ds.arr(cata_yt["all", "particle_mass"]).to("Msun"))
-        )  # most massive halo is the central halo
-        vir_rad = np.array(ds.arr(cata_yt["all", "virial_radius"]).to("pc"))[haloidx]
-        x_pos = np.array(ds.arr(cata_yt["all", "particle_position_x"]).to("pc"))[
-            haloidx
-        ]
-        y_pos = np.array(ds.arr(cata_yt["all", "particle_position_y"]).to("pc"))[
-            haloidx
-        ]
-        z_pos = np.array(ds.arr(cata_yt["all", "particle_position_z"]).to("pc"))[
-            haloidx
-        ]
+        cata_yt = h5.File(hop_catalogue, "r")
+        # cata_yt = yt.load(hop_catalogue)
+        # cata_yt = cata_yt.all_data()
+
+        dm_halo_m = np.max(np.array(cata_yt["particle_mass"][:]))  # Msun
+        haloidx = np.argmax(dm_halo_m)  # most massive halo is the central halo
+
+        # kpc is the default
+        vir_rad = np.array(ds.arr(cata_yt["virial_radius"][:], "kpc").to("pc"))[haloidx]
+        x_pos = np.array(
+            ds.arr(cata_yt["particle_position_x"][:], "code_length").to("pc")
+        )[haloidx]
+
+        y_pos = np.array(
+            ds.arr(cata_yt["particle_position_y"][:], "code_length").to("pc")
+        )[haloidx]
+        z_pos = np.array(
+            ds.arr(cata_yt["particle_position_y"][:], "code_length").to("pc")
+        )[haloidx]
+
         halo_center = ds.arr(np.array([x_pos, y_pos, z_pos]), "pc")
 
-        dm_halo_m = np.max(np.array(ds.arr(cata_yt["all", "particle_mass"]).to("Msun")))
         print("virial radius [pc]", vir_rad)
+        print("virial mass {:.2e} [Msun]".format(dm_halo_m))
 
         x_pos = ad["star", "particle_position_x"]
         y_pos = ad["star", "particle_position_y"]
@@ -187,6 +236,9 @@ if __name__ == "__main__":
         y_center = np.mean(y_pos)
         z_center = np.mean(z_pos)
 
+        cata_yt.close()
+
+        # centroid of stars
         galaxy_center = ds.arr(
             np.array([x_center, y_center, z_center]), "code_length"
         ).in_units("pc")
@@ -201,6 +253,42 @@ if __name__ == "__main__":
         vir_region = ds.sphere(galaxy_center, (vir_rad, "pc"))
 
         #                       make region cuts
+        shell_thicknes = ds.arr(50, "pc")
+
+        # SF region + 50 pc to calculate the quantities
+        spherical_shell = full_region.exclude_outside(
+            ("index", "radius"),
+            galaxy_radius,
+            galaxy_radius + shell_thicknes.value,
+            # vir_rad * 0.20,
+            # vir_rad * 0.25,
+            units="pc",
+        )
+        vrads = spherical_shell["radial_velocity"].to("km/s")
+        outwards_mask = vrads > 0
+        v_out = vrads[outwards_mask]
+
+        # mass of each gas cell in the shell
+        mass_of_gas = spherical_shell["gas", "cell_mass"].in_units("Msun")
+
+        # metal abundance in the shells
+        shell_metal = spherical_shell["ramses", "Metallicity"] / zsun
+
+        # mass in metals in the shells
+        mass_of_metals = mass_of_gas * shell_metal
+
+        # metals going out
+        metal_out = mass_of_metals[outwards_mask]
+        dmetalout_dt = (metal_out * v_out).sum() / shell_thicknes.to("km")
+        metalmass_per_year = dmetalout_dt.to("Msun/yr")
+
+        # total gas mass going out
+        gasmass_out = (mass_of_gas[outwards_mask] * v_out).sum() / shell_thicknes.to(
+            "km"
+        )
+        gasmass_per_year = gasmass_out.to("Msun/yr")
+        print("metal mass loading", metalmass_per_year)
+        print("gas mass loading", gasmass_per_year)
 
         # within virial radius, but outside of the galaxy
         cgm = full_region.exclude_outside(
@@ -229,11 +317,12 @@ if __name__ == "__main__":
         )
 
         # mean vir metallicity
-        # for each cell, what is the mass
+
         vir_Mgas = vir_region["gas", "cell_mass"].in_units("Msun").sum().to_value()
-        # for each cell, what is the Mmetal/Mgas in each cell
+        # for each cell, what is the mass
         vir_Mgas_cell = vir_region["gas", "cell_mass"].in_units("Msun").to_value()
         vir_Zmetal_cell = vir_region["ramses", "Metallicity"].to_value() / zsun
+        # for each cell, what is the Mmetal/Mgas in each cell
         vir_Mmetal_cell = vir_Mgas_cell * vir_Zmetal_cell  # metal mass in Msun
         vir_mean_Z = vir_Mmetal_cell.sum() / vir_Mgas  # average metallicity
 
@@ -355,17 +444,32 @@ if __name__ == "__main__":
         )
         f.create_dataset("Header/redshift", data=redshift, dtype="f")
         f.create_dataset("Header/time", data=t_myr, dtype="f")
+
+        # properties within the virial radius
+
+        f.create_dataset(
+            "Winds/MassOutFlowRate", data=gasmass_per_year.value, dtype="f"
+        )
+        f.create_dataset(
+            "Winds/MetalMassOutFlowRate", data=metalmass_per_year.value, dtype="f"
+        )
+
         f.create_dataset("Halo/radius", data=vir_rad, dtype="f")
         f.create_dataset("Halo/Mass", data=dm_halo_m, dtype="f")
         f.create_dataset("Halo/MeanMetallicity", data=vir_mean_Z, dtype="f")
-
-        f.create_dataset("Galaxy/MeanMetallicity", data=sf_mean_Z, dtype="f")
-        f.create_dataset("CGM/MeanMetallicity", data=cgm_mean_Z, dtype="f")
-        f.create_dataset("IGM/MeanMetallicity", data=igm_mean_Z, dtype="f")
+        f.create_dataset("Halo/MetalMass", data=vir_Mmetal_cell.sum(), dtype="f")
 
         f.create_dataset("Galaxy/ColdNeutralMediumMass", data=cnm_mass, dtype="f")
         f.create_dataset("Galaxy/WarmNeutralMediumMass", data=wnm_mass, dtype="f")
         f.create_dataset("Galaxy/HotGasMass", data=hot_mass, dtype="f")
+        f.create_dataset("Galaxy/MeanMetallicity", data=sf_mean_Z, dtype="f")
+        f.create_dataset("Galaxy/MetalMass", data=sf_Mmetal_cell.sum(), dtype="f")
+
+        f.create_dataset("CGM/MeanMetallicity", data=cgm_mean_Z, dtype="f")
+        f.create_dataset("CGM/MetalMass", data=cgm_Mmetal_cell.sum(), dtype="f")
+
+        f.create_dataset("IGM/MeanMetallicity", data=igm_mean_Z, dtype="f")
+        f.create_dataset("IGM/MetalMass", data=igm_Mmetal_cell.sum(), dtype="f")
 
         f.create_dataset("Profiles/Radius", data=bins, dtype="f")
         f.create_dataset("Profiles/RadialVelocity", data=radvel_profile, dtype="f")

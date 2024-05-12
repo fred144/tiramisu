@@ -19,9 +19,9 @@ module load openmpi
 source ~/scratch/master/bin/activate
  
 SCRIPT="./gas_pipeline.py"
-DIR="/scratch/zt1/project/ricotti-prj/user/fgarcia4/sim_data/cluster_evolution/fs035_ms10/"
+DIR="/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial"
 # also tried
 # cd /scratch/zt1/project/ricotti-prj/user/fgarcia4/globclustevo/visuals/
 # SCRIPT = "./low-sfe.py"
 # number of cores specified above
-tmpirun -n 1 python3 $SCRIPT $DIR 200 1606 1 2>&1 
+mpirun -n 1 python3 $SCRIPT $DIR 304 466 1 2>&1 

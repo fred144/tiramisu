@@ -114,7 +114,7 @@ def read_cloud_properties(logsfc_path):
 #     f.close()
 # %%
 
-cc_times, cc_halo_metal, cc_cgm_metal, cc_vir_metal = read_mean_metallicities(
+cc_times, cc_cgm_metal, cc_galaxy_metal, cc_vir_metal = read_mean_metallicities(
     "/home/fabg/container_tiramisu/post_processed/gas_properties/CC-Fiducial/",
     306,
     466,
@@ -125,7 +125,7 @@ t_myr, cloud_metal = read_cloud_properties(
 )
 
 
-f70_times, f70_halo_metal, f70_cgm_metal, f70_vir_metal = read_mean_metallicities(
+f70_times, f70_cgm_metal, f70_galaxy_metal, f70_vir_metal = read_mean_metallicities(
     "/home/fabg/container_tiramisu/post_processed/gas_properties/fs07_refine/",
     115,
     1570,
@@ -135,32 +135,62 @@ f70_t_myr, f70_cloud_metal = read_cloud_properties(
     "/home/fabg/container_tiramisu/sim_log_files/fs07_refine/logSFC"
 )
 
+f35_times, f35_cgm_metal, f35_galaxy_metal, f35_vir_metal = read_mean_metallicities(
+    "/home/fabg/container_tiramisu/post_processed/gas_properties/fs035_ms10/",
+    226,
+    1570,
+)
+f35_t_myr, f35_cloud_metal = read_cloud_properties(
+    "/home/fabg/container_tiramisu/sim_log_files/fs035_ms10/logSFC"
+)
+
+
 cmap = matplotlib.colormaps["Dark2"]
 cmap = cmap(np.linspace(0, 1, 8))
 vsfe_clr = cmap[0]
+high_clr = cmap[1]
+low_clr = cmap[2]
+# %%
+fig, ax = plt.subplots(1, 3, figsize=(9, 3), dpi=300, sharex=True, sharey=True)
+plt.subplots_adjust(hspace=0, wspace=0)
+ax[0].plot(cc_times, cc_galaxy_metal, label="SF region", color="k", lw=2)
+ax[0].plot(cc_times, cc_cgm_metal, label="CGM", color="grey", lw=2)
 
-fig, ax = plt.subplots(1, 1, figsize=(5, 4), dpi=300)
-ax.plot(cc_times, cc_cgm_metal, label="SF region", color="k", lw=2)
-ax.plot(cc_times, cc_halo_metal, label="CGM", color="k", ls="--", lw=2)
-ax.plot(cc_times, cc_vir_metal, label="virial", color=vsfe_clr, ls="--", lw=2)
-# ax.plot(f70_times, f70_cgm_metal, label="CGM", color=, lw=2)
-# ax.plot(f70_times, f70_halo_metal, label="CGM", color=cmap[1], ls="--", lw=2)
+ax[1].plot(f70_times, f70_galaxy_metal, label="SF region", color="k", lw=2)
+ax[1].plot(f70_times, f70_cgm_metal, label="CGM", color="grey", lw=2)
+
+ax[2].plot(f35_times[::4], f35_galaxy_metal[::4], label="SF region", color="k", lw=2)
+ax[2].plot(f35_times[::4], f35_cgm_metal[::4], label="CGM", color="grey", lw=2)
+
 
 # ax.plot(times, cgm_metal, label="cgm")
 # ax.scatter(times, igm_metal, label=r"igm (virrad $<$ r $<$ 10kpc)")
 # ax.plot(np.array(times), np.array(mean_metal) / 0.02, label="virrad $<$ r")
 
 
-ax.scatter(t_myr, cloud_metal, alpha=0.1, s=10, c=vsfe_clr, marker="o")
-# ax.scatter(f70_t_myr, f70_cloud_metal, alpha=0.1, s=10, c=cmap[1], marker="o")
-ax.set(
-    ylabel=r"Mean Metallicity ($\mathrm{Z_\odot}$)", yscale="log", xlabel="time (Myr)"
+ax[0].scatter(t_myr, cloud_metal, alpha=0.1, s=10, c=vsfe_clr, marker="o")
+ax[1].scatter(f70_t_myr, f70_cloud_metal, alpha=0.1, s=10, c=high_clr, marker="o")
+ax[2].scatter(f35_t_myr, f35_cloud_metal, alpha=0.1, s=10, c=low_clr, marker="o")
+
+# ax.axvline(x=590)
+# ax.axvline(x=575)
+ax[0].legend()
+ax[0].set(ylim=(1e-4, 2e-2))
+ax[0].set(xlim=(425, 670), ylim=(5e-4, 3e-2))
+
+ax[0].minorticks_on()
+ax[0].text(
+    0.05, 0.95, "VSFE", ha="left", va="top", fontsize=9, transform=ax[0].transAxes
 )
-ax.axvline(x=590)
-ax.axvline(x=575)
-ax.legend()
-ax.set(ylim=(1e-4, 2e-2))
-ax.set(xlim=(425, 670), ylim=(5e-4, 3e-2))
+ax[1].text(
+    0.05, 0.95, "high SFE", ha="left", va="top", fontsize=9, transform=ax[1].transAxes
+)
+ax[2].text(
+    0.05, 0.95, "low SFE", ha="left", va="top", fontsize=9, transform=ax[2].transAxes
+)
+
+ax[0].set(ylabel=r"Mean Metallicity [$\mathrm{Z_\odot}$]", yscale="log")
+ax[1].set(xlabel="time [Myr]")
 plt.show()
 
 # # %%
