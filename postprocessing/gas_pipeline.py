@@ -162,9 +162,12 @@ if __name__ == "__main__":
         )
         infofile = os.path.abspath(os.path.join(sn, f"info_{snums[i]}.txt"))
         print("# reading in", infofile)
-
-        ds = yt.load(infofile, fields=cell_fields, extra_particle_fields=epf)
-        ad = ds.all_data()
+        try:
+            ds = yt.load(infofile, fields=cell_fields, extra_particle_fields=epf)
+            ad = ds.all_data()
+        except:
+            print("having trouble making regon cuts, skipping")
+            continue
 
         t_myr = float(ds.current_time.in_units("Myr"))
         redshift = ds.current_redshift
