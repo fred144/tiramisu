@@ -158,9 +158,7 @@ def fill_column(ax, ad, drawbars=False):
     profile2d_average = sf_region_corrected.profile(
         # the x bin field, the y bin field
         [("gas", "density"), ("gas", "temperature")],
-        fields=[
-            ("gas", "radial_velocity"),
-        ]("ramses", "Metallicity"),
+        fields=[("gas", "radial_velocity"), ("ramses", "Metallicity")],
         n_bins=(125, 125),
         weight_field=("gas", "mass"),
         extrema=lims,

@@ -88,29 +88,29 @@ if __name__ == "__main__":
         ("gas", "mass"): ((1e-2, "msun"), (1e6, "msun")),
     }
 
-    if len(sys.argv) != 5:
-        print(sys.argv[0], "usage:")
-        print("{} snapshot_dir start_snap end_snap step ".format(sys.argv[0]))
-        exit()
-    else:
-        print("********************************************************************")
-        print("post processing global gas quantitites")
-        print("********************************************************************")
+    # if len(sys.argv) != 5:
+    #     print(sys.argv[0], "usage:")
+    #     print("{} snapshot_dir start_snap end_snap step ".format(sys.argv[0]))
+    #     exit()
+    # else:
+    #     print("********************************************************************")
+    #     print("post processing global gas quantitites")
+    #     print("********************************************************************")
 
-    datadir = sys.argv[1]
-    logsfc_path = os.path.join(sys.argv[1], "logSFC")
-    start_snapshot = int(sys.argv[2])
-    end_snapshot = int(sys.argv[3])
-    step = int(sys.argv[4])
+    # datadir = sys.argv[1]
+    # logsfc_path = os.path.join(sys.argv[1], "logSFC")
+    # start_snapshot = int(sys.argv[2])
+    # end_snapshot = int(sys.argv[3])
+    # step = int(sys.argv[4])
 
-    sim_run = os.path.basename(os.path.normpath(datadir))
-    fpaths, snums = filter_snapshots(
-        datadir,
-        start_snapshot,
-        end_snapshot,
-        sampling=step,
-        str_snaps=True,
-    )
+    # sim_run = os.path.basename(os.path.normpath(datadir))
+    # fpaths, snums = filter_snapshots(
+    #     datadir,
+    #     start_snapshot,
+    #     end_snapshot,
+    #     sampling=step,
+    #     str_snaps=True,
+    # )
 
     # first starburst in the CC-fid run
     # queiscent phase after 1st star burst, before 2nd snap 203 - 370
@@ -119,17 +119,17 @@ if __name__ == "__main__":
 
     # =============================================================================
 
-    # datadir = os.path.expanduser("~/test_data/CC-Fiducial/")
-    # logsfc_path = os.path.expanduser(os.path.join(datadir, "logSFC"))
+    datadir = os.path.expanduser("~/test_data/CC-Fiducial/")
+    logsfc_path = os.path.expanduser(os.path.join(datadir, "logSFC"))
 
-    # fpaths, snums = filter_snapshots(
-    #     datadir,
-    #     304,
-    #     412,
-    #     sampling=2,
-    #     str_snaps=True,
-    #     snapshot_type="ramses_snapshot",
-    # )
+    fpaths, snums = filter_snapshots(
+        datadir,
+        153,
+        163,
+        sampling=2,
+        str_snaps=True,
+        snapshot_type="ramses_snapshot",
+    )
 
     # =============================================================================
 
@@ -233,13 +233,14 @@ if __name__ == "__main__":
         galaxy_center = ds.arr(
             np.array([x_center, y_center, z_center]), "code_length"
         ).in_units("pc")
-        galaxy_radius = 500  # pc
+        # galaxy_radius = 500  # pc
+        galaxy_radius = 0.2 * vir_rad
         mass_hyrogen = 1.6735e-24  # grams
         end_region = 1e4  # "pc"
         bins = np.geomspace(1, end_region, 60, endpoint=True)
 
         # galaxy properties
-        sf_region = ds.sphere(galaxy_center, (galaxy_radius, "pc"))  # 500 pc region
+        sf_region = ds.sphere(galaxy_center, (galaxy_radius, "pc"))
         full_region = ds.sphere(galaxy_center, (end_region, "pc"))  # 10 kpc region
         vir_region = ds.sphere(galaxy_center, (vir_rad, "pc"))  # vir radius, usual 2kpc
 
@@ -247,7 +248,7 @@ if __name__ == "__main__":
         try:
             shell_thicknes = ds.arr(50, "pc")
 
-            # SF region + 50 pc to calculate the quantities
+            # measure SF region
             spherical_shell = full_region.exclude_outside(
                 ("index", "radius"),
                 galaxy_radius,
@@ -259,6 +260,8 @@ if __name__ == "__main__":
             vrads = spherical_shell["radial_velocity"].to("km/s")
             outwards_mask = vrads > 0
             v_out = vrads[outwards_mask]
+            inwards_mask = vrads < 0
+            v_in = vrads[inwards_mask]
 
             # mass of each gas cell in the shell
             mass_of_gas = spherical_shell["gas", "cell_mass"].in_units("Msun")
@@ -275,14 +278,22 @@ if __name__ == "__main__":
         # metals going out
         metal_out = mass_of_metals[outwards_mask]
         dmetalout_dt = (metal_out * v_out).sum() / shell_thicknes.to("km")
-        metalmass_per_year = dmetalout_dt.to("Msun/yr")
-
+        metalmass_out_per_year = dmetalout_dt.to("Msun/yr")
         # total gas mass going out
         gasmass_out = (mass_of_gas[outwards_mask] * v_out).sum() / shell_thicknes.to(
             "km"
         )
         gasmass_per_year = gasmass_out.to("Msun/yr")
-        print("metal mass loading", metalmass_per_year)
+
+        # metals inflow
+        metal_in = mass_of_metals[inwards_mask]
+        dmetalin_dt = (metal_in * v_in).sum() / shell_thicknes.to("km")
+        metalmass_in_per_year = dmetalin_dt.to("Msun/yr")
+        # total gas mass going out
+        gasmass_in = (mass_of_gas[inwards_mask] * v_in).sum() / shell_thicknes.to("km")
+        gasmass_inflow_per_year = gasmass_in.to("Msun/yr")
+
+        print("metal mass loading", metalmass_out_per_year)
         print("gas mass loading", gasmass_per_year)
 
         # within virial radius, but outside of the galaxy
@@ -446,7 +457,14 @@ if __name__ == "__main__":
             "Winds/MassOutFlowRate", data=gasmass_per_year.value, dtype="f"
         )
         f.create_dataset(
-            "Winds/MetalMassOutFlowRate", data=metalmass_per_year.value, dtype="f"
+            "Winds/MetalMassOutFlowRate", data=metalmass_out_per_year.value, dtype="f"
+        )
+
+        f.create_dataset(
+            "Winds/MassInFlowRate", data=gasmass_inflow_per_year.value, dtype="f"
+        )
+        f.create_dataset(
+            "Winds/MetalMassInFlowRate", data=metalmass_in_per_year.value, dtype="f"
         )
 
         f.create_dataset("Halo/radius", data=vir_rad, dtype="f")

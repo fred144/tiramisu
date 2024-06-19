@@ -323,11 +323,89 @@ from scipy.optimize import curve_fit
 from astropy.modeling.models import Sersic1D
 import matplotlib
 import glob
+from tools.fscanner import filter_snapshots
 
-for i in range(397, 405):
-    path = "../../../container_tiramisu/post_processed/bsc_catalogues/CC-Fiducial"
+plt.rcParams.update(
+    {
+        "text.usetex": True,
+        # "font.family": "Helvetica",
+        "font.family": "serif",
+        "mathtext.fontset": "cm",
+        "xtick.labelsize": 15,
+        "ytick.labelsize": 15,
+        "font.size": 16,
+        "xtick.direction": "in",
+        "ytick.direction": "in",
+        "ytick.right": True,
+        "xtick.top": True,
+        "xtick.major.size": 6,
+        "ytick.major.size": 6,
+        "xtick.minor.size": 4,
+        "ytick.minor.size": 4,
+    }
+)
 
-    snapshot = "info_00{:}".format(i)
+
+def snapshot_from_time(snapshots, time, split_sym="-", snap_idx=1, time_idx=2):
+    """
+    Given a list of postprocesed pop ii snapshot files, get the corresponding time
+
+    Parameters
+    ----------
+    time : TYPE
+        DESCRIPTION.
+    snapshots : TYPE
+        DESCRIPTION.
+    split_sym : TYPE, optional
+        DESCRIPTION. The default is "-".
+    snap_idx : TYPE, optional
+        DESCRIPTION. The default is 1.
+    time_idx : TYPE, optional
+        DESCRIPTION. The default is 2.
+
+    Returns
+    -------
+    None.
+
+    """
+    filepaths = snapshots
+    uni_age = []
+    snapshot = []
+    for f in snapshots:
+        name = os.path.basename(os.path.normpath(f))
+        sn_numbers = float(name.split(split_sym)[snap_idx])
+        tmyr = float(name.split(split_sym)[time_idx].replace("_", "."))
+
+        uni_age.append(tmyr)
+        snapshot.append(sn_numbers)
+
+    uni_age = np.array([uni_age])
+    snapshots = np.array(snapshot)
+    residuals = np.abs(uni_age - np.array(time)[:, np.newaxis])
+    closest_match_idxs = np.argmin(residuals, axis=1).astype(int)
+
+    matching_snaps = snapshots[closest_match_idxs]
+    matching_files = list(np.take(filepaths, closest_match_idxs))
+
+    return matching_snaps, matching_files
+
+
+times = [576, 577, 595, 659]
+paths = filter_snapshots(
+    "../../../container_tiramisu/post_processed/pop2/CC-Fiducial",
+    153,
+    466,
+    1,
+    snapshot_type="pop2_processed",
+)
+snap_nums, files = snapshot_from_time(paths, times)
+
+fig, ax = plt.subplots(nrows=4, ncols=2, figsize=(8, 15), dpi=300, sharex="col")
+plt.subplots_adjust(wspace=-0.03, hspace=0)
+path = "../../../container_tiramisu/post_processed/bsc_catalogues/CC-Fiducial"
+
+for i, pop2 in enumerate(files):
+    snapshot = "info_00{:}".format(int(snap_nums[i]))
     clumped_cat = glob.glob(os.path.join(os.path.join(path, snapshot), "profiled*.txt"))
     clumped_dat = np.loadtxt(clumped_cat[0])
     clump_masses = clumped_dat[:, 8]
@@ -338,8 +416,10 @@ for i in range(397, 405):
     bulge_group_y = clumped_dat[:, 2][np.argmax(clump_masses)]
     bulge_group_z = clumped_dat[:, 3][np.argmax(clump_masses)]
 
-    pop2 = "../../../container_tiramisu/post_processed/pop2/CC-Fiducial"
-    full_dat = np.loadtxt(glob.glob(os.path.join(pop2, "pop2-00{:}-*").format(i))[0])
+    # pop2 = "../../../container_tiramisu/post_processed/pop2/CC-Fiducial"
+    # full_dat = np.loadtxt(glob.glob(os.path.join(pop2, "pop2-00{:}-*").format(i))[0])
+    full_dat = np.loadtxt(pop2)
+
     tmyr, redshift = full_dat[0:2, 0]
     all_pop2_mass = full_dat[:, -1]
     all_ages = full_dat[:, 2]
@@ -348,7 +428,7 @@ for i in range(397, 405):
     starting_point = 0.01
     prof_rad = 200
     pids = full_dat[:, 1]
-    cmap = matplotlib.colormaps["Set2"]
+    cmap = matplotlib.colormaps["Dark2"]
     cmap = cmap(np.linspace(0, 1, 8))
     color = cmap[0]
 
@@ -364,6 +444,7 @@ for i in range(397, 405):
         distances = np.sqrt(np.sum(np.square(all_positions), axis=1))
 
         mass_per_bin, bin_edges = np.histogram(distances, bins=r, weights=m)
+        count_per_bin, _ = np.histogram(distances, bins=r)
         mask = mass_per_bin > 0
         mass_per_bin = mass_per_bin[mask]
 
@@ -374,8 +455,12 @@ for i in range(397, 405):
 
         ring_areas = np.pi * (right_edges**2 - left_edges**2)[mask]
         surf_mass_density = mass_per_bin / ring_areas
+        avg_star_masses = mass_per_bin / count_per_bin[mask]  # average star mass
+        err_surf_mass_density = np.sqrt(count_per_bin[mask]) * (
+            avg_star_masses / ring_areas
+        )
 
-        return bin_ctrs, surf_mass_density
+        return bin_ctrs, surf_mass_density, err_surf_mass_density
 
     allx, ally, allz = full_dat[:, 4:7].T
 
@@ -383,13 +468,13 @@ for i in range(397, 405):
     ally_recentered = ally - bulge_group_y
     allz_recentered = allz - bulge_group_z
 
-    bin_ctrsxy, sigma_xy = surf_dense(
+    bin_ctrsxy, sigma_xy, xy_err = surf_dense(
         allx_recentered[age_mask], ally_recentered[age_mask], all_pop2_mass[age_mask]
     )
-    bin_ctrsxz, sigma_xz = surf_dense(
+    bin_ctrsxz, sigma_xz, xz_err = surf_dense(
         allx_recentered[age_mask], allz_recentered[age_mask], all_pop2_mass[age_mask]
     )
-    bin_ctrsyz, sigma_yz = surf_dense(
+    bin_ctrsyz, sigma_yz, yz_err = surf_dense(
         ally_recentered[age_mask], allz_recentered[age_mask], all_pop2_mass[age_mask]
     )
 
@@ -406,12 +491,31 @@ for i in range(397, 405):
 
     # popt, pcov = curve_fit(sersic, bin_ctrsyz[fit_mask], sigma_yz[fit_mask])
 
-    fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(9, 4), dpi=300)
-    ax[0].scatter(bin_ctrsxy, sigma_xy, color=color)
-    ax[0].scatter(bin_ctrsxz, sigma_xz, color=color)
-    ax[0].scatter(
-        bin_ctrsyz, sigma_yz, color=color, label=r"$t_{\rm form} > 577 \: {\rm Myr}$"
+    ax[i, 0].errorbar(
+        bin_ctrsxy,
+        sigma_xy,
+        yerr=xy_err,
+        color=color,
+        label=r"$t_{\rm form} > 577 \: {\rm Myr}$",
+        fmt=".",
+        markersize=10
+        # lw=3,
     )
+
+    # ax[0].fill_between(
+    #     bin_ctrsxy,
+    #     sigma_xy - xy_err,
+    #     sigma_xy + xy_err,
+    #     color=color,
+    #     alpha=0.2,
+    #     # label=r"$t_{\rm form} > 577 \: {\rm Myr}$",
+    #     # lw=2,
+    # )
+
+    # ax[0].scatter(bin_ctrsxz, sigma_xz, color=color)
+    # ax[0].scatter(
+    #     bin_ctrsyz, sigma_yz, color=color, label=r"$t_{\rm form} > 577 \: {\rm Myr}$"
+    # )
 
     # ax[0].plot(all_bin_ctrsxy, all_sigma_xy, color="tab:red", alpha=0.4, lw=3)
     # ax[0].plot(all_bin_ctrsxz, all_sigma_xz, color="tab:red", alpha=0.4, lw=3)
@@ -435,41 +539,91 @@ for i in range(397, 405):
 
     # popt, pcov = curve_fit(sersic, bin_ctrsxy, sigma_xy, p0=[8e2, 1.5, 2, 1])
 
-    ax[0].plot(r, s1(r), ls="--", lw="3", color="black", label="sersic index = 2")
+    ax[i, 0].plot(r, s1(r), ls="--", lw="3", color="grey", label="sersic, n = 2")
     # ax[0].plot(r, test_prof)
 
-    ax[0].set(
+    ax[i, 0].set(
         xscale="log",
         yscale="log",
-        ylabel=r"Stellar Surface Density $\left[ {\rm M_\odot pc^{-2}} \right]$",
-        xlabel="Radial Distance [pc]",
+        # ylabel=r"Stellar Surface Density $\left[ {\rm M_\odot pc^{-2}} \right]$",
+        # xlabel="Radial Distance [pc]",
         xlim=(0.04, 120),
-        ylim=(1, 3e4),
+        ylim=(2, 3e4),
     )
-    ax[0].text(
+
+    ax[i, 0].axvspan(0.001, 0.1, alpha=0.2, facecolor="k")
+
+    pw = 150
+    star_bins = 2000
+    pxl_size = (pw / star_bins) ** 2
+
+    stellar_mass_dens, _, _ = np.histogram2d(
+        allx,
+        ally,
+        bins=star_bins,
+        weights=all_pop2_mass,
+        range=[
+            [-pw / 2, pw / 2],
+            [-pw / 2, pw / 2],
+        ],
+    )
+    stelllar_range = (20, 2e4)
+    lum_alpha
+    stellar_mass_dens = stellar_mass_dens.T
+    surface_dens = stellar_mass_dens / pxl_size
+    sdense = ax[i, 1].imshow(
+        surface_dens,
+        cmap="cmr.ember",
+        origin="lower",
+        extent=[-pw / 2, pw / 2, -pw / 2, pw / 2],
+        norm=LogNorm(vmin=stelllar_range[0], vmax=stelllar_range[1]),
+        alpha=lum_alpha,
+    )
+    ax[i, 1].set(ylim=(-pw / 2, pw / 2), xlim=(-pw / 2, pw / 2))
+    ax[i, 1].set_facecolor("k")
+
+    ax[i, 1].spines["bottom"].set_color("white")
+    ax[i, 1].spines["top"].set_color("white")
+    ax[i, 1].spines["right"].set_color("white")
+    ax[i, 1].spines["left"].set_color("white")
+    ax[i, 1].tick_params(axis="x", colors="w", which="both")
+    ax[i, 1].tick_params(axis="y", colors="w", which="both")
+
+    ax[i, 1].text(
         0.05,
         0.95,
         r"${{\rm t = {:.0f}\:{{\rm Myr }}}}$".format(tmyr),
-        transform=ax[0].transAxes,
-        fontsize=10,
+        transform=ax[i, 1].transAxes,
         verticalalignment="top",
         horizontalalignment="left",
+        color="white",
         clip_on=False,
     )
 
-    ax[0].axvspan(0.001, 0.1, alpha=0.2, facecolor="k")
-    ax[0].legend()
-
-    ax[1].scatter(allx[~age_mask], ally[~age_mask], s=1, alpha=0.01, color="grey")
-    ax[1].scatter(allx[age_mask], ally[age_mask], s=1, alpha=0.01, color="red")
-    ax[1].scatter(bulge_group_x, bulge_group_y, s=10, color="green")
-    ax[1].set(ylim=(-200, 200), xlim=(-200, 200))
-
-    plt.savefig(
-        "../../../gdrive_columbia/research/massimo/paper2/bulge_profile.png",
-        dpi=300,
-        bbox_inches="tight",
-        pad_inches=0.05,
+    # ax[1].scatter(allx[~age_mask], ally[~age_mask], s=1, alpha=0.01, color="grey")
+    # ax[1].scatter(allx[age_mask], ally[age_mask], s=1, alpha=0.01, color="red")
+    ax[i, 1].scatter(
+        bulge_group_x, bulge_group_y, s=50, marker="+", alpha=0.9, color="cyan"
     )
 
-    plt.show()
+ax[0, 0].legend(frameon=False)
+
+ax[3, 0].set(xlabel="r [pc]")
+[t.set_color("black") for t in ax[3, 1].xaxis.get_ticklabels()]
+ax[3, 1].set(xlabel="pc")
+fig.text(
+    0.03,
+    0.5,
+    r"$\Sigma_{\rm PopII} \left[ {\rm M_\odot pc^{-2}} \right]$",
+    va="center",
+    rotation="vertical",
+)
+
+plt.savefig(
+    "../../../gdrive_columbia/research/massimo/paper2/bulge_profile.png",
+    dpi=300,
+    bbox_inches="tight",
+    pad_inches=0.05,
+)
+
+plt.show()

@@ -102,6 +102,70 @@ def read_cloud_properties(logsfc_path):
     return t_myr, cloud_metal
 
 
+def read_gas_profs(path, start, stop, step=1):
+    fpaths, snums = filter_snapshots(
+        # "/home/fabg/container_tiramisu/post_processed/gas_properties/CC-Fiducial/",
+        # 306,
+        # 466,
+        path,
+        start,
+        stop,
+        sampling=1,
+        str_snaps=True,
+        snapshot_type="pop2_processed",
+    )
+
+    metal_profile = []
+    times = []
+    metal_radii = []
+
+    for i, file in enumerate(fpaths):
+        f = h5.File(file, "r")
+        dense = f["Profiles/Density"][:]
+        metalbins_mask = dense > 0
+
+        redshift = f["Header/redshift"][()]
+        radius = f["Profiles/Radius"][:][:-1]
+        radius = radius[metalbins_mask]
+
+        metal_profile.append(dense[metalbins_mask])
+        metal_radii.append(radius)
+        times.append(f["Header/time"][()])
+
+        f.close()
+    return metal_radii, metal_profile, times
+
+
+metal_radii, metal_profile, times = read_gas_profs(
+    "/home/fabg/container_tiramisu/post_processed/gas_properties/CC-Fiducial/",
+    304,
+    466,
+)
+fig, ax = plt.subplots(
+    1,
+    1,
+    figsize=(4, 3),
+    dpi=400,
+    sharey=True,
+    sharex=True,
+)
+plt.subplots_adjust(wspace=0.0)
+cbar_ax = ax.inset_axes([0, 1.1, 1, 0.05])
+
+cmap = plt.cm.inferno
+norm = colors.Normalize(vmin=np.min(times), vmax=np.max(times))
+
+for i, t in enumerate(times):
+    ax.plot(metal_radii[i], metal_profile[i], color=cmap(norm(t)))
+
+ax.set(
+    yscale="log",
+    ylabel="Metallicity (Zsun)",
+    xlabel="radial distance (pc)",
+    xscale="log",
+    # ylim=(1e-4, 5),
+)
+plt.show()
 # wnm_mass = []
 # hot_mass = []
 # cnm_mass = []
@@ -203,7 +267,7 @@ plt.show()
 # plt.show()
 # %%
 
-times = np.array(times)
+times = np.array(cc_times)
 
 fig, ax = plt.subplots(
     1,

@@ -194,7 +194,7 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
         metal_ax = ax[i].inset_axes([1.02, 0, 0.4, 1], sharey=ax[i])
 
         metal_ax.tick_params(axis="both", labelleft=False)
-        metal, dn_dlogmetal = log_data_function(metal_zsun_cloud, 30, (1.5e-4, 0.012))
+        metal, dn_dlogmetal = log_data_function(metal_zsun_cloud, 20, (1.5e-4, 0.012))
         metal_ax.plot(
             dn_dlogmetal,
             metal,
@@ -212,7 +212,7 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
         )
         metal_ax.set(xscale="log", xlim=(3, 5e3))
 
-        mass, dn_dlogmass = log_data_function(m_sun_cloud, 30, (2e2, 2e5))
+        mass, dn_dlogmass = log_data_function(m_sun_cloud, 20, (2e2, 2e5))
         hist_ax.plot(
             mass,
             dn_dlogmass,

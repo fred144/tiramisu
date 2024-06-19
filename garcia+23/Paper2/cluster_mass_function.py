@@ -105,6 +105,7 @@ def snapshot_from_time(snapshots, time, split_sym="-", snap_idx=1, time_idx=2):
     """
     uni_age = []
     snapshot = []
+    snap_list = snapshots
     for f in snapshots:
         name = os.path.basename(os.path.normpath(f))
         sn_numbers = float(name.split(split_sym)[snap_idx])
@@ -119,7 +120,7 @@ def snapshot_from_time(snapshots, time, split_sym="-", snap_idx=1, time_idx=2):
     closest_match_idxs = np.argmin(residuals, axis=1).astype(int)
 
     matching_snaps = snapshots[closest_match_idxs]
-    matching_files = list(np.take(snapshots, closest_match_idxs))
+    matching_files = list(np.take(snap_list, closest_match_idxs))
 
     return matching_snaps, matching_files
 
@@ -161,10 +162,10 @@ def plotting_interface(bsc_dirs, pop2_dirs, times, log_sfc, simulation_name, col
     # print(times)
     for n, r in enumerate(bsc_dirs):
         # for the given times, compute the snapshot numbers
-        snap_nums, _ = snapshot_from_time(pop2_dirs[n], times)
+        snap_nums, pop2_dat = snapshot_from_time(pop2_dirs[n], times)
 
         catalog_dirs = take_snapshot(directory=bsc_dirs[n], to_take=snap_nums)
-        # print(catalog_dirs)
+
         logsfc_data = np.loadtxt(os.path.join(log_sfc[n], "logSFC"))
         logsfc_ftime = t_myr_from_z(logsfc_data[:, 2])
         logsfc_formation_mass = logsfc_data[:, 7]
@@ -172,6 +173,9 @@ def plotting_interface(bsc_dirs, pop2_dirs, times, log_sfc, simulation_name, col
         print(catalog_dirs)
 
         for i, cat in enumerate(catalog_dirs):  # loop over the times
+            actual_time = float(
+                os.path.basename(pop2_dat[i]).split("-")[2].replace("_", ".")
+            )
             cat_file = glob.glob(os.path.join(cat, "profiled_*"))[0]
             catalogue = np.loadtxt(cat_file)
             clump_masses = catalogue[:, 8]  # msun
@@ -210,6 +214,24 @@ def plotting_interface(bsc_dirs, pop2_dirs, times, log_sfc, simulation_name, col
             imf_theory = gauss(np.log10(imf_bins_theory), *lognrml_parms)
 
             ax[i].plot(
+                bulge_mass_bins,
+                bulge_dn_dlogm,
+                drawstyle="steps-mid",
+                linewidth=2,
+                alpha=1,
+                color="crimson",
+            )
+            ax[i].fill_between(
+                bulge_mass_bins,
+                bulge_dn_dlogm,
+                step="mid",
+                facecolor="none",
+                edgecolor="crimson",
+                hatch=hatches[n % 2],
+                # label=simulation_name[n],
+            )
+
+            ax[i].plot(
                 imf_bins,
                 imf_counts,
                 drawstyle="steps-mid",
@@ -240,6 +262,17 @@ def plotting_interface(bsc_dirs, pop2_dirs, times, log_sfc, simulation_name, col
                 # ),
             )
 
+            ax[i].text(
+                0.55,
+                0.6,
+                r"$ \mu = {:.1f}, \sigma = {:.1f}$".format(
+                    lognrml_parms[1], np.abs(lognrml_parms[2])
+                ),
+                transform=ax[i].transAxes,
+                fontsize=8,
+                ha="left",
+            )
+
             ax[i].plot(
                 mass_bins,
                 dn_dlogm,
@@ -264,50 +297,59 @@ def plotting_interface(bsc_dirs, pop2_dirs, times, log_sfc, simulation_name, col
                 ls="--",
                 label=r"${{\Gamma = {:.1f}}}$".format(pwr_law_params[0]),
             )
-
-            ax[i].plot(
-                bulge_mass_bins,
-                bulge_dn_dlogm,
-                drawstyle="steps-mid",
-                linewidth=2,
-                alpha=1,
-                color="crimson",
-            )
-            ax[i].fill_between(
-                bulge_mass_bins,
-                bulge_dn_dlogm,
-                step="mid",
-                facecolor="none",
-                edgecolor="crimson",
-                hatch=hatches[n % 2],
-                # label=simulation_name[n],
+            ax[i].text(
+                0.5,
+                0.45,
+                r"${{\Gamma = {:.1f}}}$".format(pwr_law_params[0]),
+                transform=ax[i].transAxes,
+                fontsize=8,
+                ha="right",
             )
 
             ax[i].text(
                 0.95,
                 0.95,
-                r"${{\rm t = {:.0f}\:{{\rm Myr }}}}$".format(times[i]),
+                r"${{\rm t = {:.0f}\:{{\rm Myr }}}}$".format(actual_time),
                 transform=ax[i].transAxes,
                 fontsize=10,
                 verticalalignment="top",
                 horizontalalignment="right",
                 clip_on=False,
             )
+            ax[i].set(xscale="log", yscale="log", xlim=(80, 8e5), ylim=(6e-1, 500))
 
-        for t, _ in enumerate(times):
-            labelLines(
-                ax[t].get_lines(),
-                fontsize=8,
-                color="k",
-                backgroundcolor="none",
-                # ha="right",
-                # va="bottom",
-                align=False,
-                xvals=(1e3, 1e5),
-                yoffsets=0,
-            )
+            # if i == 3:
+            #     yoff = -500
+            # else:
+            #     yoff= -10
 
-    ax[0].set(xscale="log", yscale="log", xlim=(80, 8e5), ylim=(6e-1, 500))
+            # labelLines(
+            #     ax[i].get_lines(),
+            #     zorder=2.5,
+            #     fontsize=8,
+            #     # color="k",
+            #     backgroundcolor="none",
+            #     # ha="right",
+            #     # va="bottom",
+            #     align=False,
+            #     xvals=(100, 2e4),
+            #     yoffsets=yoff,
+            # )
+
+        # for t, _ in enumerate(times):
+
+        #     labelLines(
+        #         ax[t].get_lines(),
+        #         fontsize=8,
+        #         color="k",
+        #         backgroundcolor="none",
+        #         ha="right",
+        #         va="bottom",
+        #         align=True,
+        #         xvals=(1000, 1e4),
+        #         yoffsets=-10,
+        #     )
+
     # sim_handls = []
     # for s, name in enumerate(simulation_name):
     #     sim_legend = mlines.Line2D([], [], color=color[s], ls="-", label=name)
@@ -373,7 +415,7 @@ if __name__ == "__main__":
         filter_snapshots(pop2_dirs[0], 304, 466, 1, snapshot_type="pop2_processed"),
     ]
     # print(pop2_files)
-    wanted_times = [495, 565, 591, 655]  # myr
+    wanted_times = [495, 565, 591, 700]  # myr
 
     plotting_interface(
         bsc_dirs=bsc_dirs,

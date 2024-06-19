@@ -41,7 +41,7 @@ def draw_frame(
     ax.xaxis.set_ticks_position("none")
     ax.set_yticklabels([])
     ax.yaxis.set_ticks_position("none")
-    ax.axis("off")
+    # ax.axis("off")
     # luminosity
     lum = ax.imshow(
         surface_brightness,
