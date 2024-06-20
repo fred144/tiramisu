@@ -102,9 +102,9 @@ def draw_frame(
     # decide which part of the cmap is increasing in alpha
     # the final transparencey is dictatted by
 
-    gascmap = linear_cmap(0.2, 0.9, "cmr", "cubehelix")
-    tempcmap = linear_cmap(0.0, 0.2, "cmr", "cmr.torch")
-    lumcmap = "magma"
+    gascmap = linear_cmap(0.1, 0.6, "mpl", "cubehelix")
+    tempcmap = linear_cmap(0.05, 0.3, "cmr", "cmr.gothic")
+    lumcmap = cmr.amethyst
 
     lum = ax.imshow(
         surface_brightness,
@@ -114,7 +114,14 @@ def draw_frame(
         norm=LogNorm(vmin=lum_range[0], vmax=lum_range[1]),
         alpha=lum_alpha,
     )
-
+    temp = ax.imshow(
+        gaussian_filter(temp_array, gauss_sig),
+        cmap=tempcmap,
+        interpolation="gaussian",
+        origin="lower",
+        extent=[-wdth / 2, wdth / 2, -wdth / 2, wdth / 2],
+        norm=LogNorm(temp_range[0], temp_range[1]),
+    )
     gas = ax.imshow(
         gaussian_filter(
             (gas_array * (u.g / u.cm**2)).to(u.Msun / u.pc**2).value, gauss_sig
@@ -127,15 +134,6 @@ def draw_frame(
             (gas_range[0] * (u.g / u.cm**2)).to(u.Msun / u.pc**2).value,
             (gas_range[1] * (u.g / u.cm**2)).to(u.Msun / u.pc**2).value,
         ),
-    )
-
-    temp = ax.imshow(
-        gaussian_filter(temp_array, gauss_sig),
-        cmap=tempcmap,
-        interpolation="gaussian",
-        origin="lower",
-        extent=[-wdth / 2, wdth / 2, -wdth / 2, wdth / 2],
-        norm=LogNorm(temp_range[0], temp_range[1]),
     )
 
     # add scale
@@ -245,8 +243,8 @@ if __name__ == "__main__":
     datadir = os.path.expanduser("~/test_data/CC-Fiducial/")
     fpaths, snums = filter_snapshots(
         datadir,
-        304,
-        304,
+        303,
+        303,
         sampling=1,
         str_snaps=True,
         snapshot_type="ramses_snapshot",
@@ -257,7 +255,7 @@ if __name__ == "__main__":
     #                         timelapse paramaters
     # =============================================================================
 
-    pw = 300  # plot width on one side in pc
+    pw = 640  # plot width on one side in pc
     r_sf = 500  # radii for sf in pc
     gas_res = 1000  # resolution of the fixed resolution buffer
 
@@ -276,7 +274,7 @@ if __name__ == "__main__":
     check_path(render_container)
 
     ## panning
-    zoom_pw = 400
+    zoom_pw = 150
     star_bins = 2000
     pxl_size = (pw / star_bins) ** 2  # pc
 
@@ -291,7 +289,7 @@ if __name__ == "__main__":
             np.linspace(zoom_pw, pw, int(pan_frames / num_rots)),
         ]
     )
-    pause_and_rotate = [303]
+    pause_and_rotate = [301]
 
     for i, fp in enumerate(fpaths):
         print("# ____________________________________________________________________")
