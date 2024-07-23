@@ -100,7 +100,7 @@ star_bins = 2000
 pxl_size = (pw / star_bins) ** 2
 dens_norm = LogNorm(0.001, 1e4)
 temp_norm = LogNorm(2e3, 8e6)
-met_norm = LogNorm(9e-4, 5)
+met_norm = LogNorm(9e-4 * 3.81, 8)
 vrad_norm = colors.SymLogNorm(linthresh=10, linscale=1, vmin=-4e3, vmax=4e3)
 stellar_dens_norm = LogNorm(2, 2e4)
 
@@ -310,7 +310,7 @@ for i, s in enumerate(snaps):
             norm=vrad_norm,
         )
         metal = mex.imshow(
-            prjctns[3] / zsun,
+            prjctns[3] * 3.81 / zsun,
             cmap=metal_cmap,
             interpolation="gaussian",
             origin="lower",

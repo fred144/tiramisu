@@ -153,7 +153,7 @@ def plotting_interface(bsc_dirs, pop2_dirs, times, log_sfc, simulation_name, col
     bns = 16
     max_alpha = 10
     fig, ax = plt.subplots(
-        nrows=2, ncols=2, sharex=True, sharey=True, figsize=(5.5, 5), dpi=300
+        nrows=1, ncols=4, sharex=True, sharey=True, figsize=(12, 3), dpi=300
     )
     ax = ax.ravel()
     plt.subplots_adjust(hspace=0, wspace=0)
@@ -383,7 +383,8 @@ def plotting_interface(bsc_dirs, pop2_dirs, times, log_sfc, simulation_name, col
         ha="center",
     )
 
-    fig.text(0.03, 0.5, r"$N_{\rm star \: cluster}$", va="center", rotation="vertical")
+    # fig.text(0.03, 0.5, r"$N_{\rm star \: cluster}$", va="center", rotation="vertical")
+    ax[0].set(ylabel=r"$M_{\rm star \: cluster}\:\left[ \mathrm{M}_{\odot} \right] $")
 
 
 if __name__ == "__main__":

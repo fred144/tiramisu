@@ -86,10 +86,10 @@ def read_mean_metallicities(path, start, stop, step=1):
     times = []
     for i, file in enumerate(fpaths):
         f = h5.File(file, "r")
-        galaxy_metal.append(f["Galaxy/MeanMetallicity"][()])
-        cgm_metal.append(f["CGM/MeanMetallicity"][()])
-        igm_metal.append(f["IGM/MeanMetallicity"][()])
-        mean_metal.append(f["Halo/MeanMetallicity"][()])
+        galaxy_metal.append(f["Galaxy/MeanMetallicity"][()] * 3.81)
+        cgm_metal.append(f["CGM/MeanMetallicity"][()] * 3.81)
+        igm_metal.append(f["IGM/MeanMetallicity"][()] * 3.81)
+        mean_metal.append(f["Halo/MeanMetallicity"][()] * 3.81)
         times.append(f["Header/time"][()])
         f.close()
 
@@ -102,7 +102,7 @@ def read_cloud_properties(logsfc_path):
     log_sfc = np.loadtxt(logsfc_path)
     redshift = log_sfc[:, 2]
     t_myr = t_myr_from_z(redshift)
-    cloud_metal = log_sfc[:, 9]
+    cloud_metal = log_sfc[:, 9] * 3.81
     return t_myr, cloud_metal
 
 
@@ -119,18 +119,24 @@ def read_cloud_properties(logsfc_path):
 # %%
 
 
-cc_times, cc_mass, cc_metalmass = read_outflow_rates(
+cc_times, cc_mass, cc_metalmass, cc_mass_in, cc_metalmass_in = read_outflow_rates(
     "/home/fabg/container_tiramisu/post_processed/gas_properties/CC-Fiducial/",
     153,
     466,
 )
-f7_times, f7_mass, f7_metalmass = read_outflow_rates(
+f7_times, f7_mass, f7_metalmass, f7_mass_in, f7_metalmass_in = read_outflow_rates(
     "/home/fabg/container_tiramisu/post_processed/gas_properties/fs07_refine/",
     115,
     1570,
     step=6,
 )
-f3_times, f3_mass, f3_metalmass = read_outflow_rates(
+(
+    f3_times,
+    f3_mass,
+    f3_metalmass,
+    f3_mass_in,
+    f3_metalmass_in,
+) = read_outflow_rates(
     "/home/fabg/container_tiramisu/post_processed/gas_properties/fs035_ms10/",
     200,
     1606,
@@ -174,7 +180,7 @@ high_clr = cmap[1]
 low_clr = cmap[2]
 
 
-fig, ax = plt.subplots(3, 1, figsize=(5, 6), dpi=300, sharex=True, sharey=True)
+fig, ax = plt.subplots(3, 1, figsize=(5, 7), dpi=300, sharex=True, sharey=True)
 redshft_ax = ax[0].twiny()
 plt.subplots_adjust(hspace=0, wspace=0)
 ax[0].plot(cc_times, cc_galaxy_metal, label="SF region", color="k", lw=2)
@@ -183,18 +189,21 @@ ax[0].plot(
     cc_times,
     cc_metalmass / cc_mass,
     label="outflows",
-    color=cmap[6],
+    color="tab:red",
     ls=":",
     lw=2,
 )
+ax[0].plot(cc_times, cc_metalmass_in / cc_mass_in, ls="--", label="inflows", lw=2)
 
 ax[1].plot(f70_times, f70_galaxy_metal, label="SF region", color="k", lw=2)
 ax[1].plot(f70_times, f70_cgm_metal, label="CGM", color="grey", lw=2)
-ax[1].plot(f7_times, f7_metalmass / f7_mass, color=cmap[6], ls=":", lw=2)
+ax[1].plot(f7_times, f7_metalmass / f7_mass, color="tab:red", ls=":", lw=2)
+ax[1].plot(f7_times, f7_metalmass_in / f7_mass_in, ls="--", lw=2)
 
 ax[2].plot(f35_times, f35_galaxy_metal, label="SF region", color="k", lw=2)
 ax[2].plot(f35_times, f35_cgm_metal, label="CGM", color="grey", lw=2)
-ax[2].plot(f3_times, f3_metalmass / f3_mass, color=cmap[6], ls=":", lw=2)
+ax[2].plot(f3_times, f3_metalmass / f3_mass, color="tab:red", ls=":", lw=2)
+ax[2].plot(f3_times, f3_metalmass_in / f3_mass_in, ls="--", lw=2)
 
 ax[0].scatter(t_myr, cloud_metal, alpha=0.1, s=10, c=vsfe_clr, marker="o")
 ax[1].scatter(f70_t_myr, f70_cloud_metal, alpha=0.1, s=10, c=high_clr, marker="o")
@@ -202,11 +211,11 @@ ax[2].scatter(f35_t_myr, f35_cloud_metal, alpha=0.1, s=10, c=low_clr, marker="o"
 
 # ax.axvline(x=590)
 # ax.axvline(x=575)
-ax[0].legend(frameon=False, loc="lower right")
+ax[0].legend(frameon=False, loc="lower right", ncols=2)
 
 ax[0].set(
     xlim=(340, 718),
-    ylim=(3e-4, 5e-2),
+    ylim=(8e-4, 0.3),
 )
 
 ax[0].minorticks_on()

@@ -162,7 +162,8 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
         m_sun_cloud = log_sfc[:, 5][mask]
         m_sun_stars = log_sfc[:, 7][mask]
         n_hydrogen = log_sfc[:, 8][mask]
-        metal_zsun_cloud = log_sfc[:, 9][mask]  # metalicity is normalized to z_sun
+        # metalicity is normalized to z_sun
+        metal_zsun_cloud = log_sfc[:, 9][mask] * 3.81
 
         print(delta_t_form.max())
         if sfe[i] == "constant":
@@ -194,7 +195,9 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
         metal_ax = ax[i].inset_axes([1.02, 0, 0.4, 1], sharey=ax[i])
 
         metal_ax.tick_params(axis="both", labelleft=False)
-        metal, dn_dlogmetal = log_data_function(metal_zsun_cloud, 20, (1.5e-4, 0.012))
+        metal, dn_dlogmetal = log_data_function(
+            metal_zsun_cloud, 20, (1.5e-4 * 3.81, 0.012 * 3.81)
+        )
         metal_ax.plot(
             dn_dlogmetal,
             metal,

@@ -114,14 +114,14 @@ def draw_frame(
         norm=LogNorm(vmin=lum_range[0], vmax=lum_range[1]),
         alpha=lum_alpha,
     )
-    temp = ax.imshow(
-        gaussian_filter(temp_array, gauss_sig),
-        cmap=tempcmap,
-        interpolation="gaussian",
-        origin="lower",
-        extent=[-wdth / 2, wdth / 2, -wdth / 2, wdth / 2],
-        norm=LogNorm(temp_range[0], temp_range[1]),
-    )
+    # temp = ax.imshow(
+    #     gaussian_filter(temp_array, gauss_sig),
+    #     cmap=tempcmap,
+    #     interpolation="gaussian",
+    #     origin="lower",
+    #     extent=[-wdth / 2, wdth / 2, -wdth / 2, wdth / 2],
+    #     norm=LogNorm(temp_range[0], temp_range[1]),
+    # )
     gas = ax.imshow(
         gaussian_filter(
             (gas_array * (u.g / u.cm**2)).to(u.Msun / u.pc**2).value, gauss_sig
@@ -161,7 +161,7 @@ def draw_frame(
     ax.add_patch(scale)
 
     ##add the luminosity color bar
-    lum_cbar_ax = ax.inset_axes([0.19, 0.03, 0.010, 0.18])
+    lum_cbar_ax = ax.inset_axes([0.10, 0.03, 0.010, 0.18])
     lum_cbar = fig.colorbar(lum, cax=lum_cbar_ax, pad=0)
     # lum_cbar_ax.yaxis.set_ticks_position("left")
     lum_cbar_ax.set_ylabel(
@@ -176,12 +176,12 @@ def draw_frame(
         r"Surface Density [$\mathrm{ M_\odot \: pc^{-2}}$]", fontsize=11
     )
     # temp
-    temp_cbar_ax = ax.inset_axes([0.12, 0.03, 0.010, 0.18])
-    temp_cbar = fig.colorbar(temp, cax=temp_cbar_ax, pad=0)
-    # gas_cbar_ax.yaxis.set_ticks_position("left")
-    temp_cbar_ax.set_ylabel(
-        r"WeightedTemperature $\mathrm{ \left[K\right]}$", fontsize=11
-    )
+    # temp_cbar_ax = ax.inset_axes([0.12, 0.03, 0.010, 0.18])
+    # temp_cbar = fig.colorbar(temp, cax=temp_cbar_ax, pad=0)
+    # # gas_cbar_ax.yaxis.set_ticks_position("left")
+    # temp_cbar_ax.set_ylabel(
+    #     r"WeightedTemperature $\mathrm{ \left[K\right]}$", fontsize=11
+    # )
 
     ##add time and redshift
     ax.text(
@@ -461,7 +461,7 @@ if __name__ == "__main__":
                 render_container, "{}-{}.png".format(render_nickname, snums[i])
             )
 
-            # plt.show()
+            plt.show()
             plt.savefig(
                 os.path.expanduser(output_path),
                 dpi=250,
