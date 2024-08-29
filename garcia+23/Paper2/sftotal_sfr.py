@@ -62,13 +62,14 @@ def plotting_interface(run_logpath, simulation_name, color):
         total_mass = total_mass_interpolator(t_interp_points)
         # calculate the sfr in msun / yr
         sfr = np.gradient(total_mass) / (sfr_binwidth_myr * 1e6)
+        peak_sfr = np.max(sfr[t_interp_points < 800])
         print(
             "sfr peaks at",
-            t_interp_points[t_interp_points < 700][
-                np.argmax(sfr[t_interp_points < 700])
+            t_interp_points[t_interp_points < 800][
+                np.argmax(sfr[t_interp_points < 800])
             ],
             "with value",
-            np.max(sfr[t_interp_points < 700]),
+            peak_sfr,
         )
         earliest_times.append(t_myr.min())
         latest_times.append(t_myr.max())
@@ -81,6 +82,7 @@ def plotting_interface(run_logpath, simulation_name, color):
             linewidth=4,
             # alpha=0.8,
         )
+        print("latest mass {:.2e}".format(np.max(total_mass)))
         ax[i + 1].plot(
             t_interp_points,
             sfr,
@@ -92,7 +94,7 @@ def plotting_interface(run_logpath, simulation_name, color):
         ax[i + 1].minorticks_on()
         ax[i + 1].locator_params(axis="y", nbins=4)
 
-        sf_times = t_interp_points[np.argwhere(sfr > 0.001)]
+        sf_times = t_interp_points[np.argwhere(sfr > peak_sfr * 0.05)]
         # trange = t_interp_points[-1] - t_interp_points[0]
         print(sf_times.size)
         print(t_interp_points.size)
@@ -159,7 +161,7 @@ def plotting_interface(run_logpath, simulation_name, color):
     # event labels
 
     ax[1].axvspan(465, 485, facecolor="grey", alpha=0.3)
-    ax[1].axvspan(565, 585, facecolor="grey", alpha=0.3)
+    ax[1].axvspan(565, 588, facecolor="grey", alpha=0.3)
     ax[1].text(465, 0.1, "(a)", ha="right", va="center", fontsize=9)
     ax[1].text(565, 0.1, "(b)", ha="right", va="center", fontsize=9)
 
@@ -176,7 +178,7 @@ def plotting_interface(run_logpath, simulation_name, color):
     ax[3].text(405, 0.01, "(e)", ha="right", va="center", fontsize=9)
     ax[3].text(475, 0.01, "(f)", ha="right", va="center", fontsize=9)
     ax[3].text(535, 0.01, "(g)", ha="right", va="center", fontsize=9)
-    ax[3].text(585, 0.01, "(h)", ha="right", va="center", fontsize=9)
+    ax[3].text(635, 0.01, "(h)", ha="right", va="center", fontsize=9)
     # ax[3].axvspan(660, 678, facecolor="grey", alpha=0.3)
 
     # ax[0].grid(ls="--", which="both")

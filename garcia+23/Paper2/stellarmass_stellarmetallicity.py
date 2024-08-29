@@ -16,6 +16,7 @@ import matplotlib as mpl
 import cmasher as cmr
 from matplotlib.lines import Line2D
 import matplotlib.patches as mpatches
+import pandas as pd
 
 
 def snapshot_from_time(snapshots, time, split_sym="-", snap_idx=1, time_idx=2):
@@ -62,7 +63,7 @@ def snapshot_from_time(snapshots, time, split_sym="-", snap_idx=1, time_idx=2):
     return matching_snaps, matching_files
 
 
-def zstellar_mstellar(
+def running_zstellar_mstellar(
     logSFC,
     gas_prop_dir,
     start,
@@ -76,7 +77,7 @@ def zstellar_mstellar(
     # print(t_myr)
     mass_in_star = np.cumsum(log_sfc[:, 7])
 
-    cloud_zsun = log_sfc[:, 9]
+    cloud_zsun = log_sfc[:, 9] * 3.81
     running_avg = []
 
     # compute the running average such that as more and more clouds/ stars are made,
@@ -134,7 +135,7 @@ def zstellar_mstellar(
 
 # %% running average
 
-cc_mstar, cc_zstar = zstellar_mstellar(
+cc_mstar_running, cc_zstar_running = running_zstellar_mstellar(
     "/home/fabg/container_tiramisu/sim_log_files/CC-Fiducial/logSFC",
     "/home/fabg/container_tiramisu/post_processed/gas_properties/CC-Fiducial",
     356,
@@ -142,7 +143,7 @@ cc_mstar, cc_zstar = zstellar_mstellar(
     sampling_tmyr=20,
 )
 
-f7_mstar, f7_zstar = zstellar_mstellar(
+f7_mstar_running, f7_zstar_running = running_zstellar_mstellar(
     "/home/fabg/container_tiramisu/sim_log_files/fs07_refine/logSFC",
     "/home/fabg/container_tiramisu/post_processed/gas_properties/fs07_refine/",
     115,
@@ -150,7 +151,7 @@ f7_mstar, f7_zstar = zstellar_mstellar(
     sampling_tmyr=20,
 )
 
-f3_mstar, f3_zstar = zstellar_mstellar(
+f3_mstar_running, f3_zstar_running = running_zstellar_mstellar(
     "/home/fabg/container_tiramisu/sim_log_files/fs035_ms10/logSFC",
     "/home/fabg/container_tiramisu/post_processed/gas_properties/fs035_ms10/",
     100,
@@ -170,30 +171,30 @@ fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(4.5, 4), dpi=300)
 # ax.scatter(f3_mstar, f3_zgas, color=low_clr, alpha=0.8)
 
 ax.scatter(
-    cc_mstar,
-    cc_zstar,
+    np.log10(cc_mstar_running),
+    np.log10(cc_zstar_running),
     color=vsfe_clr,
-    edgecolors="black",
-    alpha=0.9,
-    s=50,
+    edgecolors="none",
+    alpha=0.8,
+    s=20,
     label="VSFE",
 )
 ax.scatter(
-    f7_mstar,
-    f7_zstar,
+    np.log10(f7_mstar_running),
+    np.log10(f7_zstar_running),
     color=high_clr,
-    edgecolors="black",
-    s=50,
-    alpha=0.9,
+    edgecolors="none",
+    alpha=0.8,
+    s=20,
     label="high SFE",
 )
 ax.scatter(
-    f3_mstar,
-    f3_zstar,
+    np.log10(f3_mstar_running),
+    np.log10(f3_zstar_running),
     color=low_clr,
-    edgecolors="black",
-    alpha=0.9,
-    s=50,
+    edgecolors="none",
+    alpha=0.8,
+    s=20,
     label="low SFE",
 )
 
@@ -201,21 +202,35 @@ ax.scatter(
 ax.set(
     xlabel=r"$M_{\rm \star} [{\rm M_\odot}]$",
     ylabel=r"$\langle Z_{\rm \star} \rangle \:  [{\rm Z_\odot}]$",
-    xscale="log",
-    yscale="log",
-    ylim=(2e-4, 5e-3),
-    xlim=(2e2, 2e6),
 )
-ax.legend(frameon=False)
+ax.legend(frameon=False, loc="upper left")
+ax.set(
+    # xlabel=r"$M_{\rm \star} [{\rm M_\odot}]$",
+    ylabel=r"$\log \: \langle Z_\star \rangle \:  [{\rm Z_\odot}]$",
+    # xscale="log",
+    # yscale="log",
+    ylim=(-3.38, -1.4),
+    xlim=(2.5, 6.5),
+)
+ax.text(
+    0.95, 0.95, "binned, cumulative", ha="right", va="top", transform=ax.transAxes
+)
 
-# plt.savefig(
-#     "../../../gdrive_columbia/research/massimo/paper2/Meanmetal_vs_Mstar-interpolated.png",
-#     dpi=300,
-#     bbox_inches="tight",
-#     pad_inches=0.05,
-# )
+
+obs2 = ax.twinx()
+obs2.locator_params(axis="y")
+obs2.set(ylim=(-3.38, -1.4), ylabel=r"log (O/H) + 12")
+obs2.set_yticklabels(list(np.round(obs2.get_yticks() + 8.69, 1).astype("str")))
+ax.minorticks_on()
+obs2.minorticks_on()
+
+plt.savefig(
+    "../../../gdrive_columbia/research/massimo/paper2/Meanmetal_vs_Mstar-binned_cumu.png",
+    dpi=300,
+    bbox_inches="tight",
+    pad_inches=0.05,
+)
 plt.show()
-
 
 # %% binned
 from scipy.stats import binned_statistic
@@ -243,7 +258,7 @@ def zstellar_mstellar_binned(
     cloud_metal_interp = interpolate.interp1d(x=t_myr, y=cloud_zsun, kind="previous")
     cloud_zsun = cloud_metal_interp(interp_tmyr)
 
-    plot_myr_bins = np.arange(t_myr.min(), t_myr.max(), 10)
+    plot_myr_bins = np.arange(t_myr.min(), t_myr.max(), sampling_tmyr)
     bin_means, bin_edges, binnumber = binned_statistic(
         interp_tmyr, cloud_zsun, statistic="mean", bins=plot_myr_bins
     )
@@ -318,8 +333,9 @@ def zstellar_mstellar_binned(
 cc_mstar, cc_zstar, cc_zgas = zstellar_mstellar_binned(
     "/home/fabg/container_tiramisu/sim_log_files/CC-Fiducial/logSFC",
     "/home/fabg/container_tiramisu/post_processed/gas_properties/CC-Fiducial",
-    153,
+    173,
     466,
+    sampling_tmyr=10,
 )
 
 f7_mstar, f7_zstar, f7_zgas = zstellar_mstellar_binned(
@@ -327,6 +343,7 @@ f7_mstar, f7_zstar, f7_zgas = zstellar_mstellar_binned(
     "/home/fabg/container_tiramisu/post_processed/gas_properties/fs07_refine/",
     115,
     1570,
+    sampling_tmyr=10,
 )
 
 f3_mstar, f3_zstar, f3_zgas = zstellar_mstellar_binned(
@@ -334,135 +351,185 @@ f3_mstar, f3_zstar, f3_zgas = zstellar_mstellar_binned(
     "/home/fabg/container_tiramisu/post_processed/gas_properties/fs035_ms10/",
     100,
     1606,
+    sampling_tmyr=10,
 )
 # %%
+
+
+def local_mz_relation(logmass):
+    """
+    from Kirby + 11
+    """
+    return -2.5 + 0.333 * (logmass - 4.0)
+
+
+def high_z_mz_relation(logmass):
+    """
+
+    translated: 12 + log(O/H) = 8.69 Zsun
+
+    """
+    # return -1.01 + 0.33 * (logmass - 8.5) #from Nakajima+23
+    # return -2.95 + 0.25  * (logmass) #from Nakajima+23
+    return -2.31 + 0.17 * logmass
+
+
 fig, ax = plt.subplots(
-    nrows=2,
+    nrows=3,
     ncols=1,
     sharex=True,
-    figsize=(5, 5),
+    figsize=(4.6, 8),
     dpi=300,
-    gridspec_kw={"height_ratios": [4, 2]},
+    gridspec_kw={"height_ratios": [4, 4, 2]},
 )
 plt.subplots_adjust(wspace=0, hspace=0)
-ax[0].scatter(
-    cc_mstar[3::], cc_zgas[3::], color=vsfe_clr, edgecolors="black", alpha=0.8
-)
-ax[0].scatter(f7_mstar, f7_zgas, color=high_clr, edgecolors="black", alpha=0.8)
-ax[0].scatter(f3_mstar, f3_zgas, color=low_clr, edgecolors="black", alpha=0.8)
 
+# stelllar metallicities
 ax[0].scatter(
-    cc_mstar,
-    cc_zstar,
+    np.log10(cc_mstar),
+    np.log10(cc_zstar),
     color=vsfe_clr,
-    edgecolors="black",
-    alpha=0.9,
-    # s=60,
+    edgecolors="none",
+    alpha=0.8,
     label="VSFE",
-    marker="s",
+    s=20,
+    # marker="s",
 )
 ax[0].scatter(
-    f7_mstar,
-    f7_zstar,
+    np.log10(f7_mstar),
+    np.log10(f7_zstar),
     color=high_clr,
-    edgecolors="black",
-    # s=60,
-    alpha=0.9,
-    label="high SFE",
-    marker="s",
+    edgecolors="none",
+    alpha=0.8,
+    s=20,
+    label="HSFE",
 )
 ax[0].scatter(
-    f3_mstar,
-    f3_zstar,
+    np.log10(f3_mstar),
+    np.log10(f3_zstar),
     color=low_clr,
-    edgecolors="black",
-    alpha=0.9,
-    # s=60,
-    label="low SFE",
-    marker="s",
+    edgecolors="none",
+    alpha=0.8,
+    s=20,
+    label="LSFE",
 )
 
-# gas properties of the SF region
-# note the gas properties are so low because the gas
-ax[0].scatter(cc_mstar, cc_zgas, color=vsfe_clr, edgecolors="black", alpha=0.7, s=50)
-ax[0].scatter(f7_mstar, f7_zgas, color=high_clr, edgecolors="black", alpha=0.7, s=50)
-ax[0].scatter(f3_mstar, f3_zgas, color=low_clr, edgecolors="black", alpha=0.7, s=50)
-
-x = np.geomspace(5e4, 2e6, 20)
-ax[0].plot(x, 1e-6 * x**0.7, "--k")
-
-
+# gas metallicities
 ax[1].scatter(
-    cc_mstar,
-    np.log10(cc_zstar / cc_zgas),
+    np.log10(cc_mstar),
+    np.log10(cc_zgas),
     color=vsfe_clr,
-    # edgecolors="black",
-    s=5,
-    # alpha=0.7,
+    edgecolors="none",
+    alpha=0.8,
+    s=20,
 )
+
+
 ax[1].scatter(
-    f7_mstar,
-    np.log10(f7_zstar / f7_zgas),
+    np.log10(f7_mstar),
+    np.log10(f7_zgas),
     color=high_clr,
-    # edgecolors="black",
-    s=5,
-    # alpha=0.7,
+    edgecolors="none",
+    alpha=0.8,
+    s=20,
 )
 ax[1].scatter(
-    f3_mstar,
-    np.log10(f3_zstar / f3_zgas),
+    np.log10(f3_mstar),
+    np.log10(f3_zgas),
     color=low_clr,
-    # edgecolors="black",
-    s=5,
-    # alpha=0.7,
+    edgecolors="none",
+    alpha=0.8,
+    s=20,
 )
 
 
-ax[1].set(
-    xlabel=r"$M_{\rm \star} [{\rm M_\odot}]$",
-    ylabel=r"$\log (Z_{\rm \star} / Z_{\rm gas})$",
-    xscale="log",
-    # yscale="log"
-    ylim=(-0.5, 0.5),
-    # xlim=(2e2, 2e6),
-)
-ax[1].minorticks_on()
-ax[1].locator_params(axis="y", nbins=4)
+ax[2].scatter(np.log10(cc_mstar), np.log10(cc_zstar / cc_zgas), color=vsfe_clr, s=5)
+ax[2].scatter(np.log10(f7_mstar), np.log10(f7_zstar / f7_zgas), color=high_clr, s=5)
+ax[2].scatter(np.log10(f3_mstar), np.log10(f3_zstar / f3_zgas), color=low_clr, s=5)
 
-handles, labels = ax[0].get_legend_handles_labels()
+metal = np.geomspace(3e4, 2e7, 20)
+# ax[0].plot(
+#     np.log10(metal),
+#     high_z_mz_relation(np.log10(metal)),
+#     color="grey",
+#     lw=4,
+#     label="Kirby+ 13",
+#     zorder=0,
+# )
 
 
 ax[0].set(
     # xlabel=r"$M_{\rm \star} [{\rm M_\odot}]$",
-    ylabel=r"$\langle Z \rangle \:  [{\rm Z_\odot}]$",
-    xscale="log",
-    yscale="log",
-    ylim=(5e-4, 9e-2),
-    xlim=(7e2, 2e6),
+    ylabel=r"$\log \: \langle Z_\star \rangle \:  [{\rm Z_\odot}]$",
+    # xscale="log",
+    # yscale="log",
+    ylim=(-3.38, -1.4),
+    xlim=(2.5, 6.5),
 )
-ax[0].legend(frameon=False)
-colors = ["lightgrey", "lightgrey"]
-lw = [0, 0]
-ls = ["s", "o"]
-s = [8, 8]
-labels = ["Pop II", "gas"]
-lines = [
-    Line2D(
-        [0],
-        [0],
-        color=c,
-        markersize=s[i],
-        linewidth=lw[i],
-        marker=ls[i],
-        label=labels[i],
-    )
-    for i, c in enumerate(colors)
-]
-handles.extend(lines)
-ax[0].legend(handles=handles, ncols=2, frameon=False, loc="upper left", fontsize=10)
+ax[0].legend(frameon=False, loc="lower right")
+
+
+obs2 = ax[0].twinx()
+obs2.locator_params(axis="y")
+obs2.set(ylim=(-3.38, -1.4), ylabel=r"log (O/H) + 12")
+obs2.set_yticklabels(list(np.round(obs2.get_yticks() + 8.69, 1).astype("str")))
+ax[0].minorticks_on()
+obs2.minorticks_on()
+
+
+ax[1].set(
+    # xlabel=r"$M_{\rm \star} [{\rm M_\odot}]$",
+    ylabel=r"$\log \: \langle Z_{\rm gas} \rangle \:  [{\rm Z_\odot}]$",
+    # xscale="log",
+    # yscale="log",
+    ylim=(-3.38, -1.4),
+    xlim=(2.5, 6.5),
+)
+ax[1].minorticks_on()
+
+obs2 = ax[1].twinx()
+obs2.locator_params(axis="y")
+obs2.set(ylim=(-3.38, -1.4), ylabel=r"log (O/H) + 12")
+obs2.set_yticklabels(list(np.round(obs2.get_yticks() + 8.69, 1).astype("str")))
+ax[1].minorticks_on()
+obs2.minorticks_on()
+
+
+ax[2].set(
+    xlabel=r"$\log \:  M_{\rm \star} [{\rm M_\odot}]$",
+    ylabel=r"$\log (Z_{\rm \star} / Z_{\rm gas})$",
+    ylim=(-0.5, 0.5),
+)
+ax[2].minorticks_on()
+ax[2].locator_params(axis="y", nbins=4)
+
+
+ax[0].text(
+    0.05, 0.95, "binned, instantaneous", ha="left", va="top", transform=ax[0].transAxes
+)
+
+# colors = ["lightgrey", "lightgrey"]
+# lw = [0, 0]
+# ls = ["s", "o"]
+# s = [8, 8]
+# labels = ["Pop II", "gas"]
+# lines = [
+#     Line2D(
+#         [0],
+#         [0],
+#         color=c,
+#         markersize=s[i],
+#         linewidth=lw[i],
+#         marker=ls[i],
+#         label=labels[i],
+#     )
+#     for i, c in enumerate(colors)
+# ]
+# handles.extend(lines)
+# ax[0].legend(handles=handles, ncols=2, frameon=False, loc="upper left", fontsize=9)
 
 plt.savefig(
-    "../../../gdrive_columbia/research/massimo/paper2/Meanmetal_vs_Mstar-binned.png",
+    "../../../gdrive_columbia/research/massimo/paper2/Meanmetal_vs_Mstar-binned_inst.png",
     dpi=300,
     bbox_inches="tight",
     pad_inches=0.05,

@@ -137,7 +137,7 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
 
     hist_ax = ax[2].inset_axes([0, -0.52, 1, 0.5], sharex=ax[2])
     hist_ax.set_ylabel(
-        r"$\mathrm{d} N / {\rm d}\log \:\left({ M_{\rm cloud}}/\rm{M}_{\odot}\right)$",
+        r"$\mathrm{d} N / {\rm d}\log \:\left({ M_{\rm cloud}} {\rm{M}_{\odot}} \right)$",
         loc="bottom",
     )
     hist_ax.sharex(ax[2])
@@ -165,7 +165,7 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
         # metalicity is normalized to z_sun
         metal_zsun_cloud = log_sfc[:, 9][mask] * 3.81
 
-        print(delta_t_form.max())
+        print(t_form[1] - t_form[0], redshft.max())
         if sfe[i] == "constant":
             sfe_val = (
                 star_formation_efficiency(n_hydrogen, m_sun_cloud, metal_zsun_cloud)
@@ -176,12 +176,14 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
         else:
             print("sfe is ether constant or variable")
             raise ValueError
-
-        normalize = matplotlib.colors.Normalize(vmin=250, vmax=685)
+        # print(sfe_val[np.argmin(metal_zsun_cloud)])
+        # normalize = matplotlib.colors.LogNorm(vmin=1, vmax=100)
+        normalize = matplotlib.colors.Normalize(vmin=340, vmax=790)
         sfe_scatter = ax[i].scatter(
             m_sun_cloud,
             metal_zsun_cloud,
             c=t_form,
+            # c=sfe_val,
             # label=simulation_name[i],
             cmap=cmr.tropical_r,
             marker=marker[i],
@@ -251,7 +253,7 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
     metal_ax.set(
         xlabel=r"$\mathrm{dN / d\log}$"
         "\n"
-        r"$\left( Z_{\rm cloud}/ \rm{Z}_{\odot}\right)$",
+        r"$\left( \frac{Z_{\rm cloud}}{\rm{Z}_{\odot}}\right)$",
     )
     ax[1].set(
         ylabel=r"$Z_{\rm cloud}\:\left[\mathrm{Z}_\odot \right]$",
@@ -268,7 +270,7 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
     )
     dens_bar.ax.xaxis.set_label_position("top")
     dens_bar.ax.xaxis.set_ticks_position("top")
-    dens_bar.ax.locator_params(nbins=12)
+    # dens_bar.ax.locator_params(nbins=12)
 
 
 if __name__ == "__main__":
@@ -277,18 +279,18 @@ if __name__ == "__main__":
 
     colors = [
         cmap[0],
-        cmap[2],
         cmap[1],
+        cmap[2],
     ]
     runs = [
         "../../../container_tiramisu/sim_log_files/CC-Fiducial",
-        "../../../container_tiramisu/sim_log_files/fs035_ms10",
         "../../../container_tiramisu/sim_log_files/fs07_refine",
+        "../../../container_tiramisu/sim_log_files/fs035_ms10",
     ]
     names = [
         "VSFE",
-        "low SFE",
-        "high SFE",
+        "HSFE",
+        "LSFE",
     ]
     markers = [
         "o",

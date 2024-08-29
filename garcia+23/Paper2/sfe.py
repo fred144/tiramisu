@@ -93,7 +93,7 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
     # ax = ax.ravel()
     hist_ax_right = ax.inset_axes([1.02, 0, 0.4, 1], sharey=ax)
     hist_ax_right.set_xlabel(r"$\mathrm{PDF (SFE)}$", fontsize=10)
-    hist_ax_right.tick_params(axis="both", labelleft=False, labelsize=6)
+    hist_ax_right.tick_params(axis="both", labelleft=False, labelsize=5)
     plt.subplots_adjust(wspace=0.0)
     # latest_redshift = 9.12 # before second starburst
     latest_redshift = 5
@@ -115,6 +115,7 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
         metal_zsun_cloud = log_sfc[:, 9][mask]  # metalicity is normalized to z_sun
         t_form = t_myr_from_z(redshft)
         delta_tform = t_form - t_form.min()
+
         print(len(m_sun_cloud))
         if sfe[i] == "constant":
             sfe_val = (
@@ -127,38 +128,108 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
             print("sfe is ether constant or variable")
             raise ValueError
 
+        first_gen = t_form < 500
         sfe_scatter = ax.scatter(
-            m_sun_cloud,
-            sfe_val,
+            m_sun_cloud[first_gen],
+            sfe_val[first_gen],
             # c=t_form,
-            c=np.log10(n_hydrogen),
+            c=np.log10(n_hydrogen[first_gen]),
             # label=simulation_name[i],
             cmap=cmr.tropical,
             marker=marker[i],
             edgecolors="black",
+            linewidth=1,
+            s=40,
+            alpha=0.7,
+            vmin=np.min(np.log10(n_hydrogen)),
+            vmax=np.max(np.log10(n_hydrogen)),
+        )
+
+        sfe_scatter = ax.scatter(
+            m_sun_cloud[~first_gen],
+            sfe_val[~first_gen],
+            # c=t_form,
+            c=np.log10(n_hydrogen[~first_gen]),
+            # label=simulation_name[i],
+            cmap=cmr.tropical,
+            marker="s",
+            edgecolors="black",
             linewidth=0.5,
             s=40,
             alpha=0.7,
+            vmin=np.min(np.log10(n_hydrogen)),
+            vmax=np.max(np.log10(n_hydrogen)),
         )
-        print(np.max(sfe_val))
+
+        print(
+            "highest sfe",
+            np.max(sfe_val),
+            "with density",
+            n_hydrogen[np.argmax(sfe_val)],
+            "and mass",
+            m_sun_cloud[np.argmax(sfe_val)],
+            "and metallicity",
+        )
+        print(
+            "highest dens",
+            np.max(n_hydrogen),
+            "with SFE",
+            sfe_val[np.argmax(n_hydrogen)],
+        )
+
+        print("first gen SFE", np.min(sfe_val[first_gen]), np.max(sfe_val[first_gen]))
+        print(
+            "first gen dens",
+            n_hydrogen[np.argmin(sfe_val[first_gen])],
+            n_hydrogen[np.argmax(sfe_val[first_gen])],
+        )
+
+        print("2nd gen SFE", np.min(sfe_val[~first_gen]), np.max(sfe_val[~first_gen]))
+        print(
+            "2nd gen dens",
+            n_hydrogen[np.argmin(sfe_val[~first_gen])],
+            n_hydrogen[np.argmax(sfe_val[~first_gen])],
+        )
+
+        print("most massive cloud", np.max(m_sun_cloud[~first_gen]))
+        print(
+            "most massive dens",
+            n_hydrogen[np.argmin(m_sun_cloud[~first_gen])],
+        )
+        print(
+            "most massive cloud formed at",
+            t_form[np.argmin(m_sun_cloud[~first_gen])],
+        )
 
         hist_ax_right.hist(
-            sfe_val,
+            sfe_val[first_gen],
             bins=sfe_bins,
-            color=hist_color[i],
+            color="crimson",
             edgecolor="k",
             # histtype="stepfilled",
             # hatch=hatches[i % 2],
-            alpha=0.8,
+            alpha=1,
             linewidth=0.8,
             density=True,
             orientation="horizontal",
             label=simulation_name[i],
         )
-        ax.set(
-            xscale="log",
-            yscale="log",
+
+        hist_ax_right.hist(
+            sfe_val[~first_gen],
+            bins=sfe_bins,
+            color=hist_color[i],
+            edgecolor="k",
+            # histtype="stepfilled",
+            # hatch=hatches[i % 2],
+            alpha=0.5,
+            # linewidth=0.8,
+            density=True,
+            orientation="horizontal",
+            label=simulation_name[i],
         )
+
+        ax.set(xscale="log", yscale="log")
 
         ax.text(
             0.95,
@@ -195,7 +266,12 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
     # hist_ax_right.axhline(y=10, color="grey", ls="--", zorder=-1)
 
     cbar_ax = ax.inset_axes([0, 1.02, 1.42, 0.05])
-    dens_bar = fig.colorbar(sfe_scatter, cax=cbar_ax, pad=0, orientation="horizontal")
+    dens_bar = fig.colorbar(
+        sfe_scatter,
+        cax=cbar_ax,
+        pad=0,
+        orientation="horizontal",
+    )
 
     dens_bar.set_label(
         # label=(r"$t_{\rm form}$ [Myr]"),
@@ -206,6 +282,8 @@ def plotting_interface(run_logpath, simulation_name, marker, hist_color, sfe: st
     dens_bar.ax.xaxis.set_label_position("top")
     dens_bar.ax.xaxis.set_ticks_position("top")
     dens_bar.ax.locator_params(nbins=12)
+    dens_bar.minorticks_on()
+    hist_ax_right.set(xscale="log")
 
     # ax[0].set(
     #     xlabel=r"Cloud Mass $\left[\mathrm{M}_{\odot}\right]$",

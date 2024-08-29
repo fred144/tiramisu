@@ -378,7 +378,7 @@ def plotting_interface(bsc_dirs, pop2_dirs, times, log_sfc, simulation_name, col
     ax[0].minorticks_on()
     fig.text(
         0.5,
-        0.05,
+        0.0,
         r"$M_{\rm star \: cluster}\:\left[ \mathrm{M}_{\odot} \right] $",
         ha="center",
     )

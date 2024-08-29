@@ -35,9 +35,9 @@ plt.rcParams.update(
         # "font.family": "Helvetica",
         "font.family": "serif",
         "mathtext.fontset": "cm",
-        "xtick.labelsize": 14,
-        "ytick.labelsize": 14,
-        "font.size": 15,
+        "xtick.labelsize": 16,
+        "ytick.labelsize": 16,
+        "font.size": 18,
         "xtick.direction": "in",
         "ytick.direction": "in",
         "ytick.right": True,
@@ -86,9 +86,9 @@ def draw_frame(
     star_bins=2000,
     gauss_sig=9,
 ):
-    lum_range = (6e33, 3e36)
+    lum_range = (5e32, 4e35)
     gas_range = (0.005, 0.32)
-    temp_range = (2e3, 2e5)
+    temp_range = (2e3, 8e4)
 
     pxl_size = (wdth / star_bins) ** 2
     lum_alpha = 1
@@ -102,26 +102,27 @@ def draw_frame(
     # decide which part of the cmap is increasing in alpha
     # the final transparencey is dictatted by
 
-    gascmap = linear_cmap(0.1, 0.6, "mpl", "cubehelix")
-    tempcmap = linear_cmap(0.05, 0.3, "cmr", "cmr.gothic")
-    lumcmap = cmr.amethyst
+    gascmap = linear_cmap(0.3, 0.5, "mpl", "cubehelix")
+    tempcmap = linear_cmap(0.05, 0.2, "mpl", "hot")
+    lumcmap = "inferno"  # cmr.amethyst
 
     lum = ax.imshow(
         surface_brightness,
+        interpolation="gaussian",
         cmap=lumcmap,
         origin="lower",
         extent=[-wdth / 2, wdth / 2, -wdth / 2, wdth / 2],
         norm=LogNorm(vmin=lum_range[0], vmax=lum_range[1]),
         alpha=lum_alpha,
     )
-    # temp = ax.imshow(
-    #     gaussian_filter(temp_array, gauss_sig),
-    #     cmap=tempcmap,
-    #     interpolation="gaussian",
-    #     origin="lower",
-    #     extent=[-wdth / 2, wdth / 2, -wdth / 2, wdth / 2],
-    #     norm=LogNorm(temp_range[0], temp_range[1]),
-    # )
+    temp = ax.imshow(
+        gaussian_filter(temp_array, gauss_sig),
+        cmap=tempcmap,
+        interpolation="gaussian",
+        origin="lower",
+        extent=[-wdth / 2, wdth / 2, -wdth / 2, wdth / 2],
+        norm=LogNorm(temp_range[0], temp_range[1]),
+    )
     gas = ax.imshow(
         gaussian_filter(
             (gas_array * (u.g / u.cm**2)).to(u.Msun / u.pc**2).value, gauss_sig
@@ -161,20 +162,19 @@ def draw_frame(
     ax.add_patch(scale)
 
     ##add the luminosity color bar
-    lum_cbar_ax = ax.inset_axes([0.10, 0.03, 0.010, 0.18])
-    lum_cbar = fig.colorbar(lum, cax=lum_cbar_ax, pad=0)
+    lum_cbar_ax = ax.inset_axes([0.05, 0.10, 0.3, 0.02])
+    lum_cbar = fig.colorbar(lum, cax=lum_cbar_ax, pad=0, orientation="horizontal")
     # lum_cbar_ax.yaxis.set_ticks_position("left")
-    lum_cbar_ax.set_ylabel(
-        r" $I_\lambda \: $ [${\rm erg\:\:s^{-1}\:\AA^{-1}\:pc^{-2}}$]",
-        fontsize=11,
+    lum_cbar_ax.set_xlabel(
+        r" $I_{\rm 1500 \AA} \: $ [${\rm erg\:\:s^{-1}\:\AA^{-1}\:pc^{-2}}$]",
     )
     # add the gas color bar
-    gas_cbar_ax = ax.inset_axes([0.05, 0.03, 0.010, 0.18])
-    gas_cbar = fig.colorbar(gas, cax=gas_cbar_ax, pad=0)
-    # gas_cbar_ax.yaxis.set_ticks_position("left")
-    gas_cbar_ax.set_ylabel(
-        r"Surface Density [$\mathrm{ M_\odot \: pc^{-2}}$]", fontsize=11
-    )
+    # gas_cbar_ax = ax.inset_axes([0.05, 0.03, 0.010, 0.18])
+    # gas_cbar = fig.colorbar(gas, cax=gas_cbar_ax, pad=0)
+    # # gas_cbar_ax.yaxis.set_ticks_position("left")
+    # gas_cbar_ax.set_ylabel(
+    #     r"Surface Density [$\mathrm{ M_\odot \: pc^{-2}}$]",
+    # )
     # temp
     # temp_cbar_ax = ax.inset_axes([0.12, 0.03, 0.010, 0.18])
     # temp_cbar = fig.colorbar(temp, cax=temp_cbar_ax, pad=0)
@@ -188,7 +188,7 @@ def draw_frame(
         0.05,
         0.96,
         (
-            "\n" r"$\mathrm{{t = {:.2f} \: Myr}}$" "\n" r"$\mathrm{{z = {:.2f} }}$"
+            "\n" r"$\mathrm{{t = {:.0f} \: Myr}}$" "\n" r"$\mathrm{{z = {:.2f} }}$"
         ).format(
             # label,
             t_myr,
@@ -243,8 +243,8 @@ if __name__ == "__main__":
     datadir = os.path.expanduser("~/test_data/CC-Fiducial/")
     fpaths, snums = filter_snapshots(
         datadir,
-        303,
-        303,
+        323,
+        323,
         sampling=1,
         str_snaps=True,
         snapshot_type="ramses_snapshot",
@@ -255,9 +255,9 @@ if __name__ == "__main__":
     #                         timelapse paramaters
     # =============================================================================
 
-    pw = 640  # plot width on one side in pc
+    pw = 300  # plot width on one side in pc
     r_sf = 500  # radii for sf in pc
-    gas_res = 1000  # resolution of the fixed resolution buffer
+    gas_res = 2000  # resolution of the fixed resolution buffer
 
     # run save
     sim_run = os.path.basename(os.path.normpath(datadir))
@@ -274,11 +274,11 @@ if __name__ == "__main__":
     check_path(render_container)
 
     ## panning
-    zoom_pw = 150
+    zoom_pw = 300
     star_bins = 2000
     pxl_size = (pw / star_bins) ** 2  # pc
 
-    pan_frames = 400  # number of frames to use up for animaton
+    pan_frames = 60  # number of frames to use up for animaton
     num_rots = 4  # number of 360 degreee rotations
     rotation_interval = np.linspace(0, 2 * num_rots, pan_frames, endpoint=False) * np.pi
     zoom_interval = np.concatenate(
@@ -289,7 +289,7 @@ if __name__ == "__main__":
             np.linspace(zoom_pw, pw, int(pan_frames / num_rots)),
         ]
     )
-    pause_and_rotate = [301]
+    pause_and_rotate = [323]
 
     for i, fp in enumerate(fpaths):
         print("# ____________________________________________________________________")
@@ -337,7 +337,7 @@ if __name__ == "__main__":
             # reset the star positions every loop
             print(">>> Rotating View")
 
-            rr = 0  # rotation sequence restart from
+            rr = 50  # rotation sequence restart from
 
             for rot_i, (rotation_angle, plt_wdth) in enumerate(
                 zip(rotation_interval[rr:], zoom_interval[rr:]), start=rr
@@ -464,7 +464,7 @@ if __name__ == "__main__":
             plt.show()
             plt.savefig(
                 os.path.expanduser(output_path),
-                dpi=250,
+                dpi=400,
                 bbox_inches="tight",
                 pad_inches=0.05,
             )
