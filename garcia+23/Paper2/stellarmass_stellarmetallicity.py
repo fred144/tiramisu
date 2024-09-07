@@ -140,7 +140,7 @@ cc_mstar_running, cc_zstar_running = running_zstellar_mstellar(
     "/home/fabg/container_tiramisu/post_processed/gas_properties/CC-Fiducial",
     356,
     466,
-    sampling_tmyr=20,
+    sampling_tmyr=10,
 )
 
 f7_mstar_running, f7_zstar_running = running_zstellar_mstellar(
@@ -148,7 +148,7 @@ f7_mstar_running, f7_zstar_running = running_zstellar_mstellar(
     "/home/fabg/container_tiramisu/post_processed/gas_properties/fs07_refine/",
     115,
     1570,
-    sampling_tmyr=20,
+    sampling_tmyr=10,
 )
 
 f3_mstar_running, f3_zstar_running = running_zstellar_mstellar(
@@ -156,8 +156,25 @@ f3_mstar_running, f3_zstar_running = running_zstellar_mstellar(
     "/home/fabg/container_tiramisu/post_processed/gas_properties/fs035_ms10/",
     100,
     1606,
-    sampling_tmyr=20,
+    sampling_tmyr=10,
 )
+
+
+def local_mz_relation(logmass, b=-1.69, m=0.3):
+    """
+    from Kirby + 11
+    """
+    # return -2.5 + 0.333 * (logmass - 4.0)
+    return b + m * (logmass - 6)
+
+
+def local_berg_12(logmstar, m=0.3, b=5.43):
+    twelve_log_oh = m * logmstar + b
+    zstar = twelve_log_oh - 8.69
+    return zstar
+
+
+metal = np.geomspace(1e2, 2e7, 20)
 
 cmap = matplotlib.colormaps["Dark2"]
 cmap = cmap(np.linspace(0, 1, 8))
@@ -170,6 +187,144 @@ fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(4.5, 4), dpi=300)
 # ax.scatter(f7_mstar, f7_zgas, color=high_clr, alpha=0.8)
 # ax.scatter(f3_mstar, f3_zgas, color=low_clr, alpha=0.8)
 
+
+kirby_dat = np.loadtxt("./kirby13.txt")
+
+ax.errorbar(
+    kirby_dat[:, 0],
+    kirby_dat[:, 2],
+    xerr=kirby_dat[:, 1],
+    yerr=kirby_dat[:, 3],
+    fmt=".",
+    markersize=5,
+    color="olive",
+)
+ax.plot(
+    np.log10(metal),
+    local_mz_relation(np.log10(metal)),
+    color="olive",
+    lw=2,
+    alpha=0.5,
+    zorder=0,
+    ls="--",
+)
+ax.text(
+    2.6,
+    -2.65,
+    "Kirby+ 13, $z \sim 0$",
+    rotation=27,
+    rotation_mode="anchor",
+    color="olive",
+    ha="left",
+    va="bottom",
+    fontsize=10,
+)
+# ax.fill_between(
+#     np.log10(metal),
+#     local_mz_relation(np.log10(metal), -1.69 - 0.04, 0.30 - 0.02),
+#     local_mz_relation(np.log10(metal), -1.69 + 0.04, 0.30 + 0.02),
+#     alpha=0.2,
+#     color="grey",
+#     linewidth=0.0,
+#     zorder=0,
+# )
+# ax.fill_between(
+#     np.log10(metal),
+#     local_mz_relation(np.log10(metal)) + 2 * 0.17,
+#     local_mz_relation(np.log10(metal)) - 2 * 0.17,
+#     alpha=0.2,
+#     color="grey",
+#     linewidth=0.0,
+#     zorder=0,
+# )
+
+
+# def heintz_23(logmstar):
+#     twelve_log_oh = 0.33 * logmstar + 4.65
+#     zstar = twelve_log_oh - 8.69
+#     return zstar
+
+
+# ax.plot(
+#     np.log10(metal),
+#     heintz_23(np.log10(metal)),
+#     color="grey",
+#     lw=2,
+#     alpha=0.4,
+#     zorder=0,
+#     # label="Heintz+23, z = 7-10",
+# )
+# ax.plot(
+#     np.log10(metal),
+#     heintz_23(np.log10(metal)),
+#     color="grey",
+#     lw=2,
+#     alpha=0.4,
+#     zorder=0,
+# )
+# ax.fill_between(
+#     np.log10(metal),
+#     heintz_23(np.log10(metal)) - 0.4,
+#     heintz_23(np.log10(metal)) + 0.4,
+#     alpha=0.2,
+#     facecolor="grey",
+#     linewidth=0.0,
+#     zorder=0,
+# )
+# ax.fill_between(
+#     np.log10(metal),
+#     heintz_23(np.log10(metal)) - 0.4,
+#     heintz_23(np.log10(metal)) + 0.4,
+#     alpha=0.2,
+#     facecolor="grey",
+#     linewidth=0.0,
+#     zorder=0,
+# )
+# ax.text(
+#     3,
+#     -3.25,
+#     "Heintz+ 24, $z$ = 7 - 10",
+#     rotation=30,
+#     rotation_mode="anchor",
+#     color="grey",
+#     ha="left",
+#     va="bottom",
+#     fontsize=10,
+# )
+
+
+# Berg
+ax.plot(
+    np.log10(metal),
+    local_berg_12(np.log10(metal)),
+    color="darkorange",
+    lw=2,
+    alpha=0.4,
+    zorder=0,
+)
+ax.fill_between(
+    np.log10(metal),
+    local_berg_12(np.log10(metal), 0.30 + 0.05, 5.43 + 0.42),
+    local_berg_12(np.log10(metal), 0.30 - 0.05, 5.43 - 0.42),
+    alpha=0.2,
+    color="darkorange",
+    linewidth=0.0,
+    zorder=0,
+)
+ax.text(
+    4.5,
+    -1.85,
+    "Berg+ 12, $z \sim 0$",
+    rotation=27,
+    rotation_mode="anchor",
+    color="darkorange",
+    ha="left",
+    va="bottom",
+    fontsize=10,
+)
+
+
+# Our Data
 ax.scatter(
     np.log10(cc_mstar_running),
     np.log10(cc_zstar_running),
@@ -203,7 +358,7 @@ ax.set(
     xlabel=r"$M_{\rm \star} [{\rm M_\odot}]$",
     ylabel=r"$\langle Z_{\rm \star} \rangle \:  [{\rm Z_\odot}]$",
 )
-ax.legend(frameon=False, loc="upper left")
+ax.legend(frameon=False, loc="lower right")
 ax.set(
     # xlabel=r"$M_{\rm \star} [{\rm M_\odot}]$",
     ylabel=r"$\log \: \langle Z_\star \rangle \:  [{\rm Z_\odot}]$",
@@ -212,9 +367,7 @@ ax.set(
     ylim=(-3.38, -1.4),
     xlim=(2.5, 6.5),
 )
-ax.text(
-    0.95, 0.95, "binned, cumulative", ha="right", va="top", transform=ax.transAxes
-)
+ax.text(0.05, 0.95, "binned, cumulative", ha="left", va="top", transform=ax.transAxes)
 
 
 obs2 = ax.twinx()
@@ -269,6 +422,10 @@ def zstellar_mstellar_binned(
     bin_centers = 0.5 * (left_edges + right_edges)
 
     print(bin_centers)
+
+    # take the previous mass,
+    # but interpolate it so that it can have multiple samplings matching up
+    # with the binned statistics before
     stellar_mass_interp = interpolate.interp1d(x=t_myr, y=mass_stars, kind="previous")
     mstar = stellar_mass_interp(bin_centers)
 
@@ -356,29 +513,11 @@ f3_mstar, f3_zstar, f3_zgas = zstellar_mstellar_binned(
 # %%
 
 
-def local_mz_relation(logmass):
-    """
-    from Kirby + 11
-    """
-    return -2.5 + 0.333 * (logmass - 4.0)
-
-
-def high_z_mz_relation(logmass):
-    """
-
-    translated: 12 + log(O/H) = 8.69 Zsun
-
-    """
-    # return -1.01 + 0.33 * (logmass - 8.5) #from Nakajima+23
-    # return -2.95 + 0.25  * (logmass) #from Nakajima+23
-    return -2.31 + 0.17 * logmass
-
-
 fig, ax = plt.subplots(
     nrows=3,
     ncols=1,
     sharex=True,
-    figsize=(4.6, 8),
+    figsize=(4.6, 9),
     dpi=300,
     gridspec_kw={"height_ratios": [4, 4, 2]},
 )
@@ -393,7 +532,6 @@ ax[0].scatter(
     alpha=0.8,
     label="VSFE",
     s=20,
-    # marker="s",
 )
 ax[0].scatter(
     np.log10(f7_mstar),
@@ -403,6 +541,7 @@ ax[0].scatter(
     alpha=0.8,
     s=20,
     label="HSFE",
+    zorder=2,
 )
 ax[0].scatter(
     np.log10(f3_mstar),
@@ -412,6 +551,7 @@ ax[0].scatter(
     alpha=0.8,
     s=20,
     label="LSFE",
+    zorder=2,
 )
 
 # gas metallicities
@@ -422,9 +562,8 @@ ax[1].scatter(
     edgecolors="none",
     alpha=0.8,
     s=20,
+    zorder=2,
 )
-
-
 ax[1].scatter(
     np.log10(f7_mstar),
     np.log10(f7_zgas),
@@ -432,6 +571,7 @@ ax[1].scatter(
     edgecolors="none",
     alpha=0.8,
     s=20,
+    zorder=2,
 )
 ax[1].scatter(
     np.log10(f3_mstar),
@@ -440,74 +580,255 @@ ax[1].scatter(
     edgecolors="none",
     alpha=0.8,
     s=20,
+    zorder=2,
+)
+
+ax[2].scatter(
+    np.log10(cc_mstar), np.log10(cc_zstar / cc_zgas), zorder=2, color=vsfe_clr, s=5
+)
+ax[2].scatter(
+    np.log10(f7_mstar), np.log10(f7_zstar / f7_zgas), zorder=2, color=high_clr, s=5
+)
+ax[2].scatter(
+    np.log10(f3_mstar), np.log10(f3_zstar / f3_zgas), zorder=2, color=low_clr, s=5
+)
+ax[2].axhline(y=0, lw=2, color="grey", alpha=0.2, ls="--")
+
+
+# =============================================================================
+# # comparing to observations
+# =============================================================================
+def heintz_23(logmstar):
+    twelve_log_oh = 0.33 * logmstar + 4.65
+    zstar = twelve_log_oh - 8.69
+    return zstar
+
+
+metal = np.geomspace(1e2, 2e7, 20)
+# heintz
+ax[0].plot(
+    np.log10(metal),
+    heintz_23(np.log10(metal)),
+    color="grey",
+    lw=2,
+    alpha=0.4,
+    zorder=0,
+    # label="Heintz+23, z = 7-10",
+)
+ax[1].plot(
+    np.log10(metal),
+    heintz_23(np.log10(metal)),
+    color="grey",
+    lw=2,
+    alpha=0.4,
+    zorder=0,
+)
+ax[0].fill_between(
+    np.log10(metal),
+    heintz_23(np.log10(metal)) - 0.4,
+    heintz_23(np.log10(metal)) + 0.4,
+    alpha=0.2,
+    facecolor="grey",
+    linewidth=0.0,
+    zorder=0,
+)
+ax[1].fill_between(
+    np.log10(metal),
+    heintz_23(np.log10(metal)) - 0.4,
+    heintz_23(np.log10(metal)) + 0.4,
+    alpha=0.2,
+    facecolor="grey",
+    linewidth=0.0,
+    zorder=0,
+)
+ax[0].text(
+    5.0,
+    -2.7,
+    "Heintz+ 24, $z$ = 7 - 10",
+    rotation=27,
+    rotation_mode="anchor",
+    color="grey",
+    ha="left",
+    va="bottom",
+    fontsize=10,
 )
 
 
-ax[2].scatter(np.log10(cc_mstar), np.log10(cc_zstar / cc_zgas), color=vsfe_clr, s=5)
-ax[2].scatter(np.log10(f7_mstar), np.log10(f7_zstar / f7_zgas), color=high_clr, s=5)
-ax[2].scatter(np.log10(f3_mstar), np.log10(f3_zstar / f3_zgas), color=low_clr, s=5)
+# Curti
+def curti_23(mstar, m=0.11, b=7.65):
+    twelve_log_oh = m * np.log10(mstar / 1e8) + b
+    zstar = twelve_log_oh - 8.69
+    return zstar
 
-metal = np.geomspace(3e4, 2e7, 20)
+
 # ax[0].plot(
 #     np.log10(metal),
-#     high_z_mz_relation(np.log10(metal)),
-#     color="grey",
-#     lw=4,
-#     label="Kirby+ 13",
+#     curti_23(metal),
+#     color=cmap[4],
+#     lw=2,
+#     alpha=0.4,
 #     zorder=0,
+#     # label="curti_23, z = 7-10",
 # )
 
 
-ax[0].set(
-    # xlabel=r"$M_{\rm \star} [{\rm M_\odot}]$",
-    ylabel=r"$\log \: \langle Z_\star \rangle \:  [{\rm Z_\odot}]$",
-    # xscale="log",
-    # yscale="log",
-    ylim=(-3.38, -1.4),
-    xlim=(2.5, 6.5),
+# nakajima 23
+def nakajima_23(mstar, m=0.25, b=8.24):
+    twelve_log_oh = m * np.log10(mstar / 1e10) + b
+    zstar = twelve_log_oh - 8.69
+    return zstar
+
+
+ax[0].plot(
+    np.log10(metal),
+    nakajima_23(metal),
+    color="darkorange",
+    ls="--",
+    lw=2,
+    alpha=0.8,
+    zorder=0,
+    # label="nakajima_23, z = 7-10",
 )
-ax[0].legend(frameon=False, loc="lower right")
+ax[1].plot(
+    np.log10(metal),
+    nakajima_23(metal),
+    color="darkorange",
+    ls="--",
+    lw=2,
+    alpha=0.8,
+    zorder=0,
+)
+ax[0].text(
+    3.0,
+    -2.15,
+    "Nakajima+ 23, $z$ = 4 - 10",
+    rotation=20,
+    rotation_mode="anchor",
+    color="darkorange",
+    ha="left",
+    va="bottom",
+    fontsize=10,
+)
+
+# ax[0].fill_between(
+#     np.log10(metal),
+#     nakajima_23(metal, m=0.25 - 0.03, b=8.24 - 0.05),
+#     nakajima_23(metal, m=0.25 + 0.03, b=8.24 + 0.05),
+#     facecolor="darkorange",
+#     alpha=0.2,
+#     zorder=0,
+#     linewidth=0.0,
+# )
+# ax[1].fill_between(
+#     np.log10(metal),
+#     nakajima_23(metal, m=0.25 - 0.03, b=8.24 - 0.05),
+#     nakajima_23(metal, m=0.25 + 0.03, b=8.24 + 0.05),
+#     facecolor="darkorange",
+#     alpha=0.2,
+#     zorder=0,
+#     linewidth=0.0,
+# )
 
 
-obs2 = ax[0].twinx()
-obs2.locator_params(axis="y")
-obs2.set(ylim=(-3.38, -1.4), ylabel=r"log (O/H) + 12")
-obs2.set_yticklabels(list(np.round(obs2.get_yticks() + 8.69, 1).astype("str")))
-ax[0].minorticks_on()
-obs2.minorticks_on()
+# Moroshita
+def moroshita_24(mstar, alpha=0.27, Bz=7.73, a_z=0.01):
+    z = 3
+    twelve_log_oh = alpha * np.log10(mstar / 10**8.8) + Bz  # + a_z * np.log(1 + z)
+    zstar = twelve_log_oh - 8.69
+    return zstar
 
+
+ax[0].plot(
+    np.log10(metal),
+    moroshita_24(metal),
+    color="olive",
+    lw=2,
+    alpha=0.5,
+    zorder=0,
+)
+ax[1].plot(
+    np.log10(metal),
+    moroshita_24(metal),
+    color="olive",
+    lw=2,
+    alpha=0.5,
+    zorder=0,
+)
+
+
+ax[0].fill_between(
+    np.log10(metal),
+    moroshita_24(metal) + 0.26,
+    moroshita_24(metal) - 0.26,
+    facecolor="olive",
+    alpha=0.2,
+    zorder=0,
+    linewidth=0.0,
+)
+ax[1].fill_between(
+    np.log10(metal),
+    moroshita_24(metal) + 0.26,
+    moroshita_24(metal) - 0.26,
+    facecolor="olive",
+    alpha=0.2,
+    zorder=0,
+    linewidth=0.0,
+)
+ax[0].text(
+    3.0,
+    -2.48,
+    "Moroshita+ 24, $z$ = 3 - 9.5",
+    rotation=22,
+    rotation_mode="anchor",
+    color="olive",
+    ha="left",
+    va="bottom",
+    fontsize=10,
+)
+
+ax[0].set(
+    ylabel=r"$\log \: \langle Z_{\rm \star, inst.} \rangle \:  [{\rm Z_\odot}]$",
+    ylim=(-3.38, -1.4),
+    xlim=(2.5, 7),
+)
+ax[0].legend(frameon=False, loc="lower right", fontsize=10)
+
+
+obs = ax[0].twinx()
+obs.locator_params(axis="y")
+obs.set(ylim=(-3.38, -1.4), ylabel=r"log (O/H) + 12")
+obs.set_yticklabels(list(np.round(obs.get_yticks() + 8.69, 1).astype("str")))
+obs.minorticks_on()
 
 ax[1].set(
-    # xlabel=r"$M_{\rm \star} [{\rm M_\odot}]$",
-    ylabel=r"$\log \: \langle Z_{\rm gas} \rangle \:  [{\rm Z_\odot}]$",
-    # xscale="log",
-    # yscale="log",
+    ylabel=r"$\log \: \langle Z_{\rm gas, inst.} \rangle \:  [{\rm Z_\odot}]$",
     ylim=(-3.38, -1.4),
     xlim=(2.5, 6.5),
 )
 ax[1].minorticks_on()
 
-obs2 = ax[1].twinx()
-obs2.locator_params(axis="y")
-obs2.set(ylim=(-3.38, -1.4), ylabel=r"log (O/H) + 12")
-obs2.set_yticklabels(list(np.round(obs2.get_yticks() + 8.69, 1).astype("str")))
-ax[1].minorticks_on()
-obs2.minorticks_on()
+obs1 = ax[1].twinx()
+obs1.locator_params(axis="y")
+obs1.set(ylim=(-3.38, -1.4), ylabel=r"log (O/H) + 12")
+obs1.set_yticklabels(list(np.round(obs1.get_yticks() + 8.69, 1).astype("str")))
+obs1.minorticks_on()
 
 
 ax[2].set(
     xlabel=r"$\log \:  M_{\rm \star} [{\rm M_\odot}]$",
-    ylabel=r"$\log (Z_{\rm \star} / Z_{\rm gas})$",
     ylim=(-0.5, 0.5),
+)
+ax[2].set_ylabel(
+    r"$\log (\langle Z_{\rm \star, inst.} \rangle / \langle Z_{\rm gas, inst.} \rangle)$",
+    fontsize=9,
 )
 ax[2].minorticks_on()
 ax[2].locator_params(axis="y", nbins=4)
-
-
 ax[0].text(
     0.05, 0.95, "binned, instantaneous", ha="left", va="top", transform=ax[0].transAxes
 )
-
+ax[0].minorticks_on()
+ax[1].minorticks_on()
 # colors = ["lightgrey", "lightgrey"]
 # lw = [0, 0]
 # ls = ["s", "o"]

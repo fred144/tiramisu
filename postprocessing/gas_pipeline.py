@@ -256,26 +256,45 @@ if __name__ == "__main__":
                 galaxy_radius + shell_thicknes.value,
             )
             # measure SF region
-            spherical_shell = full_region.exclude_outside(
+            inner_spherical_shell = full_region.exclude_outside(
                 ("index", "radius"),
                 galaxy_radius,
                 galaxy_radius + shell_thicknes.value,
                 units="pc",
             )
-            vrads = spherical_shell["radial_velocity"].to("km/s")
+            vrads = inner_spherical_shell["radial_velocity"].to("km/s")
             outwards_mask = vrads > 0
             v_out = vrads[outwards_mask]
             inwards_mask = vrads < 0
             v_in = vrads[inwards_mask]
-
             # mass of each gas cell in the shell
-            mass_of_gas = spherical_shell["gas", "cell_mass"].in_units("Msun")
-
+            mass_of_gas = inner_spherical_shell["gas", "cell_mass"].in_units("Msun")
             # metal abundance in the shells
-            shell_metal = spherical_shell["ramses", "Metallicity"] / zsun
-
+            shell_metal = inner_spherical_shell["ramses", "Metallicity"] / zsun
             # mass in metals in the shells
             mass_of_metals = mass_of_gas * shell_metal
+
+            ########## measure Virial Radius interface
+            outer_shell_thicknes = ds.arr(vir_rad * 0.1, "pc")
+            outer_spherical_shell = full_region.exclude_outside(
+                ("index", "radius"),
+                vir_rad,
+                vir_rad + outer_shell_thicknes.value,
+                units="pc",
+            )
+            outer_vrads = outer_spherical_shell["radial_velocity"].to("km/s")
+            halo_outwards_mask = outer_vrads > 0
+            halo_v_out = outer_vrads[halo_outwards_mask]
+            halo_inwards_mask = outer_vrads < 0
+            halo_v_in = outer_vrads[halo_inwards_mask]
+            # mass of each gas cell in the shell
+            halo_mass_of_gas = outer_spherical_shell["gas", "cell_mass"].in_units(
+                "Msun"
+            )
+            # metal abundance in the shells
+            halo_shell_metal = outer_spherical_shell["ramses", "Metallicity"] / zsun
+            # mass in metals in the shells
+            halo_mass_of_metals = halo_mass_of_gas * halo_shell_metal
         except:
             print("having trouble making regon cuts, skipping")
             continue
@@ -297,22 +316,46 @@ if __name__ == "__main__":
         # total gas mass going out
         gasmass_in = (mass_of_gas[inwards_mask] * v_in).sum() / shell_thicknes.to("km")
         gasmass_inflow_per_year = gasmass_in.to("Msun/yr")
-
         print("mass outflow rate [msun / yr]", gasmass_per_year)
         print("mass inflow rate [msun / yr]", -gasmass_inflow_per_year)
+
+        ######### now for the Halo interface
+
+        # metals outflow
+        halo_metal_out = halo_mass_of_metals[halo_outwards_mask]
+        halo_dmetalout_dt = (
+            halo_metal_out * halo_v_out
+        ).sum() / outer_shell_thicknes.to("km")
+        halo_metalmass_out_per_year = halo_dmetalout_dt.to("Msun/yr")
+
+        # total gas mass going out
+        halo_gasmass_out = (
+            halo_mass_of_gas[halo_outwards_mask] * halo_v_out
+        ).sum() / outer_shell_thicknes.to("km")
+        halo_gasmass_per_year = halo_gasmass_out.to("Msun/yr")
+
+        # metals inflow
+        halo_metal_in = halo_mass_of_metals[halo_inwards_mask]
+        halo_dmetalin_dt = (halo_metal_in * halo_v_in).sum() / outer_shell_thicknes.to(
+            "km"
+        )
+        halo_metalmass_in_per_year = halo_dmetalin_dt.to("Msun/yr")
+
+        # total gas mass going out
+        halo_gasmass_in = (
+            halo_mass_of_gas[halo_inwards_mask] * halo_v_in
+        ).sum() / outer_shell_thicknes.to("km")
+        halo_gasmass_inflow_per_year = halo_gasmass_in.to("Msun/yr")
+
+        print("halo mass outflow rate [msun / yr]", halo_gasmass_per_year)
+        print("halo mass inflow rate [msun / yr]", -halo_gasmass_inflow_per_year)
 
         # within virial radius, but outside of the galaxy
         cgm = full_region.exclude_outside(
             ("index", "radius"), galaxy_radius, vir_rad, units="pc"
         )
 
-        # 500 pc within the star forming region
-        # sf = full_region.exclude_outside(
-        #     ("index", "radius"), galaxy_radius, vir_rad, units="pc"
-        # )
-
         # let's calculate the different phases by mass in the galaxy or ISM
-
         cnm = sf_region.exclude_outside(("gas", "temperature"), 0, 100)
         cnm_mass = (
             cnm.quantities.total_quantity(("gas", "cell_mass")).in_units("Msun").value
