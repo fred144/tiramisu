@@ -251,7 +251,7 @@ if __name__ == "__main__":
         try:
             shell_thicknes = ds.arr(0.1 * galaxy_radius, "pc")
             print(
-                "outflow rates computed b/w [pc] r = ",
+                "ISM outflow rates computed b/w [pc] r = ",
                 galaxy_radius,
                 galaxy_radius + shell_thicknes.value,
             )
@@ -276,6 +276,11 @@ if __name__ == "__main__":
 
             ########## measure Virial Radius interface
             outer_shell_thicknes = ds.arr(vir_rad * 0.1, "pc")
+            print(
+                "halo outflow rates computed b/w [pc] r = ",
+                vir_rad,
+                vir_rad + outer_shell_thicknes.value,
+            )
             outer_spherical_shell = full_region.exclude_outside(
                 ("index", "radius"),
                 vir_rad,
@@ -500,8 +505,7 @@ if __name__ == "__main__":
         f.create_dataset("Header/redshift", data=redshift, dtype="f")
         f.create_dataset("Header/time", data=t_myr, dtype="f")
 
-        # properties within the virial radius
-
+        # gas properties
         f.create_dataset(
             "Winds/MassOutFlowRate", data=gasmass_per_year.value, dtype="f"
         )
@@ -514,6 +518,27 @@ if __name__ == "__main__":
         )
         f.create_dataset(
             "Winds/MetalMassInFlowRate", data=metalmass_in_per_year.value, dtype="f"
+        )
+
+        ## same but for Halo
+        f.create_dataset(
+            "HaloWinds/MassOutFlowRate", data=halo_gasmass_per_year.value, dtype="f"
+        )
+        f.create_dataset(
+            "HaloWinds/MetalMassOutFlowRate",
+            data=halo_metalmass_out_per_year.value,
+            dtype="f",
+        )
+
+        f.create_dataset(
+            "HaloWinds/MassInFlowRate",
+            data=halo_gasmass_inflow_per_year.value,
+            dtype="f",
+        )
+        f.create_dataset(
+            "HaloWinds/MetalMassInFlowRate",
+            data=halo_metalmass_in_per_year.value,
+            dtype="f",
         )
 
         f.create_dataset("Halo/radius", data=vir_rad, dtype="f")
