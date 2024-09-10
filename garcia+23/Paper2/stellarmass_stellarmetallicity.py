@@ -511,8 +511,6 @@ f3_mstar, f3_zstar, f3_zgas = zstellar_mstellar_binned(
     sampling_tmyr=10,
 )
 # %%
-
-
 fig, ax = plt.subplots(
     nrows=3,
     ncols=1,

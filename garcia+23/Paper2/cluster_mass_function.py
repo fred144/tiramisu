@@ -16,6 +16,8 @@ import glob
 import matplotlib
 from tools import plotstyle
 from labellines import labelLine, labelLines
+from astropy import units as u
+from astropy import constants as const
 
 # from modules.match_t_sims import find_matching_time, get_snapshots
 from scipy.optimize import curve_fit
@@ -150,12 +152,12 @@ def plotting_interface(bsc_dirs, pop2_dirs, times, log_sfc, simulation_name, col
     minimum_bsc_mass = 250  # minimum solar mass
     maximum_bsc_mass = 2e5
     x_range = (60, 5e6)
-    bns = 16
+    bns = 15
     max_alpha = 10
     fig, ax = plt.subplots(
-        nrows=1, ncols=4, sharex=True, sharey=True, figsize=(12, 3), dpi=300
+        nrows=2, ncols=4, sharex=True, sharey=True, figsize=(11, 6), dpi=300
     )
-    ax = ax.ravel()
+    # ax = ax.ravel()
     plt.subplots_adjust(hspace=0, wspace=0)
 
     hatches = ["\\\\\\\\", "////"]
@@ -176,147 +178,189 @@ def plotting_interface(bsc_dirs, pop2_dirs, times, log_sfc, simulation_name, col
             actual_time = float(
                 os.path.basename(pop2_dat[i]).split("-")[2].replace("_", ".")
             )
+
+            pop2_masses = np.sum(np.loadtxt(pop2_dat[i])[:, -1])
+
+            # clumps we were succesful in profiling
             cat_file = glob.glob(os.path.join(cat, "profiled_*"))[0]
             catalogue = np.loadtxt(cat_file)
+            # print(catalogue.shape())
             clump_masses = catalogue[:, 8]  # msun
             clump_alphas = catalogue[:, 14]
-            mask = (
+            clump_ids = catalogue[:, 0]
+            sx, sy, sz = catalogue[:, 9:12].T * 1e3 * (u.m / u.s)
+            sigma_3d_squared = sx**2 + sy**2 + sz**2  # m/s this is 1D
+
+            r_half = catalogue[:, 21] * u.parsec  # half light radius
+            r = catalogue[:, 4] * u.parsec
+            r_core = catalogue[:, 12] * u.parsec  # pc
+            half_masses = 0.5 * clump_masses * u.Msun
+            m_core = catalogue[:, -1]
+
+            print(
+                actual_time,
+                pop2_masses,
+                clump_masses.max(),
+                clump_masses.max() / pop2_masses,
+            )
+
+            ke_avg_perparticle = (1 / 2) * sigma_3d_squared * half_masses.to(u.kg)
+            pot_energy = (
+                (3 / 5) * (const.G * half_masses.to(u.kg) ** 2) / r_half.to(u.m)
+            )
+            # vir_parameter = (5 * sigma_3d_squared * r_half.to(u.m)) / (
+            #     const.G * (half_masses).to(u.kg)
+            # )
+
+            vir_parameter = 2 * ke_avg_perparticle / pot_energy
+
+            # plt.figure()
+            # plt.hist(vir_parameter)
+
+            mask_all = (
                 (clump_masses > minimum_bsc_mass)
                 & (clump_alphas < max_alpha)
                 & (clump_masses < maximum_bsc_mass)
             )
-            bsc_masses = clump_masses[mask]
-            bulge_masses = clump_masses[clump_masses > maximum_bsc_mass]
 
-            # central_mass =
-            # bsc mass function
-            print(i)
-            mass_bins, dn_dlogm = log_data_function(
-                bsc_masses, bns, x_range, func_type="counts"
-            )
-            bulge_mass_bins, bulge_dn_dlogm = log_data_function(
-                bulge_masses, bns, x_range, func_type="counts"
-            )
+            mask_vir = (vir_parameter <= 10) & (clump_masses < maximum_bsc_mass)
 
-            mass_weight = np.where(mass_bins > 700, 0.01, 100)
-            pwr_law_params, mass_bins_theory, dn_dlogm_theory = fit_mfunc(
-                pwr_law, mass_bins, dn_dlogm, weights=mass_weight
-            )
+            for h, mask in enumerate([mask_all, mask_vir]):
+                bsc_masses = clump_masses[mask]
 
-            # at formation mass function
-            logsfc_mask = logsfc_ftime < times[i]
-            imf_bins, imf_counts = log_data_function(
-                logsfc_formation_mass[logsfc_mask], bns, x_range, func_type="counts"
-            )
-            lognrml_parms, _, _ = fit_mfunc(gauss, np.log10(imf_bins), imf_counts)
-            imf_bins_theory = np.geomspace(imf_bins.min(), imf_bins.max(), 100)
+                bulge_masses = clump_masses[clump_masses > maximum_bsc_mass]
 
-            imf_theory = gauss(np.log10(imf_bins_theory), *lognrml_parms)
+                # central_mass =
+                # bsc mass function
+                # print(i)
+                mass_bins, dn_dlogm = log_data_function(
+                    bsc_masses, bns, x_range, func_type="counts"
+                )
+                bulge_mass_bins, bulge_dn_dlogm = log_data_function(
+                    bulge_masses, bns, x_range, func_type="counts"
+                )
 
-            ax[i].plot(
-                bulge_mass_bins,
-                bulge_dn_dlogm,
-                drawstyle="steps-mid",
-                linewidth=2,
-                alpha=1,
-                color="crimson",
-            )
-            ax[i].fill_between(
-                bulge_mass_bins,
-                bulge_dn_dlogm,
-                step="mid",
-                facecolor="none",
-                edgecolor="crimson",
-                hatch=hatches[n % 2],
-                # label=simulation_name[n],
-            )
+                mass_weight = np.where(mass_bins > 700, 0.01, 100)
+                # mass_weight = np.where(mass_bins > 700, 1, 1)
+                pwr_law_params, mass_bins_theory, dn_dlogm_theory = fit_mfunc(
+                    pwr_law, mass_bins, dn_dlogm, weights=mass_weight
+                )
 
-            ax[i].plot(
-                imf_bins,
-                imf_counts,
-                drawstyle="steps-mid",
-                alpha=1,
-                lw=2,
-                color=color[n],
-            )
-            ax[i].fill_between(
-                imf_bins,
-                imf_counts,
-                step="mid",
-                facecolor=color[n],
-                edgecolor=color[n],
-                alpha=0.2,
-                zorder=-1
-                # label=simulation_name[n],
-            )
+                # at formation mass function
+                logsfc_mask = logsfc_ftime < times[i]
+                imf_bins, imf_counts = log_data_function(
+                    logsfc_formation_mass[logsfc_mask], bns, x_range, func_type="counts"
+                )
+                lognrml_parms, _, _ = fit_mfunc(gauss, np.log10(imf_bins), imf_counts)
+                imf_bins_theory = np.geomspace(imf_bins.min(), imf_bins.max(), 100)
+                imf_theory = gauss(np.log10(imf_bins_theory), *lognrml_parms)
 
-            ax[i].plot(
-                imf_bins_theory,
-                imf_theory,
-                ls=":",
-                alpha=1,
-                lw=2,
-                color="k",
-                # label=r"$ \mu = {:.1f}$, $\Sigma = {:.1f}$".format(
-                #     lognrml_parms[1], np.abs(lognrml_parms[2])
-                # ),
-            )
+                ax[h, i].plot(
+                    bulge_mass_bins,
+                    bulge_dn_dlogm,
+                    drawstyle="steps-mid",
+                    linewidth=2,
+                    alpha=1,
+                    color="crimson",
+                )
+                ax[h, i].fill_between(
+                    bulge_mass_bins,
+                    bulge_dn_dlogm,
+                    step="mid",
+                    facecolor="none",
+                    edgecolor="crimson",
+                    hatch=hatches[n % 2],
+                    # label=simulation_name[n],
+                )
 
-            ax[i].text(
-                0.55,
-                0.6,
-                r"$ \mu = {:.1f}, \sigma = {:.1f}$".format(
-                    lognrml_parms[1], np.abs(lognrml_parms[2])
-                ),
-                transform=ax[i].transAxes,
-                fontsize=8,
-                ha="left",
-            )
+                ax[h, i].plot(
+                    imf_bins,
+                    imf_counts,
+                    drawstyle="steps-mid",
+                    alpha=1,
+                    lw=2,
+                    color=color[n],
+                )
+                ax[h, i].fill_between(
+                    imf_bins,
+                    imf_counts,
+                    step="mid",
+                    facecolor=color[n],
+                    edgecolor=color[n],
+                    alpha=0.2,
+                    zorder=-1
+                    # label=simulation_name[n],
+                )
 
-            ax[i].plot(
-                mass_bins,
-                dn_dlogm,
-                drawstyle="steps-mid",
-                linewidth=2,
-                alpha=1,
-                color=color[n],
-            )
-            ax[i].fill_between(
-                mass_bins,
-                dn_dlogm,
-                step="mid",
-                facecolor="none",
-                edgecolor=color[n],
-                hatch=hatches[n % 2],
-                # label=simulation_name[n],
-            )
-            ax[i].plot(
-                mass_bins_theory,
-                dn_dlogm_theory,
-                color="k",
-                ls="--",
-                label=r"${{\Gamma = {:.1f}}}$".format(pwr_law_params[0]),
-            )
-            ax[i].text(
-                0.5,
-                0.45,
-                r"${{\Gamma = {:.1f}}}$".format(pwr_law_params[0]),
-                transform=ax[i].transAxes,
-                fontsize=8,
-                ha="right",
-            )
+                ax[h, i].plot(
+                    imf_bins_theory,
+                    imf_theory,
+                    ls=":",
+                    alpha=1,
+                    lw=2,
+                    color="k",
+                    # label=r"$ \mu = {:.1f}$, $\Sigma = {:.1f}$".format(
+                    #     lognrml_parms[1], np.abs(lognrml_parms[2])
+                    # ),
+                )
+                if h == 0:
+                    ax[h, i].text(
+                        0.55,
+                        0.6,
+                        r"$ \mu = {:.1f}, \sigma = {:.1f}$".format(
+                            lognrml_parms[1], np.abs(lognrml_parms[2])
+                        ),
+                        transform=ax[h, i].transAxes,
+                        fontsize=8,
+                        ha="left",
+                    )
+                    ax[h, i].text(
+                        0.95,
+                        0.95,
+                        r"${{\rm t = {:.0f}\:{{\rm Myr }}}}$".format(actual_time),
+                        transform=ax[h, i].transAxes,
+                        fontsize=10,
+                        verticalalignment="top",
+                        horizontalalignment="right",
+                        clip_on=False,
+                    )
 
-            ax[i].text(
-                0.95,
-                0.95,
-                r"${{\rm t = {:.0f}\:{{\rm Myr }}}}$".format(actual_time),
-                transform=ax[i].transAxes,
-                fontsize=10,
-                verticalalignment="top",
-                horizontalalignment="right",
-                clip_on=False,
-            )
-            ax[i].set(xscale="log", yscale="log", xlim=(80, 8e5), ylim=(6e-1, 500))
+                ax[h, i].plot(
+                    mass_bins,
+                    dn_dlogm,
+                    drawstyle="steps-mid",
+                    linewidth=2,
+                    alpha=1,
+                    color=color[n],
+                )
+                ax[h, i].fill_between(
+                    mass_bins,
+                    dn_dlogm,
+                    step="mid",
+                    facecolor="none",
+                    edgecolor=color[n],
+                    hatch=hatches[n % 2],
+                    # label=simulation_name[n],
+                )
+                ax[h, i].plot(
+                    mass_bins_theory,
+                    dn_dlogm_theory,
+                    color="k",
+                    ls="--",
+                    label=r"${{\Gamma = {:.1f}}}$".format(pwr_law_params[0]),
+                )
+                ax[h, i].text(
+                    0.5,
+                    0.45,
+                    r"${{\Gamma = {:.1f}}}$".format(pwr_law_params[0]),
+                    transform=ax[h, i].transAxes,
+                    fontsize=8,
+                    ha="right",
+                )
+
+                ax[h, i].set(
+                    xscale="log", yscale="log", xlim=(80, 8e5), ylim=(6e-1, 500)
+                )
 
             # if i == 3:
             #     yoff = -500
@@ -366,7 +410,7 @@ def plotting_interface(bsc_dirs, pop2_dirs, times, log_sfc, simulation_name, col
     cmf = mlines.Line2D([], [], color="k", ls="--", label=r"${\rm CMF}$")
     icmf = mlines.Line2D([], [], color="k", ls=":", label=r"${\rm ICMF}$")
 
-    ax[0].legend(
+    ax[0, 0].legend(
         bbox_to_anchor=(0.0, 1),
         loc="upper left",
         handles=[cmf, icmf],
@@ -375,36 +419,51 @@ def plotting_interface(bsc_dirs, pop2_dirs, times, log_sfc, simulation_name, col
         ncols=1,
     )
     # ax[0].ax.locator_params(nbins=12)
-    ax[0].minorticks_on()
+    ax[0, 0].minorticks_on()
     fig.text(
         0.5,
-        0.0,
+        0.05,
         r"$M_{\rm star \: cluster}\:\left[ \mathrm{M}_{\odot} \right] $",
         ha="center",
     )
 
-    # fig.text(0.03, 0.5, r"$N_{\rm star \: cluster}$", va="center", rotation="vertical")
-    ax[0].set(ylabel=r"$M_{\rm star \: cluster}\:\left[ \mathrm{M}_{\odot} \right] $")
+    fig.text(0.09, 0.5, r"$N_{\rm star \: cluster}$", va="center", rotation="vertical")
+
+    ax[1, 0].text(
+        0.05,
+        0.95,
+        r"$\alpha_{\rm vir} \leq 10$, bound",
+        transform=ax[1, 0].transAxes,
+        fontsize=10,
+        verticalalignment="top",
+        horizontalalignment="left",
+        clip_on=False,
+    )
+
+    # ax[0, 0].set(ylabel=r"$N_{\rm star \: cluster}\:$")
 
 
 if __name__ == "__main__":
     cmap = matplotlib.colormaps["Set2"]
     cmap = cmap(np.linspace(0, 1, 8))
     colors = [
-        cmap[0],
         # cmap[1],
-        cmap[2],
+        # cmap[2],
+        cmap[0],
     ]
     pop2_dirs = [
-        # "../../container_tiramisu/post_processed/pop2/fs07_refine",
+        # "../../../container_tiramisu/post_processed/pop2/fs07_refine",
+        # "../../../container_tiramisu/post_processed/pop2/fs035_ms10",
         "../../../container_tiramisu/post_processed/pop2/CC-Fiducial",
     ]
     bsc_dirs = [
-        # "../../container_tiramisu/post_processed/bsc_catalogues/fs07_refine",
+        # "../../../container_tiramisu/post_processed/bsc_catalogues/fs07_refine",
+        # "../../../container_tiramisu/post_processed/bsc_catalogues/fs035_ms10",
         "../../../container_tiramisu/post_processed/bsc_catalogues/CC-Fiducial",
     ]
     logs = [
-        # "../../container_tiramisu/sim_log_files/fs07_refine",
+        # "../../../container_tiramisu/sim_log_files/fs07_refine",
+        # "../../../container_tiramisu/sim_log_files/fs035_ms10",
         "../../../container_tiramisu/sim_log_files/CC-Fiducial",
     ]
     names = [
@@ -413,10 +472,11 @@ if __name__ == "__main__":
     ]
     pop2_files = [
         # filter_snapshots(pop2_dirs[0], 113, 1570, 1, snapshot_type="pop2_processed"),
+        # filter_snapshots(pop2_dirs[0], 140, 1606, 1, snapshot_type="pop2_processed"),
         filter_snapshots(pop2_dirs[0], 304, 466, 1, snapshot_type="pop2_processed"),
     ]
     # print(pop2_files)
-    wanted_times = [495, 565, 591, 700]  # myr
+    wanted_times = [495, 512, 595, 700]  # myr
 
     plotting_interface(
         bsc_dirs=bsc_dirs,
@@ -428,7 +488,7 @@ if __name__ == "__main__":
     )
 
     plt.savefig(
-        "../../../gdrive_columbia/research/massimo/paper2/cluster_mass_function.png",
+        "../../../gdrive_columbia/research/massimo/paper2/cluster_mass_function_virialized.png",
         dpi=300,
         bbox_inches="tight",
         pad_inches=0.05,
