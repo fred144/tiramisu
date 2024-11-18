@@ -18,7 +18,7 @@ from matplotlib.lines import Line2D
 import matplotlib.patches as mpatches
 
 
-def read_outflow_rates(path, start, stop, step=1):
+def read_outflow_rates(path, start, stop, step=1, boundary="ISM"):
     fpaths, snums = filter_snapshots(
         # "/home/fabg/container_tiramisu/post_processed/gas_properties/CC-Fiducial/",
         # 306,
@@ -36,16 +36,28 @@ def read_outflow_rates(path, start, stop, step=1):
     mass_inflow = []
     metalmass_inflow = []
     times = []
-    for i, file in enumerate(fpaths):
-        f = h5.File(file, "r")
-        mass_outflow.append(f["Winds/MassOutFlowRate"][()])
-        metalmass_outflow.append(f["Winds/MetalMassOutFlowRate"][()] * 3.81)
-        mass_inflow.append(f["Winds/MassInFlowRate"][()])
-        metalmass_inflow.append(f["Winds/MetalMassInFlowRate"][()] * 3.81)
-        times.append(f["Header/time"][()])
+    
+    if boundary == "ISM":
+        for i, file in enumerate(fpaths):
+            f = h5.File(file, "r")
+            mass_outflow.append(f["Winds/MassOutFlowRate"][()])
+            metalmass_outflow.append(f["Winds/MetalMassOutFlowRate"][()] * 3.81)
+            mass_inflow.append(f["Winds/MassInFlowRate"][()])
+            metalmass_inflow.append(f["Winds/MetalMassInFlowRate"][()] * 3.81)
+            times.append(f["Header/time"][()])
+    elif boundary == "CGM":
+        for i, file in enumerate(fpaths):
+            f = h5.File(file, "r")
+            # print(file)
+            mass_outflow.append(f["HaloWinds/MassOutFlowRate"][()])
+            metalmass_outflow.append(f["HaloWinds/MetalMassOutFlowRate"][()] * 3.81)
+            mass_inflow.append(f["HaloWinds/MassInFlowRate"][()])
+            metalmass_inflow.append(f["HaloWinds/MetalMassInFlowRate"][()] * 3.81)
+            times.append(f["Header/time"][()])
+    else:
+        raise ValueError("boundary must be 'ISM' or 'CGM'")
 
-        f.close()
-
+    f.close()
     return (
         np.array(times),
         np.array(mass_outflow),

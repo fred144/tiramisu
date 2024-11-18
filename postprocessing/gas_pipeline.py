@@ -88,29 +88,29 @@ if __name__ == "__main__":
         ("gas", "mass"): ((1e-2, "msun"), (1e6, "msun")),
     }
 
-    if len(sys.argv) != 5:
-        print(sys.argv[0], "usage:")
-        print("{} snapshot_dir start_snap end_snap step ".format(sys.argv[0]))
-        exit()
-    else:
-        print("********************************************************************")
-        print("post processing global gas quantitites")
-        print("********************************************************************")
+    # if len(sys.argv) != 5:
+    #     print(sys.argv[0], "usage:")
+    #     print("{} snapshot_dir start_snap end_snap step ".format(sys.argv[0]))
+    #     exit()
+    # else:
+    #     print("********************************************************************")
+    #     print("post processing global gas quantitites")
+    #     print("********************************************************************")
 
-    datadir = sys.argv[1]
-    logsfc_path = os.path.join(sys.argv[1], "logSFC")
-    start_snapshot = int(sys.argv[2])
-    end_snapshot = int(sys.argv[3])
-    step = int(sys.argv[4])
+    # datadir = sys.argv[1]
+    # logsfc_path = os.path.join(sys.argv[1], "logSFC")
+    # start_snapshot = int(sys.argv[2])
+    # end_snapshot = int(sys.argv[3])
+    # step = int(sys.argv[4])
 
-    sim_run = os.path.basename(os.path.normpath(datadir))
-    fpaths, snums = filter_snapshots(
-        datadir,
-        start_snapshot,
-        end_snapshot,
-        sampling=step,
-        str_snaps=True,
-    )
+    # sim_run = os.path.basename(os.path.normpath(datadir))
+    # fpaths, snums = filter_snapshots(
+    #     datadir,
+    #     start_snapshot,
+    #     end_snapshot,
+    #     sampling=step,
+    #     str_snaps=True,
+    # )
 
     # first starburst in the CC-fid run
     # queiscent phase after 1st star burst, before 2nd snap 203 - 370
@@ -119,17 +119,17 @@ if __name__ == "__main__":
 
     # =============================================================================
 
-    # datadir = os.path.expanduser("~/test_data/CC-Fiducial/")
-    # logsfc_path = os.path.expanduser(os.path.join(datadir, "logSFC"))
+    datadir = os.path.expanduser("~/test_data/CC-Fiducial/")
+    logsfc_path = os.path.expanduser(os.path.join(datadir, "logSFC"))
 
-    # fpaths, snums = filter_snapshots(
-    #     datadir,
-    #     153,
-    #     304,
-    #     sampling=2,
-    #     str_snaps=True,
-    #     snapshot_type="ramses_snapshot",
-    # )
+    fpaths, snums = filter_snapshots(
+        datadir,
+        303,
+        303,
+        sampling=2,
+        str_snaps=True,
+        snapshot_type="ramses_snapshot",
+    )
 
     # =============================================================================
 

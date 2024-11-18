@@ -12,6 +12,8 @@ import yt
 
 
 if __name__ == "__main__":
+    cell_fields, epf = ram_fields()
+
     if len(sys.argv) != 5:
         print(sys.argv[0], "usage:")
         print(
@@ -21,11 +23,10 @@ if __name__ == "__main__":
         )
         exit()
 
-    cell_fields, epf = ram_fields()
     # datadir = os.path.relpath("../../cosm_test_data/refine")
     datadir = sys.argv[1]
 
-    # datadir = os.path.relpath("../../sim_data/cluster_evolution/CC-radius1")
+    # datadir = os.path.relpath(os.path.expanduser("~/test_data/CC-Fiducial/"))
 
     sim_run = os.path.basename(os.path.normpath(datadir))
 
