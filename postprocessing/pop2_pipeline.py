@@ -1,6 +1,8 @@
+# %%
+
 import sys
 
-sys.path.append("..")  # makes sure that importing the modules work
+sys.path.append("../")  # makes sure that importing the modules work
 import numpy as np
 import os
 
@@ -10,36 +12,53 @@ from tools.ram_fields import ram_fields
 from tools.fscanner import filter_snapshots
 import yt
 
+# %%
 
 if __name__ == "__main__":
     cell_fields, epf = ram_fields()
 
-    if len(sys.argv) != 5:
-        print(sys.argv[0], "usage:")
-        print(
-            "{} data_directory_to_postprocess start_snapshot end_snapshot step".format(
-                sys.argv[0]
-            )
-        )
-        exit()
+    # if len(sys.argv) != 5:
+    #     print(sys.argv[0], "usage:")
+    #     print(
+    #         "{} data_directory_to_postprocess start_snapshot end_snapshot step".format(
+    #             sys.argv[0]
+    #         )
+    #     )
+    #     exit()
 
-    # datadir = os.path.relpath("../../cosm_test_data/refine")
-    datadir = sys.argv[1]
+    datadir = os.path.relpath("../../cosm_test_data/refine")
+    # datadir = sys.argv[1]
 
-    # datadir = os.path.relpath(os.path.expanduser("~/test_data/CC-Fiducial/"))
+    datadir = os.path.relpath(os.path.expanduser("~/test_data/CC-Fiducial/"))
 
     sim_run = os.path.basename(os.path.normpath(datadir))
 
     print("- sim run", sim_run)
+    # snaps, snap_strings = filter_snapshots(
+    #     datadir,
+    #     int(sys.argv[2]),
+    #     int(sys.argv[3]),
+    #     sampling=int(sys.argv[4]),
+    #     str_snaps=True,
+    # )
     snaps, snap_strings = filter_snapshots(
         datadir,
-        int(sys.argv[2]),
-        int(sys.argv[3]),
-        sampling=int(sys.argv[4]),
+        412,
+        412,
+        sampling=1,
         str_snaps=True,
     )
+
     pop2_container = os.path.join(
         "..", "..", "container_tiramisu", "post_processed", "pop2", sim_run
+    )
+    star_cluster_container = os.path.join(
+        "..",
+        "..",
+        "container_tiramisu",
+        "post_processed",
+        "star_cluster_tracers",
+        sim_run,
     )
 
     if not os.path.exists(pop2_container):
@@ -47,6 +66,13 @@ if __name__ == "__main__":
         os.makedirs(pop2_container)
     else:
         pass
+
+    if not os.path.exists(star_cluster_container):
+        print("Creating container", star_cluster_container)
+        os.makedirs(star_cluster_container)
+    else:
+        pass
+
     sim_logfile = os.path.join(
         "..",
         "..",
@@ -64,18 +90,11 @@ if __name__ == "__main__":
 
         ds = yt.load(infofile, fields=cell_fields, extra_particle_fields=epf)
         ad = ds.all_data()
-
+        # %%
         # get time-dependent params.
         redshft = ds.current_redshift
         current_hubble = ds.hubble_constant
         current_time = float(ds.current_time.in_units("Myr"))
-
-        # get SFC/PSC positions and other important fields,
-        # need to modify definitions to get these sinks
-        # pos_sfcs = np.array(ad["SFC", "particle_position"])
-        # pos_pscs = np.array(ad["PSC", "particle_position"])
-        # pos_sfcs_recentered = pos_sfcs - plt_ctr
-        # pos_pscs_recentered = pos_pscs - plt_ctr
 
         # read POPII star info
         star_id = np.array(ad["star", "particle_identity"])
@@ -104,6 +123,15 @@ if __name__ == "__main__":
         # y_vel = ad["star", "particle_velocity_y"].to("km/s")
         # z_vel = ad["star", "particle_velocity_z"].to("km/s")
 
+        # get SFC/PSC positions and other important fields,
+        # need to modify definitions to get these sinks in the source code
+
+        # pos_sfcs = np.array(ad["SFC", "particle_position"])
+        # pos_pscs = np.array(ad["PSC", "particle_position"])
+        # pos_sfcs_recentered = pos_sfcs - plt_ctr  # star forming clouds
+        # pos_pscs_recentered = pos_pscs - plt_ctr  # passive star clusters
+        pos_clouds = np.array(ad["cloud_tracer", "particle_position_x"])
+        print(pos_clouds)
         #  converts code age to relative ages
         # calculate the age of the universe when the first star was born
         # using the logSFC as a reference point for redshift when the first star

@@ -8,7 +8,7 @@ import numpy as np
 import glob
 import os
 import matplotlib.pyplot as plt
-import cmasher as cmr
+# import cmasher as cmr
 from matplotlib.colors import LogNorm
 from astropy import units as u
 from astropy import constants as const
@@ -95,7 +95,8 @@ def metal_lookup(log_sfc_path, starform_times):
     return star_metals
 
 
-times = [659]  # [595, 600, 627, 655]
+# times = [659]  # [595, 600, 627, 655]
+times = np.linspace(585, 660, 5)
 # get all the snapshots
 paths = filter_snapshots(
     "../../../container_tiramisu/post_processed/pop2/CC-Fiducial",
@@ -118,6 +119,12 @@ color = cmap[0]
 # fahrion data
 fahrion2022 = np.loadtxt("./fahrion2022.txt")
 fahrion2021 = np.loadtxt("./fahrion2021.txt")
+#carlsten data
+calstern_virgo = np.loadtxt("./carlsten2022.txt", delimiter=",")
+
+fahrion_data = np.concatenate((fahrion2022, fahrion2021), axis=0)
+galaxy_mass = []
+nsc_mass = []
 for i, pop2 in enumerate(files):
     snapshot = "info_00{:}".format(int(snap_nums[i]))
 
@@ -205,39 +212,89 @@ for i, pop2 in enumerate(files):
             total_mass / (4 / 3 * np.pi * clump_radius**3)
         )
     )
+    nsc_mass.append(big_mass.sum())
+    galaxy_mass.append(np.sum(all_masses))
 
-    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(5, 4.4), dpi=300, sharex="col")
-    plt.subplots_adjust(hspace=0)
-    masses = np.geomspace(1e5, 1e12, 100)  # galaxy masses
-    # Neumauer et al. 2020
-    log_m_nsc = 0.48 * np.log10(masses / 1e9) + 6.51
-    ax.scatter(np.sum(all_masses), big_mass.sum(), marker="*", s=100, color=color, edgecolors="black", label="This work")
-    ax.plot(masses, 10**log_m_nsc,  color="grey", zorder=0, alpha=0.4)
-    # add 0.6 dex scatter
-    ax.fill_between(masses, 10**(log_m_nsc - 0.6), 10**(log_m_nsc + 0.6), color="grey", alpha=0.2)
-    ax.scatter(
-        10 ** fahrion2022[:, 0],
-        10 ** fahrion2022[:, 1],
-        label="Fahrion et al. 2020",
-        marker="d",
-        color="grey",
-        edgecolors="black",
-        alpha=0.8
-    )
-    ax.scatter(
-        10 ** fahrion2021[:, 0],
-        10 ** fahrion2021[:, 1],
-        label="Fahrion et al. 2021",
-        color="orange",
-        marker="^",
-        edgecolors="black",
-        alpha=0.8
-    )
-    # ax.plot(masses, 0.3*masses, label="NSC mass relation")
-    
-    # label the relation
-    ax.text(0.05, 0.25, "Neumayer+2020", transform=ax.transAxes, fontsize=8, rotation=24, color="grey")
-    ax.set(yscale="log", xscale="log", xlim=(1e5, 2e10), ylim=(2e3, 2e8), xlabel="$M_\star \mathrm{[M_\odot]}$", ylabel="NSC mass [M$_\odot$]")
-    ax.legend(frameon=False,  loc="upper left", fontsize=8, ncols=1)
-    plt.savefig( "../../../gdrive_columbia/research/massimo/paper2/nsc_galmass_relation.png", dpi=300, bbox_inches="tight")
-    plt.show()
+#%%
+fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(6, 4.5), dpi=300, sharex="col")
+plt.subplots_adjust(hspace=0)
+masses = np.geomspace(1e5, 1e12, 100)  # galaxy masses
+# Neumauer et al. 2020
+log_m_nsc = 0.48 * np.log10(masses / 1e9) + 6.51
+# ax.scatter(np.sum(all_masses), big_mass.sum(), marker="*", s=100, color=color, edgecolors="black", label="This work")
+ax.scatter(
+    galaxy_mass[-1],
+    nsc_mass[-1],
+    marker="*",
+    s=200,
+    c=color,
+    alpha=0.8,
+    edgecolors="black",
+    zorder=10,
+    label=r"This work, $z = {:.1f}$".format(z_from_t_myr(tmyr)),
+    # cmap="inferno"
+)
+ax.plot(masses, 10**log_m_nsc, color="k", lw=3, ls="-.",  alpha=0.8, zorder=10,)
+# add 0.6 dex scatter
+ax.fill_between(
+    masses,
+    10 ** (log_m_nsc - 0.6),
+    10 ** (log_m_nsc + 0.6),
+    facecolor="grey",
+    alpha=0.2,
+)
+# ax.scatter(
+#     10 ** fahrion2022[:, 0],
+#     10 ** fahrion2022[:, 1],
+#     label="Fahrion et al. 2020",
+#     marker="d",
+#     color="grey",
+#     edgecolors="black",
+#     alpha=0.8
+# )
+ax.scatter(
+    10 ** fahrion_data[:, 0],
+    10 ** fahrion_data[:, 1],
+    label="Fahrion et al. 2020, 2021",
+    color="orange",
+    marker="d",
+    # edgecolors="black",
+    alpha=0.8,
+)
+ax.scatter(
+    10 ** calstern_virgo[:, 0],
+    10 ** calstern_virgo[:, 1],
+    label="Carlsten et al. 2022",
+    color="grey",
+    marker="^",
+    # edgecolors="black",
+    alpha=0.8,
+)
+
+# ax.plot(masses, 0.3*masses, label="NSC mass relation")
+
+# label the relation
+ax.text(
+    0.01,
+    0.18,
+    "Neumayer et al. 2020",
+    transform=ax.transAxes,
+    fontsize=9,
+    rotation=20,
+    color="k",
+)
+ax.set(
+    yscale="log",
+    xscale="log",
+    xlim=(1e5, 2e10),
+    ylim=(2e3, 2e8),
+    xlabel="$M_\star \mathrm{[M_\odot]}$",
+    ylabel="NSC mass [M$_\odot$]",
+)
+ax.legend(frameon=False, loc="upper left", fontsize=10, ncols=1)
+plt.savefig(
+    "../../../gdrive_columbia/research/massimo/paper2/nsc_galmass_relation.png",
+    dpi=300,
+    bbox_inches="tight",
+)
+plt.show()

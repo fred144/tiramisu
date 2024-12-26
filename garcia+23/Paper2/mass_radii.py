@@ -104,8 +104,60 @@ path = "../../../container_tiramisu/post_processed/bsc_catalogues/CC-Fiducial"
 logsfc = os.path.expanduser("~/test_data/CC-Fiducial/logSFC")
 logsfc_dat = np.loadtxt(logsfc)
 
+# get data from neumayer 2020
+reffvsmass = np.loadtxt("neumayer2020_reffvsM.txt", delimiter=",")
+reffvsmass = 10**reffvsmass
+
+sigmaeffvsmass = np.loadtxt("neumayer2020_SigmaEffvsM.txt", delimiter=",")
+sigmaeffvsmass = 10**sigmaeffvsmass
+# %%
+
 fig, ax = plt.subplots(nrows=2, ncols=2, figsize=(6, 6), dpi=300)
 plt.subplots_adjust(hspace=0.25, wspace=0.25)
+
+
+def create_extended_colormap(boundaries, cmap_name="viridis"):
+    """
+    Create a colormap that extends the given colormap with gray at the end.
+
+    Parameters:
+    - boundaries: List of boundaries defining the color segments (must be sorted).
+    - cmap_name: Name of the base colormap (default: 'viridis').
+
+    Returns:
+    - custom_cmap: A ListedColormap with the extended segments.
+    - norm: A BoundaryNorm for mapping data to the custom segments.
+    """
+    # Number of segments for the colormap
+    n_segments = len(boundaries) - 1
+
+    # Generate colors from the specified colormap
+    base_cmap = plt.cm.get_cmap(cmap_name)
+    cmap_colors = base_cmap(
+        np.linspace(0, 1, n_segments - 1)
+    )  # All but the last segment
+
+    # Add gray color as the final segment
+    gray_color = np.array([[0.5, 0.5, 0.5, 0.4]])  # RGBA for gray
+    cmap_colors = np.vstack([cmap_colors, gray_color])
+
+    # Create a ListedColormap
+    custom_cmap = ListedColormap(cmap_colors)
+
+    # Create a BoundaryNorm
+    norm = BoundaryNorm(boundaries, len(cmap_colors))
+
+    return custom_cmap, norm
+
+
+# Example: Define boundaries
+
+intervals = 0.5
+cmap_end = 2.5
+boundaries = np.arange(0, cmap_end + intervals * 2, intervals)
+
+# Create custom colormap and norm
+custom_cmap, norm = create_extended_colormap(boundaries, cmap_name="cmr.tropical")
 
 for i, pop2 in enumerate(files):
     snapshot = "info_00{:}".format(int(snap_nums[i]))
@@ -144,7 +196,7 @@ for i, pop2 in enumerate(files):
 
     clump_radii = clumped_dat[:, 4] * u.parsec
     clump_half_mass_radius = clumped_dat[:, 21] * u.parsec
-    clump_masses = clumped_dat[:, 8]
+    clump_masses = clumped_dat[:, 8] * u.Msun
     # central density
     Sigma0 = clumped_dat[:, 16]
 
@@ -154,10 +206,10 @@ for i, pop2 in enumerate(files):
     r_half = clumped_dat[:, 21] * u.parsec  # half light radius
     r = clumped_dat[:, 4] * u.parsec
     r_core = clumped_dat[:, 12] * u.parsec  # pc
-    half_masses = 0.5 * clump_masses * u.Msun
+    half_masses = 0.5 * clump_masses
     m_core = clumped_dat[:, -1]
-    ke_avg_perparticle = (1 / 2) * sigma_3d_squared * half_masses.to(u.kg)
-    pot_energy = (3 / 5) * (const.G * half_masses.to(u.kg) ** 2) / r_half.to(u.m)
+    ke_avg_perparticle = (1 / 2) * sigma_3d_squared * clump_masses.to(u.kg)
+    pot_energy = (3 / 5) * (const.G * clump_masses.to(u.kg) ** 2) / r_half.to(u.m)
 
     vir_parameter = 2 * ke_avg_perparticle / pot_energy
 
@@ -193,23 +245,51 @@ for i, pop2 in enumerate(files):
         )
     )
 
-    vir_mask = vir_parameter <= 10
+    vir_mask = vir_parameter < cmap_end
 
     # plot mass of clump vs radius of clumps
-    ax[i,0].scatter(
-        clump_masses[~vir_mask], clump_radii[~vir_mask], c="grey", s=40, alpha=0.2
+    ax[i, 0].scatter(
+        clump_masses[~vir_mask],
+        clump_radii[~vir_mask],
+        c="grey",
+        s=40,
+        alpha=0.3,
+        edgecolors="none",
     )
-    bound_scat = ax[i,0].scatter(
+    bound_scat = ax[i, 0].scatter(
         clump_masses[vir_mask],
         clump_half_mass_radius[vir_mask],
         c=vir_parameter[vir_mask],
-        cmap="viridis",
+        cmap=custom_cmap,
+        norm=norm,
         s=40,
-        alpha=0.7,
         edgecolors="k",
-        norm=matplotlib.colors.LogNorm(vmin=0.2, vmax=11),
+        alpha=0.9,
     )
-    ax[i,0].set(
+
+    # plot central density as a function of object mass
+    bulge_mask = clump_masses == clump_masses[np.argmax(clump_masses)]
+    Sigma0[bulge_mask] = 1e3
+    ax[i, 1].scatter(
+        clump_masses[vir_mask],
+        Sigma0[vir_mask],
+        c=vir_parameter[vir_mask],
+        s=40,
+        edgecolors="k",
+        cmap=custom_cmap,
+        norm=norm,
+        alpha=0.9,
+    )
+    ax[i, 1].scatter(
+        clump_masses[~vir_mask],
+        Sigma0[~vir_mask],
+        c="grey",
+        s=40,
+        alpha=0.3,
+        edgecolors="none",
+    )
+
+    ax[i, 0].set(
         xscale="log",
         yscale="log",
         ylabel=r"$r_{\rm half-mass}\: {\rm [pc]}$",
@@ -218,65 +298,134 @@ for i, pop2 in enumerate(files):
         ylim=(0.1, 50),
     )
 
-    # plot central density as a function of object mass
-    bulge_mask = clump_masses == clump_masses[np.argmax(clump_masses)]
-    Sigma0[bulge_mask] = 1e3
-    ax[i,1].scatter(
-        clump_masses[vir_mask],
-        Sigma0[vir_mask],
-        c=vir_parameter[vir_mask],
-        cmap="viridis",
-        s=40,
-        alpha=0.7,
-        edgecolors="k",
-        norm=matplotlib.colors.LogNorm(vmin=0.2, vmax=11),
-    )
-    ax[i,1].scatter(
-        clump_masses[~vir_mask], Sigma0[~vir_mask], c="grey", s=40, alpha=0.2
-    )
-    ax[i,1].set(
+    ax[i, 1].set(
         xscale="log",
         yscale="log",
         ylabel=r"$\Sigma_0$ [M$_\odot$/pc$^2$]",
         xlabel=r"$m_{\rm star\: cluster} {[\rm M_\odot]}$",
         xlim=(2e2, 9e5),
+        # xlim=(2e2, 9e7),
         ylim=(60, 3e4),
     )
 
-    ax[i,0].axhspan(0.01, 0.1, color="gray", alpha=0.8)
+    ax[i, 0].axhspan(0.01, 0.1, color="gray", alpha=0.8)
     # time
-  
-    ax[i,0].text(
-    0.1,
-    0.9,
-    r"$t = {:.0f}$ Myr".format(tmyr),
-    transform=ax[i,0].transAxes,
-    ha="left",
-    va="top",
-    fontsize=9
+
+    ax[i, 0].text(
+        0.1,
+        0.9,
+        r"$t = {:.0f}$ Myr".format(tmyr),
+        transform=ax[i, 0].transAxes,
+        ha="left",
+        va="top",
+        fontsize=9,
     )
     # line for constant density
     mtheory = np.geomspace(1e2, 1e6, 100)
-    rtheory = mtheory**(1 / 3) * 0.06
-    rtheory2 = mtheory**(1 / 2) * 0.06 
-    ax[i,0].plot(mtheory, rtheory, lw=2, ls="--", alpha=0.2, c="k", label=r"$r \propto m_{\rm star\: cluster}^{1/3}$")
-    # ax[i+2].plot(mtheory, rtheory2, lw=2, ls="--", alpha=0.2, c="k", label=r"$\Sigma_0 \propto m^{1/2}$")
-    labelLines(ax[i,0].get_lines(),  color="k",align=True, yoffsets=-1, fontsize=10)
-    
-ax[1,0].annotate('NSC', xy=(2e5, 10), xytext=(5e4, 20), fontsize=9,
- arrowprops=dict(arrowstyle="->", connectionstyle="arc3", color="grey"))
+    rtheory = mtheory ** (1 / 3) * 0.06
+    rtheory2 = mtheory ** (1 / 2) * 0.06
 
-ax[1,1].annotate('NSC', xy=(2e5, 1e3), xytext=(5e4, 2e3), fontsize=9,
- arrowprops=dict(arrowstyle="->", connectionstyle="arc3", color="grey"))
+    if i == 1:
+        ax[i, 0].scatter(reffvsmass[:, 0], reffvsmass[:, 1], s=2, color="k", alpha=0.8)
+        ax[i, 1].scatter(
+            sigmaeffvsmass[:, 0], sigmaeffvsmass[:, 1], s=2, color="k", alpha=0.5
+        )
+
+        # make a confidence band
+        # power law in log space
+        def power_law(x, a, b):
+            return a * x**b
+
+        popt, pcov = curve_fit(
+            power_law, np.log10(reffvsmass[:, 0]), np.log10(reffvsmass[:, 1])
+        )
+        reffvsmass_err = np.sqrt(np.diag(pcov))
+
+        x = np.geomspace(1e2, 1e8, 100)
+        
+        reffvsmass_theory = 10 ** power_law(np.log10(x), *popt)
+        ax[i, 0].plot(x, reffvsmass_theory, lw=2, ls="-.", c="k")
+
+        # confidence band with 1 sigma errors
+        # ax[i, 0].fill_between(
+        #     x,
+        #     10 ** power_law(np.log10(x), popt[0] - reffvsmass_err[0], popt[1] - reffvsmass_err[1]),
+        #     10 ** power_law(np.log10(x), popt[0] + reffvsmass_err[0], popt[1] + reffvsmass_err[1]),
+        #     color="k",
+        #     alpha=0.1,
+        # )
+
+        # condfidence with half a dex above and below
+        ax[i, 0].fill_between(
+            x,
+            10 ** (power_law(np.log10(x), popt[0], popt[1]) - 0.6),
+            10 ** (power_law(np.log10(x), popt[0], popt[1]) + 0.6),
+            alpha=0.1,
+            facecolor="k",
+        )
+
+        # now do the same for the surface density
+        popt, pcov = curve_fit(
+            power_law, np.log10(sigmaeffvsmass[:, 0]), np.log10(sigmaeffvsmass[:, 1])
+        )
+        sigmaeffvsmass_err = np.sqrt(np.diag(pcov))
+        sigmaeffvsmass_theory = 10 ** power_law(np.log10(x), *popt)
+        ax[i, 1].plot(x, sigmaeffvsmass_theory, lw=2, ls="-.", c="k", label=r"Neumayer et al. 2020, $z=0$")
+       
+        # confidence band with 1 sigma errors
+        # ax[i, 1].fill_between(x, 10 ** (power_law(np.log10(x), popt[0] - sigmaeffvsmass_err[0], popt[1] - sigmaeffvsmass_err[1]), 10 ** (power_law(np.log10(x), popt[0] + sigmaeffvsmass_err[0], popt[1] + sigmaeffvsmass_err[1])), color="k", alpha=0.1))
+
+        # condfidence with half a dex above and below
+        ax[i, 1].fill_between(
+            x,
+            10 ** (power_law(np.log10(x), popt[0], popt[1]) - 0.6),
+            10 ** (power_law(np.log10(x), popt[0], popt[1]) + 0.6),
+            alpha=0.1,
+            facecolor="k",
+        )
+        ax[i,1].legend(fontsize=10, loc='upper left', frameon=False, bbox_to_anchor=(-0.1, 2.45))
+
+    # ax[i, 0].plot(
+    #     mtheory,
+    #     rtheory,
+    #     lw=2,
+    #     ls="--",
+    #     alpha=0.2,
+    #     c="k",
+    #     label=r"$r \propto m_{\rm star\: cluster}^{1/3}$",
+    # )
+
+    # ax[i+2].plot(mtheory, rtheory2, lw=2, ls="--", alpha=0.2, c="k", label=r"$\Sigma_0 \propto m^{1/2}$")
+    # labelLines(ax[i, 0].get_lines(), color="k", align=True, yoffsets=-1, fontsize=10)
+
+ax[1, 0].annotate(
+    "NSC",
+    xy=(2e5, 10),
+    xytext=(5e4, 20),
+    fontsize=9,
+    arrowprops=dict(arrowstyle="->", connectionstyle="arc3", color="grey"),
+)
+
+ax[1, 1].annotate(
+    "NSC",
+    xy=(2e5, 1e3),
+    xytext=(5e4, 3e2),
+    fontsize=9,
+    arrowprops=dict(arrowstyle="->", connectionstyle="arc3", color="grey"),
+)
 
 
 # create a colorbar
-cbar_ax = ax[0,0].inset_axes([0.0, 1.1, 1, 0.08])
+cbar_ax = ax[0, 0].inset_axes([0.0, 1.1, 1, 0.08])
+
 cbar = fig.colorbar(
     bound_scat,
     cax=cbar_ax,
     pad=0,
     orientation="horizontal",
+    boundaries=boundaries,
+    ticks=[0.5, 1, 1.5, 2, 2.5],
+    extend="max",
 )
 # cbar.set_label(r"$\alpha_{\rm vir}$", fontsize=10,loc='left', labelpad=-20, x=0.9)
 cbar.ax.xaxis.set_tick_params(labelsize=10)

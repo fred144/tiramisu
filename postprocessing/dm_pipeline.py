@@ -36,6 +36,7 @@ if __name__ == "__main__":
     # step = 1
 
     # sim_run = datadir.replace("\\", "/").split("/")[-1]
+    
     sim_run = os.path.basename(os.path.normpath(datadir))
     snaps, snap_strings = filter_snapshots(
         datadir,
@@ -58,10 +59,10 @@ if __name__ == "__main__":
     processor_number = 0
     cell_fields, epf = ram_fields()
 
-    # %%
-    m_vir = []
-    r_vir = []
-    tot_m_star = []
+  
+    m_vir = [] # mass of the most massive halo
+    r_vir = [] # virial radius of the most massive halo in pc, physical units
+    tot_m_star = [] # total mass of stars in the simulation
     t = []
     z = []
     snapshot = []
@@ -120,4 +121,4 @@ if __name__ == "__main__":
             X=dm_total_data,
             header="snap_num\tt[myr]\tredshift\tmvir[msun]\trvir[pc]\tm_star[msun]",
         )
-        print(">> table refreshed")
+        print(">> table refreshed: ",os.path.join(dm_container, "main_halo.txt"))

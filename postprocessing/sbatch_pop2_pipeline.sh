@@ -24,4 +24,4 @@ DIR="/scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial"
 # cd /scratch/zt1/project/ricotti-prj/user/fgarcia4/globclustevo/visuals/
 # SCRIPT = "./low-sfe.py"
 # number of cores specified above
-mpirun -n 1 python3 $SCRIPT $DIR 305 466 1 2>&1 
+mpirun -n 1 python3 $SCRIPT $DIR 153 466 1 2>&1 

@@ -210,7 +210,7 @@ for i, pop2 in enumerate(files):
     norm = BoundaryNorm(bounds, segmented_cmap.N)
 
     pw = 200
-
+    star_bins = 128
     pxl_size = (pw / star_bins) ** 2  # in parsec^2
 
     # age_masks = [big_ages > 300, (big_ages < 300) & (big_ages > 200), big_ages < 200]

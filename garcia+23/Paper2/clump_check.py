@@ -1,5 +1,5 @@
 #%%
-# import sys
+import sys
 
 sys.path.append("../../")
 
@@ -15,7 +15,7 @@ from astropy import constants as const
 from tools import plotstyle
 import matplotlib
 from tools.cosmo import t_myr_from_z, z_from_t_myr
-
+from tools.fscanner import filter_snapshots
 
 matplotlib.rcParams.update(matplotlib.rcParamsDefault)
 plt.rcParams.update(
@@ -56,18 +56,24 @@ def metal_lookup(log_sfc_path, starform_times):
 path = "../../../container_tiramisu/post_processed/bsc_catalogues/CC-Fiducial"
 logsfc = os.path.expanduser("~/test_data/CC-Fiducial/logSFC")
 logsfc_dat = np.loadtxt(logsfc)
-times = [576, 577, 595, 659]
-bulge_clumpid = [4, 1, 15, 17]
-snapshots = ["info_00385", "info_00386", "info_00404", "info_00466"]
+# get the position of the sfcs which is the last three columns
+sfc_positions = logsfc_dat[:, -3:]
+
+# times = [576, 577, 595, 659]
+# bulge_clumpid = [4, 1, 15, 17]
+# snapshots = ["info_00385", "info_00386", "info_00404", "info_00466"]
+
+times = [ 659] # myr
+bulge_clumpid = [17] # done by looking manually at the snapshots
+snapshots = [ "info_00466"]
+
 cmap = matplotlib.colormaps["Dark2"]
 cmap = cmap(np.linspace(0, 1, 8))
 color = cmap[0]
 
-# fig, ax = plt.subplots(
-#     nrows=4, ncols=1, figsize=(8, 15.35), dpi=300, sharex=True, sharey=True
-# )
 
-plt.subplots_adjust(hspace=0)
+#%%
+# plt.subplots_adjust(hspace=0)
 for i, snapshot in enumerate(snapshots):
     bound_star_path = glob.glob(
         os.path.join(os.path.join(path, snapshot), "clumped_*.txt")
@@ -80,13 +86,6 @@ for i, snapshot in enumerate(snapshots):
     disrupted_paths = glob.glob(
         os.path.join(os.path.join(path, snapshot), "disrupted_*.txt")
     )
-
-    # full_dat = np.loadtxt(
-    #     os.path.join(
-    #         "../../../container_tiramisu/post_processed/pop2/CC-Fiducial",
-    #         "pop2-{}-*.txt".format(snapshot.split("_")[1]),
-    #     )
-    # )
 
     bound_dat = np.loadtxt(bound_star_path[0])
     unbound_dat = np.loadtxt(field_star_path[0])
@@ -153,27 +152,26 @@ for i, snapshot in enumerate(snapshots):
     fig, ax = plt.subplots(nrows=2, ncols=1, figsize=(5, 5), dpi=300)
     plt.subplots_adjust(wspace=0.25, hspace=0.25)
     ax[0].hist(
-        big_ages,
+        creation_time,
         color=color,
-        bins=np.linspace(0, 340, 30),
+        bins=np.linspace(330, 690, 30),
         linewidth=0.8,
         edgecolor="k",
     )
-    ax[0].text(
-        0.95,
-        0.95,
-        r"${{\rm t = {:.0f}\:{{\rm Myr }}}}$".format(times[i]),
-        transform=ax[0].transAxes,
-        verticalalignment="top",
-        horizontalalignment="right",
-        color="k",
-        clip_on=False,
-    )
+
+    ax[0].axvline(x=580, color="k",  lw=2, alpha=0.5)
+    ax[ 0].annotate(
+    "starburst (b)",
+    xy=(580, 1e3),
+    xytext=(600, 5e3),
+    fontsize=8,
+    arrowprops=dict(arrowstyle="->", connectionstyle="arc3", color="black"),
+)
 
     ax[0].text(
         0.05,
-        0.95,
-        r"NSC",
+        0.92,
+        r"NSC stars""\t"r"$t_{{\rm univ}} = {:.0f}$ Myr".format(times[i]),
         transform=ax[0].transAxes,
         verticalalignment="top",
         horizontalalignment="left",
@@ -189,7 +187,7 @@ for i, snapshot in enumerate(snapshots):
         edgecolor="k",
     )
 
-    ax[0].set(yscale="log", xlabel="PopII Ages [Myr]", ylim=(0.5, 8e4))
+    ax[0].set(yscale="log", xlabel=r"PopII formation $t_{\rm univ}$ [Myr]", ylim=(0.5, 8e4))
     ax[1].set(
         yscale="log", xlabel=r"log $Z_{\rm PopII}~[{\rm Z_\odot}]$", ylim=(0.5, 8e4)
     )
