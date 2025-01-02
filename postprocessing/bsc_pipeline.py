@@ -411,7 +411,8 @@ if __name__ == "__main__":
             clump_ctr_z = z[c - 1]
             rad = clump_rad[c - 1]
             # ages in Myr
-            age = float(st.mode(pop2_ages[clump_mask], keepdims=True)[0])
+            print(pop2_ages[clump_mask])
+            age = float(st.mode(pop2_ages[clump_mask])[0])
             oldest_star = np.max(pop2_ages[clump_mask])
             youngest_star = np.min(pop2_ages[clump_mask])
             clump_mass = np.sum(pop2_masses[clump_mask])

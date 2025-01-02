@@ -1,0 +1,1483 @@
+Loading python/zen2/3.8.12
+  Loading requirement: matplotlib/3.4.3/zen2
+=============================================================================
+Warning: particle_families are modified at /site-packages/yt/frontends/ramses
+=============================================================================
+********************************************************************
+post processing global gas quantitites
+********************************************************************
+> running filter_snapshots
+> processing ramses_snapshot
+> found 163 snapshots
+* start or stop snapshot doesn't exist
+> starting at 304
+> stopping at 466
+> returning 163
+>>> done 
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00304/info_00304.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00304/info_00304.0.h5
+virial radius [pc] 3282.911540642093 , virial mass 1.39e+08 [Msun]
+outflow rates computed b/w [pc] r =  328.2911540642093 361.12026947063026
+mass outflow rate [msun / yr] 0.2644172336362963 Msun/yr
+mass inflow rate [msun / yr] 0.08293047195761617 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00304-493_69-myr-z-9_952.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00305/info_00305.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00305/info_00305.0.h5
+virial radius [pc] 2660.273723921735 , virial mass 1.37e+08 [Msun]
+outflow rates computed b/w [pc] r =  266.0273723921735 292.63010963139084
+mass outflow rate [msun / yr] 0.13666183487876393 Msun/yr
+mass inflow rate [msun / yr] 0.07201441562353528 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00305-494_71-myr-z-9_937.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00306/info_00306.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00306/info_00306.0.h5
+virial radius [pc] 3243.7086967653586 , virial mass 1.41e+08 [Msun]
+outflow rates computed b/w [pc] r =  324.3708696765359 356.8079566441895
+mass outflow rate [msun / yr] 0.17616573486282427 Msun/yr
+mass inflow rate [msun / yr] 0.08383829701274255 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00306-495_72-myr-z-9_922.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00307/info_00307.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00307/info_00307.0.h5
+virial radius [pc] 2654.875292667588 , virial mass 1.36e+08 [Msun]
+outflow rates computed b/w [pc] r =  265.4875292667588 292.0362821934347
+mass outflow rate [msun / yr] 0.12762849013700647 Msun/yr
+mass inflow rate [msun / yr] 0.05859712098161997 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00307-496_73-myr-z-9_908.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00308/info_00308.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00308/info_00308.0.h5
+virial radius [pc] 2936.3784064426873 , virial mass 1.37e+08 [Msun]
+outflow rates computed b/w [pc] r =  293.63784064426875 323.0016247086956
+mass outflow rate [msun / yr] 0.12864194017601085 Msun/yr
+mass inflow rate [msun / yr] 0.0727876744029687 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00308-497_75-myr-z-9_893.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00309/info_00309.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00309/info_00309.0.h5
+virial radius [pc] 2892.3222239255197 , virial mass 1.37e+08 [Msun]
+outflow rates computed b/w [pc] r =  289.232222392552 318.1554446318072
+mass outflow rate [msun / yr] 0.13419999627423335 Msun/yr
+mass inflow rate [msun / yr] 0.06404320764381055 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00309-498_77-myr-z-9_878.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00310/info_00310.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00310/info_00310.0.h5
+virial radius [pc] 2876.9877109879044 , virial mass 1.38e+08 [Msun]
+outflow rates computed b/w [pc] r =  287.6987710987905 316.4686482086695
+mass outflow rate [msun / yr] 0.13357272933891948 Msun/yr
+mass inflow rate [msun / yr] 0.05741935711185649 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00310-499_77-myr-z-9_863.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00311/info_00311.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00311/info_00311.0.h5
+virial radius [pc] 2859.7899801371964 , virial mass 1.38e+08 [Msun]
+outflow rates computed b/w [pc] r =  285.97899801371966 314.5768978150916
+mass outflow rate [msun / yr] 0.13156298187658574 Msun/yr
+mass inflow rate [msun / yr] 0.05231920922147911 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00311-500_78-myr-z-9_849.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00312/info_00312.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00312/info_00312.0.h5
+virial radius [pc] 2551.335979099908 , virial mass 1.40e+08 [Msun]
+outflow rates computed b/w [pc] r =  255.1335979099908 280.6469577009899
+mass outflow rate [msun / yr] 0.14529232306286788 Msun/yr
+mass inflow rate [msun / yr] 0.04082683812877493 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00312-501_80-myr-z-9_834.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00313/info_00313.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00313/info_00313.0.h5
+virial radius [pc] 2558.094312973027 , virial mass 1.38e+08 [Msun]
+outflow rates computed b/w [pc] r =  255.80943129730272 281.390374427033
+mass outflow rate [msun / yr] 0.153071371000942 Msun/yr
+mass inflow rate [msun / yr] 0.03902864702385358 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00313-502_80-myr-z-9_820.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00314/info_00314.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00314/info_00314.0.h5
+virial radius [pc] 2527.1362145258254 , virial mass 1.37e+08 [Msun]
+outflow rates computed b/w [pc] r =  252.71362145258254 277.9849835978408
+mass outflow rate [msun / yr] 0.1551034151894837 Msun/yr
+mass inflow rate [msun / yr] 0.03724190035862923 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00314-503_81-myr-z-9_805.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00315/info_00315.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00315/info_00315.0.h5
+virial radius [pc] 2506.5504336785657 , virial mass 1.37e+08 [Msun]
+outflow rates computed b/w [pc] r =  250.6550433678566 275.72054770464223
+mass outflow rate [msun / yr] 0.15756529928522242 Msun/yr
+mass inflow rate [msun / yr] 0.037215816246912455 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00315-504_82-myr-z-9_791.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00316/info_00316.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00316/info_00316.0.h5
+virial radius [pc] 2543.4856941635812 , virial mass 1.37e+08 [Msun]
+outflow rates computed b/w [pc] r =  254.34856941635815 279.78342635799396
+mass outflow rate [msun / yr] 0.15894467364820167 Msun/yr
+mass inflow rate [msun / yr] 0.03454377006607561 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00316-505_82-myr-z-9_777.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00317/info_00317.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00317/info_00317.0.h5
+virial radius [pc] 2730.825310995325 , virial mass 1.39e+08 [Msun]
+outflow rates computed b/w [pc] r =  273.0825310995325 300.39078420948573
+mass outflow rate [msun / yr] 0.16380957925679132 Msun/yr
+mass inflow rate [msun / yr] 0.036529057752494445 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00317-506_83-myr-z-9_762.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00318/info_00318.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00318/info_00318.0.h5
+virial radius [pc] 2714.911209790747 , virial mass 1.38e+08 [Msun]
+outflow rates computed b/w [pc] r =  271.4911209790747 298.64023307698216
+mass outflow rate [msun / yr] 0.14767350968947224 Msun/yr
+mass inflow rate [msun / yr] 0.03327844625860066 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00318-507_71-myr-z-9_750.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00319/info_00319.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00319/info_00319.0.h5
+virial radius [pc] 2708.4418979852558 , virial mass 1.39e+08 [Msun]
+outflow rates computed b/w [pc] r =  270.8441897985256 297.92860877837813
+mass outflow rate [msun / yr] 0.1476209017693388 Msun/yr
+mass inflow rate [msun / yr] 0.03274730581379022 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00319-507_83-myr-z-9_748.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00320/info_00320.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00320/info_00320.0.h5
+virial radius [pc] 2476.3003296894935 , virial mass 1.38e+08 [Msun]
+outflow rates computed b/w [pc] r =  247.63003296894937 272.39303626584433
+mass outflow rate [msun / yr] 0.0937178004729911 Msun/yr
+mass inflow rate [msun / yr] 0.0260300842829047 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00320-508_84-myr-z-9_734.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00321/info_00321.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00321/info_00321.0.h5
+virial radius [pc] 2487.3627544857222 , virial mass 1.41e+08 [Msun]
+outflow rates computed b/w [pc] r =  248.73627544857223 273.60990299342944
+mass outflow rate [msun / yr] 0.08342477184822043 Msun/yr
+mass inflow rate [msun / yr] 0.02245445698819227 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00321-509_85-myr-z-9_720.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00322/info_00322.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00322/info_00322.0.h5
+virial radius [pc] 2596.3322641209493 , virial mass 1.42e+08 [Msun]
+outflow rates computed b/w [pc] r =  259.6332264120949 285.59654905330444
+mass outflow rate [msun / yr] 0.07871621108984161 Msun/yr
+mass inflow rate [msun / yr] 0.0255835984700324 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00322-510_85-myr-z-9_706.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00323/info_00323.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00323/info_00323.0.h5
+virial radius [pc] 2583.835998925538 , virial mass 1.42e+08 [Msun]
+outflow rates computed b/w [pc] r =  258.38359989255383 284.2219598818092
+mass outflow rate [msun / yr] 0.07460779095131252 Msun/yr
+mass inflow rate [msun / yr] 0.02263618799392451 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00323-511_86-myr-z-9_692.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00324/info_00324.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00324/info_00324.0.h5
+virial radius [pc] 2385.5864142105456 , virial mass 1.43e+08 [Msun]
+outflow rates computed b/w [pc] r =  238.55864142105457 262.41450556316005
+mass outflow rate [msun / yr] 0.07144565517522315 Msun/yr
+mass inflow rate [msun / yr] 0.01866712053608736 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00324-512_87-myr-z-9_678.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00325/info_00325.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00325/info_00325.0.h5
+virial radius [pc] 2545.074616343083 , virial mass 1.43e+08 [Msun]
+outflow rates computed b/w [pc] r =  254.50746163430833 279.9582077977392
+mass outflow rate [msun / yr] 0.06859641181253001 Msun/yr
+mass inflow rate [msun / yr] 0.02179010815108059 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00325-513_88-myr-z-9_664.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00326/info_00326.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00326/info_00326.0.h5
+virial radius [pc] 2515.0081454137003 , virial mass 1.43e+08 [Msun]
+outflow rates computed b/w [pc] r =  251.50081454137003 276.650895995507
+mass outflow rate [msun / yr] 0.06213738286801236 Msun/yr
+mass inflow rate [msun / yr] 0.02250145019303828 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00326-514_88-myr-z-9_650.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00327/info_00327.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00327/info_00327.0.h5
+virial radius [pc] 2493.8500097950855 , virial mass 1.44e+08 [Msun]
+outflow rates computed b/w [pc] r =  249.38500097950856 274.3235010774594
+mass outflow rate [msun / yr] 0.0584997683990497 Msun/yr
+mass inflow rate [msun / yr] 0.023202399508221123 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00327-515_89-myr-z-9_636.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00328/info_00328.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00328/info_00328.0.h5
+virial radius [pc] 2470.3851792807063 , virial mass 1.47e+08 [Msun]
+outflow rates computed b/w [pc] r =  247.03851792807063 271.7423697208777
+mass outflow rate [msun / yr] 0.05344860398449438 Msun/yr
+mass inflow rate [msun / yr] 0.02508156924812073 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00328-516_91-myr-z-9_622.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00329/info_00329.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00329/info_00329.0.h5
+virial radius [pc] 2468.355770039835 , virial mass 1.43e+08 [Msun]
+outflow rates computed b/w [pc] r =  246.83557700398353 271.5191347043819
+mass outflow rate [msun / yr] 0.052746707525601816 Msun/yr
+mass inflow rate [msun / yr] 0.028169588756624373 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00329-517_91-myr-z-9_608.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00330/info_00330.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00330/info_00330.0.h5
+virial radius [pc] 2317.3313751450955 , virial mass 1.43e+08 [Msun]
+outflow rates computed b/w [pc] r =  231.73313751450956 254.90645126596053
+mass outflow rate [msun / yr] 0.04965794026643127 Msun/yr
+mass inflow rate [msun / yr] 0.027323200705424093 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00330-518_92-myr-z-9_594.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00331/info_00331.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00331/info_00331.0.h5
+virial radius [pc] 2430.59177124785 , virial mass 1.46e+08 [Msun]
+outflow rates computed b/w [pc] r =  243.059177124785 267.36509483726354
+mass outflow rate [msun / yr] 0.04960582794358739 Msun/yr
+mass inflow rate [msun / yr] 0.034283792202555584 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00331-519_94-myr-z-9_581.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00332/info_00332.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00332/info_00332.0.h5
+virial radius [pc] 2412.115515579638 , virial mass 1.44e+08 [Msun]
+outflow rates computed b/w [pc] r =  241.21155155796384 265.3327067137602
+mass outflow rate [msun / yr] 0.048473549408645754 Msun/yr
+mass inflow rate [msun / yr] 0.03936932619374338 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00332-520_98-myr-z-9_567.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00333/info_00333.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00333/info_00333.0.h5
+virial radius [pc] 2404.3849493741504 , virial mass 1.46e+08 [Msun]
+outflow rates computed b/w [pc] r =  240.43849493741504 264.48234443115655
+mass outflow rate [msun / yr] 0.04752920012063291 Msun/yr
+mass inflow rate [msun / yr] 0.04680659314669579 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00333-522_05-myr-z-9_552.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00334/info_00334.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00334/info_00334.0.h5
+virial radius [pc] 2417.903563873376 , virial mass 1.46e+08 [Msun]
+outflow rates computed b/w [pc] r =  241.7903563873376 265.9693920260714
+mass outflow rate [msun / yr] 0.04675033117123928 Msun/yr
+mass inflow rate [msun / yr] 0.054362767992218015 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00334-523_10-myr-z-9_538.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00335/info_00335.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00335/info_00335.0.h5
+virial radius [pc] 2311.5155910013978 , virial mass 1.46e+08 [Msun]
+outflow rates computed b/w [pc] r =  231.1515591001398 254.26671501015377
+mass outflow rate [msun / yr] 0.04558695803384363 Msun/yr
+mass inflow rate [msun / yr] 0.05697234679821602 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00335-524_14-myr-z-9_524.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00336/info_00336.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00336/info_00336.0.h5
+virial radius [pc] 2443.688859437009 , virial mass 1.46e+08 [Msun]
+outflow rates computed b/w [pc] r =  244.3688859437009 268.805774538071
+mass outflow rate [msun / yr] 0.04833485091807103 Msun/yr
+mass inflow rate [msun / yr] 0.07448395079028476 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00336-525_17-myr-z-9_510.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00337/info_00337.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00337/info_00337.0.h5
+virial radius [pc] 2408.8594821306665 , virial mass 1.46e+08 [Msun]
+outflow rates computed b/w [pc] r =  240.88594821306665 264.9745430343733
+mass outflow rate [msun / yr] 0.04787298298550347 Msun/yr
+mass inflow rate [msun / yr] 0.07659116572981567 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00337-525_98-myr-z-9_500.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00338/info_00338.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00338/info_00338.0.h5
+virial radius [pc] 2959.161095012438 , virial mass 1.56e+08 [Msun]
+outflow rates computed b/w [pc] r =  295.91610950124385 325.50772045136824
+mass outflow rate [msun / yr] 0.049099620157070575 Msun/yr
+mass inflow rate [msun / yr] 0.10385230911612085 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00338-526_18-myr-z-9_497.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00339/info_00339.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00339/info_00339.0.h5
+virial radius [pc] 2375.1723264735724 , virial mass 1.49e+08 [Msun]
+outflow rates computed b/w [pc] r =  237.51723264735725 261.26895591209296
+mass outflow rate [msun / yr] 0.048314539834804056 Msun/yr
+mass inflow rate [msun / yr] 0.08704254135431395 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00339-527_19-myr-z-9_483.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00340/info_00340.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00340/info_00340.0.h5
+virial radius [pc] 2925.641178304253 , virial mass 1.54e+08 [Msun]
+outflow rates computed b/w [pc] r =  292.56411783042535 321.8205296134679
+mass outflow rate [msun / yr] 0.045970835749145164 Msun/yr
+mass inflow rate [msun / yr] 0.1119914079335662 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00340-528_24-myr-z-9_470.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00341/info_00341.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00341/info_00341.0.h5
+virial radius [pc] 2888.574284540052 , virial mass 1.59e+08 [Msun]
+outflow rates computed b/w [pc] r =  288.8574284540052 317.7431712994057
+mass outflow rate [msun / yr] 0.04484059230401097 Msun/yr
+mass inflow rate [msun / yr] 0.11242878384968075 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00341-529_26-myr-z-9_456.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00342/info_00342.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00342/info_00342.0.h5
+virial radius [pc] 2866.0693824431255 , virial mass 1.60e+08 [Msun]
+outflow rates computed b/w [pc] r =  286.6069382443126 315.2676320687438
+mass outflow rate [msun / yr] 0.04351510091468043 Msun/yr
+mass inflow rate [msun / yr] 0.11443857829891264 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00342-530_37-myr-z-9_441.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00343/info_00343.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00343/info_00343.0.h5
+virial radius [pc] 2890.965946203685 , virial mass 1.58e+08 [Msun]
+outflow rates computed b/w [pc] r =  289.0965946203685 318.00625408240535
+mass outflow rate [msun / yr] 0.04280620585386962 Msun/yr
+mass inflow rate [msun / yr] 0.11581460923257914 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00343-531_42-myr-z-9_428.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00344/info_00344.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00344/info_00344.0.h5
+virial radius [pc] 2885.1187428616263 , virial mass 1.59e+08 [Msun]
+outflow rates computed b/w [pc] r =  288.51187428616265 317.3630617147789
+mass outflow rate [msun / yr] 0.04247068611269593 Msun/yr
+mass inflow rate [msun / yr] 0.11617563047842085 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00344-532_52-myr-z-9_413.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00345/info_00345.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00345/info_00345.0.h5
+virial radius [pc] 3118.8972501432086 , virial mass 1.57e+08 [Msun]
+outflow rates computed b/w [pc] r =  311.8897250143209 343.078697515753
+mass outflow rate [msun / yr] 0.038873104486784556 Msun/yr
+mass inflow rate [msun / yr] 0.11109144762347316 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00345-533_66-myr-z-9_399.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00346/info_00346.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00346/info_00346.0.h5
+virial radius [pc] 2874.6703635739646 , virial mass 1.58e+08 [Msun]
+outflow rates computed b/w [pc] r =  287.46703635739647 316.21373999313613
+mass outflow rate [msun / yr] 0.039921112957052 Msun/yr
+mass inflow rate [msun / yr] 0.11573097369331053 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00346-534_67-myr-z-9_385.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00347/info_00347.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00347/info_00347.0.h5
+virial radius [pc] 2864.867671976162 , virial mass 1.59e+08 [Msun]
+outflow rates computed b/w [pc] r =  286.4867671976162 315.1354439173778
+mass outflow rate [msun / yr] 0.03872525773982632 Msun/yr
+mass inflow rate [msun / yr] 0.11485656676717064 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00347-535_79-myr-z-9_371.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00348/info_00348.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00348/info_00348.0.h5
+virial radius [pc] 2853.6853334064313 , virial mass 1.57e+08 [Msun]
+outflow rates computed b/w [pc] r =  285.3685333406431 313.9053866747074
+mass outflow rate [msun / yr] 0.03854855547873666 Msun/yr
+mass inflow rate [msun / yr] 0.11121862842495894 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00348-536_90-myr-z-9_357.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00349/info_00349.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00349/info_00349.0.h5
+virial radius [pc] 2853.969794545906 , virial mass 1.55e+08 [Msun]
+outflow rates computed b/w [pc] r =  285.3969794545906 313.9366774000497
+mass outflow rate [msun / yr] 0.036279437706231335 Msun/yr
+mass inflow rate [msun / yr] 0.11053595633455988 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00349-538_03-myr-z-9_342.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00350/info_00350.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00350/info_00350.0.h5
+virial radius [pc] 2834.0525960226805 , virial mass 1.57e+08 [Msun]
+outflow rates computed b/w [pc] r =  283.4052596022681 311.74578556249486
+mass outflow rate [msun / yr] 0.034860075477738804 Msun/yr
+mass inflow rate [msun / yr] 0.11058633708803826 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00350-539_13-myr-z-9_328.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00351/info_00351.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00351/info_00351.0.h5
+virial radius [pc] 2902.8129220013207 , virial mass 1.55e+08 [Msun]
+outflow rates computed b/w [pc] r =  290.2812922001321 319.3094214201453
+mass outflow rate [msun / yr] 0.033774624950502 Msun/yr
+mass inflow rate [msun / yr] 0.10757210011923872 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00351-540_27-myr-z-9_314.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00352/info_00352.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00352/info_00352.0.h5
+virial radius [pc] 2801.2147729120356 , virial mass 1.55e+08 [Msun]
+outflow rates computed b/w [pc] r =  280.1214772912036 308.13362502032396
+mass outflow rate [msun / yr] 0.03423514897697208 Msun/yr
+mass inflow rate [msun / yr] 0.11163628670285776 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00352-541_27-myr-z-9_301.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00353/info_00353.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00353/info_00353.0.h5
+virial radius [pc] 2778.511805494589 , virial mass 1.54e+08 [Msun]
+outflow rates computed b/w [pc] r =  277.85118054945895 305.63629860440483
+mass outflow rate [msun / yr] 0.03347182662077788 Msun/yr
+mass inflow rate [msun / yr] 0.11205769493034694 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00353-542_27-myr-z-9_288.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00354/info_00354.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00354/info_00354.0.h5
+virial radius [pc] 2851.8563360483886 , virial mass 1.56e+08 [Msun]
+outflow rates computed b/w [pc] r =  285.18563360483887 313.70419696532275
+mass outflow rate [msun / yr] 0.03139442527953273 Msun/yr
+mass inflow rate [msun / yr] 0.11059011718234989 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00354-543_31-myr-z-9_275.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00355/info_00355.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00355/info_00355.0.h5
+virial radius [pc] 2779.146726935814 , virial mass 1.57e+08 [Msun]
+outflow rates computed b/w [pc] r =  277.9146726935814 305.7061399629395
+mass outflow rate [msun / yr] 0.03180332229237303 Msun/yr
+mass inflow rate [msun / yr] 0.10970323702131726 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00355-544_38-myr-z-9_262.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00356/info_00356.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00356/info_00356.0.h5
+virial radius [pc] 2750.6502171549455 , virial mass 1.60e+08 [Msun]
+outflow rates computed b/w [pc] r =  275.06502171549454 302.571523887044
+mass outflow rate [msun / yr] 0.030303111043347368 Msun/yr
+mass inflow rate [msun / yr] 0.1152587453179066 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00356-545_47-myr-z-9_248.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00357/info_00357.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00357/info_00357.0.h5
+virial radius [pc] 2735.6407501517415 , virial mass 1.58e+08 [Msun]
+outflow rates computed b/w [pc] r =  273.5640750151742 300.9204825166916
+mass outflow rate [msun / yr] 0.029639030375769895 Msun/yr
+mass inflow rate [msun / yr] 0.11399004690650212 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00357-546_58-myr-z-9_234.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00358/info_00358.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00358/info_00358.0.h5
+virial radius [pc] 2721.1005997545662 , virial mass 1.58e+08 [Msun]
+outflow rates computed b/w [pc] r =  272.11005997545664 299.3210659730023
+mass outflow rate [msun / yr] 0.0292696209792472 Msun/yr
+mass inflow rate [msun / yr] 0.11759387520053703 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00358-547_72-myr-z-9_220.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00359/info_00359.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00359/info_00359.0.h5
+virial radius [pc] 2708.6298978436516 , virial mass 1.59e+08 [Msun]
+outflow rates computed b/w [pc] r =  270.8629897843652 297.9492887628017
+mass outflow rate [msun / yr] 0.0276954472901263 Msun/yr
+mass inflow rate [msun / yr] 0.12158176963146518 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00359-548_88-myr-z-9_205.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00360/info_00360.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00360/info_00360.0.h5
+virial radius [pc] 2710.3164428207183 , virial mass 1.58e+08 [Msun]
+outflow rates computed b/w [pc] r =  271.03164428207185 298.13480871027906
+mass outflow rate [msun / yr] 0.027700347892032528 Msun/yr
+mass inflow rate [msun / yr] 0.12209136279181643 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00360-550_07-myr-z-9_191.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00361/info_00361.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00361/info_00361.0.h5
+virial radius [pc] 2533.407423218853 , virial mass 1.58e+08 [Msun]
+outflow rates computed b/w [pc] r =  253.34074232188533 278.67481655407386
+mass outflow rate [msun / yr] 0.029014925578489698 Msun/yr
+mass inflow rate [msun / yr] 0.14022365930334463 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00361-551_09-myr-z-9_178.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00362/info_00362.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00362/info_00362.0.h5
+virial radius [pc] 2666.3203587699663 , virial mass 1.58e+08 [Msun]
+outflow rates computed b/w [pc] r =  266.63203587699667 293.29523946469635
+mass outflow rate [msun / yr] 0.026831760800050706 Msun/yr
+mass inflow rate [msun / yr] 0.12928869761290124 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00362-552_13-myr-z-9_165.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00363/info_00363.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00363/info_00363.0.h5
+virial radius [pc] 2419.6547527227235 , virial mass 1.59e+08 [Msun]
+outflow rates computed b/w [pc] r =  241.96547527227236 266.1620227994996
+mass outflow rate [msun / yr] 0.027806609411355376 Msun/yr
+mass inflow rate [msun / yr] 0.15554115809999433 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00363-553_19-myr-z-9_152.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00364/info_00364.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00364/info_00364.0.h5
+virial radius [pc] 2400.7537048763206 , virial mass 1.58e+08 [Msun]
+outflow rates computed b/w [pc] r =  240.07537048763209 264.0829075363953
+mass outflow rate [msun / yr] 0.02788206610176621 Msun/yr
+mass inflow rate [msun / yr] 0.16058134800643883 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00364-554_28-myr-z-9_139.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00365/info_00365.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00365/info_00365.0.h5
+virial radius [pc] 2404.4623638805065 , virial mass 1.58e+08 [Msun]
+outflow rates computed b/w [pc] r =  240.44623638805066 264.4908600268557
+mass outflow rate [msun / yr] 0.027276979622170693 Msun/yr
+mass inflow rate [msun / yr] 0.15728784313395516 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00365-555_39-myr-z-9_126.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00366/info_00366.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00366/info_00366.0.h5
+virial radius [pc] 2506.170161451854 , virial mass 1.53e+08 [Msun]
+outflow rates computed b/w [pc] r =  250.6170161451854 275.67871775970394
+mass outflow rate [msun / yr] 0.026007572543401757 Msun/yr
+mass inflow rate [msun / yr] 0.1444871914160593 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00366-556_52-myr-z-9_112.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00367/info_00367.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00367/info_00367.0.h5
+virial radius [pc] 2511.122280517549 , virial mass 1.58e+08 [Msun]
+outflow rates computed b/w [pc] r =  251.1122280517549 276.2234508569304
+mass outflow rate [msun / yr] 0.02506290655635596 Msun/yr
+mass inflow rate [msun / yr] 0.14231349412354455 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00367-557_67-myr-z-9_098.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00368/info_00368.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00368/info_00368.0.h5
+virial radius [pc] 2263.3109495337485 , virial mass 1.56e+08 [Msun]
+outflow rates computed b/w [pc] r =  226.33109495337487 248.96420444871237
+mass outflow rate [msun / yr] 0.027241347912465994 Msun/yr
+mass inflow rate [msun / yr] 0.1671661745478528 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00368-558_78-myr-z-9_085.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00369/info_00369.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00369/info_00369.0.h5
+virial radius [pc] 2255.1333133975613 , virial mass 1.53e+08 [Msun]
+outflow rates computed b/w [pc] r =  225.51333133975615 248.06466447373177
+mass outflow rate [msun / yr] 0.026159065625152286 Msun/yr
+mass inflow rate [msun / yr] 0.16584145662433208 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00369-559_84-myr-z-9_072.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00370/info_00370.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00370/info_00370.0.h5
+virial radius [pc] 2278.7128751878577 , virial mass 1.54e+08 [Msun]
+outflow rates computed b/w [pc] r =  227.87128751878578 250.65841627066436
+mass outflow rate [msun / yr] 0.027077474064438847 Msun/yr
+mass inflow rate [msun / yr] 0.15855123740889984 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00370-560_91-myr-z-9_059.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00371/info_00371.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00371/info_00371.0.h5
+virial radius [pc] 2311.3469692717044 , virial mass 1.61e+08 [Msun]
+outflow rates computed b/w [pc] r =  231.13469692717047 254.2481666198875
+mass outflow rate [msun / yr] 0.025232253886051655 Msun/yr
+mass inflow rate [msun / yr] 0.14986711850209405 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00371-562_03-myr-z-9_046.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00372/info_00372.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00372/info_00372.0.h5
+virial radius [pc] 2357.7398260479486 , virial mass 1.60e+08 [Msun]
+outflow rates computed b/w [pc] r =  235.77398260479487 259.35138086527434
+mass outflow rate [msun / yr] 0.024673297301605855 Msun/yr
+mass inflow rate [msun / yr] 0.1405191086852586 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00372-563_16-myr-z-9_032.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00373/info_00373.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00373/info_00373.0.h5
+virial radius [pc] 2378.928165882808 , virial mass 1.57e+08 [Msun]
+outflow rates computed b/w [pc] r =  237.89281658828082 261.6820982471089
+mass outflow rate [msun / yr] 0.023785826108299823 Msun/yr
+mass inflow rate [msun / yr] 0.13269117757013135 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00373-564_18-myr-z-9_020.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00374/info_00374.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00374/info_00374.0.h5
+virial radius [pc] 2141.5785016840987 , virial mass 1.55e+08 [Msun]
+outflow rates computed b/w [pc] r =  214.15785016840988 235.57363518525088
+mass outflow rate [msun / yr] 0.027966371005861138 Msun/yr
+mass inflow rate [msun / yr] 0.15044738500081403 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00374-565_24-myr-z-9_008.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00375/info_00375.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00375/info_00375.0.h5
+virial radius [pc] 2130.5660226266186 , virial mass 1.52e+08 [Msun]
+outflow rates computed b/w [pc] r =  213.05660226266187 234.36226248892805
+mass outflow rate [msun / yr] 0.025652157161428674 Msun/yr
+mass inflow rate [msun / yr] 0.14697248731547655 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00375-565_95-myr-z-8_999.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00376/info_00376.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00376/info_00376.0.h5
+virial radius [pc] 2418.3133107619983 , virial mass 1.56e+08 [Msun]
+outflow rates computed b/w [pc] r =  241.83133107619983 266.0144641838198
+mass outflow rate [msun / yr] 0.024151608810329885 Msun/yr
+mass inflow rate [msun / yr] 0.12051527392021257 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00376-566_27-myr-z-8_996.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00377/info_00377.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00377/info_00377.0.h5
+virial radius [pc] 2485.930754127735 , virial mass 1.63e+08 [Msun]
+outflow rates computed b/w [pc] r =  248.5930754127735 273.45238295405085
+mass outflow rate [msun / yr] 0.02325294828066247 Msun/yr
+mass inflow rate [msun / yr] 0.11412844334190804 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00377-567_49-myr-z-8_981.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00378/info_00378.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00378/info_00378.0.h5
+virial radius [pc] 2322.3275063893434 , virial mass 1.56e+08 [Msun]
+outflow rates computed b/w [pc] r =  232.23275063893436 255.4560257028278
+mass outflow rate [msun / yr] 0.024061564619577983 Msun/yr
+mass inflow rate [msun / yr] 0.12204611873279128 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00378-568_61-myr-z-8_968.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00379/info_00379.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00379/info_00379.0.h5
+virial radius [pc] 2279.115078024293 , virial mass 1.56e+08 [Msun]
+outflow rates computed b/w [pc] r =  227.9115078024293 250.70265858267223
+mass outflow rate [msun / yr] 0.023660209791224223 Msun/yr
+mass inflow rate [msun / yr] 0.124314180117602 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00379-569_70-myr-z-8_955.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00380/info_00380.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00380/info_00380.0.h5
+virial radius [pc] 2319.4271593582307 , virial mass 1.57e+08 [Msun]
+outflow rates computed b/w [pc] r =  231.9427159358231 255.1369875294054
+mass outflow rate [msun / yr] 0.023302020217713326 Msun/yr
+mass inflow rate [msun / yr] 0.11612183450363738 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00380-570_77-myr-z-8_943.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00381/info_00381.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00381/info_00381.0.h5
+virial radius [pc] 2236.489418210941 , virial mass 1.58e+08 [Msun]
+outflow rates computed b/w [pc] r =  223.64894182109413 246.01383600320355
+mass outflow rate [msun / yr] 0.023588863158541012 Msun/yr
+mass inflow rate [msun / yr] 0.11993554549612795 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00381-571_79-myr-z-8_931.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00382/info_00382.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00382/info_00382.0.h5
+virial radius [pc] 2226.933809578003 , virial mass 1.58e+08 [Msun]
+outflow rates computed b/w [pc] r =  222.69338095780031 244.96271905358034
+mass outflow rate [msun / yr] 0.02437317517002966 Msun/yr
+mass inflow rate [msun / yr] 0.11812173328458943 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00382-572_80-myr-z-8_919.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00383/info_00383.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00383/info_00383.0.h5
+virial radius [pc] 2546.4854293804487 , virial mass 1.59e+08 [Msun]
+outflow rates computed b/w [pc] r =  254.6485429380449 280.1133972318494
+mass outflow rate [msun / yr] 0.023496124250031974 Msun/yr
+mass inflow rate [msun / yr] 0.0984309789795545 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00383-573_85-myr-z-8_907.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00384/info_00384.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00384/info_00384.0.h5
+virial radius [pc] 2326.1462098908605 , virial mass 1.58e+08 [Msun]
+outflow rates computed b/w [pc] r =  232.61462098908606 255.8760830879947
+mass outflow rate [msun / yr] 0.024090712920860142 Msun/yr
+mass inflow rate [msun / yr] 0.1093860086436684 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00384-574_87-myr-z-8_896.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00385/info_00385.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00385/info_00385.0.h5
+virial radius [pc] 2588.1691904300815 , virial mass 1.59e+08 [Msun]
+outflow rates computed b/w [pc] r =  258.81691904300817 284.69861094730896
+mass outflow rate [msun / yr] 0.022809062481447345 Msun/yr
+mass inflow rate [msun / yr] 0.0943181730418306 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00385-575_88-myr-z-8_884.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00386/info_00386.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00386/info_00386.0.h5
+virial radius [pc] 2217.2245626103618 , virial mass 1.59e+08 [Msun]
+outflow rates computed b/w [pc] r =  221.7224562610362 243.89470188713983
+mass outflow rate [msun / yr] 0.0241895550789605 Msun/yr
+mass inflow rate [msun / yr] 0.12533657155026676 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00386-576_93-myr-z-8_872.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00387/info_00387.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00387/info_00387.0.h5
+virial radius [pc] 2442.2276073622934 , virial mass 1.61e+08 [Msun]
+outflow rates computed b/w [pc] r =  244.22276073622936 268.6450368098523
+mass outflow rate [msun / yr] 0.022311852098775085 Msun/yr
+mass inflow rate [msun / yr] 0.106162645102062 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00387-577_95-myr-z-8_860.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00388/info_00388.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00388/info_00388.0.h5
+virial radius [pc] 2455.0960276784654 , virial mass 1.62e+08 [Msun]
+outflow rates computed b/w [pc] r =  245.50960276784656 270.06056304463124
+mass outflow rate [msun / yr] 0.02167975298160237 Msun/yr
+mass inflow rate [msun / yr] 0.11191540710210005 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00388-578_95-myr-z-8_849.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00389/info_00389.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00389/info_00389.0.h5
+virial radius [pc] 2451.2225797976394 , virial mass 1.61e+08 [Msun]
+outflow rates computed b/w [pc] r =  245.12225797976396 269.63448377774034
+mass outflow rate [msun / yr] 0.024445516483947737 Msun/yr
+mass inflow rate [msun / yr] 0.11202590813284433 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00389-580_01-myr-z-8_837.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00390/info_00390.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00390/info_00390.0.h5
+virial radius [pc] 2478.361546883412 , virial mass 1.61e+08 [Msun]
+outflow rates computed b/w [pc] r =  247.8361546883412 272.6197701571753
+mass outflow rate [msun / yr] 0.027488892108753823 Msun/yr
+mass inflow rate [msun / yr] 0.11275371483497082 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00390-581_06-myr-z-8_825.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00391/info_00391.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00391/info_00391.0.h5
+virial radius [pc] 2462.5714785626315 , virial mass 1.62e+08 [Msun]
+outflow rates computed b/w [pc] r =  246.25714785626315 270.88286264188946
+mass outflow rate [msun / yr] 0.039915169881009106 Msun/yr
+mass inflow rate [msun / yr] 0.1089693382073244 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00391-582_06-myr-z-8_814.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00392/info_00392.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00392/info_00392.0.h5
+virial radius [pc] 2687.1802435213785 , virial mass 1.63e+08 [Msun]
+outflow rates computed b/w [pc] r =  268.7180243521379 295.5898267873517
+mass outflow rate [msun / yr] 0.04374547514467744 Msun/yr
+mass inflow rate [msun / yr] 0.09758568163227709 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00392-583_06-myr-z-8_803.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00393/info_00393.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00393/info_00393.0.h5
+virial radius [pc] 2690.49488865285 , virial mass 1.62e+08 [Msun]
+outflow rates computed b/w [pc] r =  269.049488865285 295.95443775181354
+mass outflow rate [msun / yr] 0.052843486247725155 Msun/yr
+mass inflow rate [msun / yr] 0.0974701604514138 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00393-584_08-myr-z-8_791.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00394/info_00394.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00394/info_00394.0.h5
+virial radius [pc] 2472.9784531639775 , virial mass 1.61e+08 [Msun]
+outflow rates computed b/w [pc] r =  247.29784531639777 272.0276298480376
+mass outflow rate [msun / yr] 0.172214806042772 Msun/yr
+mass inflow rate [msun / yr] 0.10167836405750696 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00394-585_09-myr-z-8_780.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00395/info_00395.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00395/info_00395.0.h5
+virial radius [pc] 2172.0618521432543 , virial mass 1.60e+08 [Msun]
+outflow rates computed b/w [pc] r =  217.20618521432544 238.926803735758
+mass outflow rate [msun / yr] 0.34121327655667116 Msun/yr
+mass inflow rate [msun / yr] 0.1071677335657493 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00395-586_09-myr-z-8_769.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00396/info_00396.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00396/info_00396.0.h5
+virial radius [pc] 2302.325152641811 , virial mass 1.61e+08 [Msun]
+outflow rates computed b/w [pc] r =  230.23251526418113 253.25576679059924
+mass outflow rate [msun / yr] 0.5335124565427943 Msun/yr
+mass inflow rate [msun / yr] 0.09577311640625942 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00396-587_10-myr-z-8_758.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00397/info_00397.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00397/info_00397.0.h5
+virial radius [pc] 2134.4883854111786 , virial mass 1.60e+08 [Msun]
+outflow rates computed b/w [pc] r =  213.44883854111788 234.79372239522968
+mass outflow rate [msun / yr] 0.531722255870123 Msun/yr
+mass inflow rate [msun / yr] 0.11900431812505034 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00397-588_12-myr-z-8_746.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00398/info_00398.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00398/info_00398.0.h5
+virial radius [pc] 2759.205947973868 , virial mass 1.62e+08 [Msun]
+outflow rates computed b/w [pc] r =  275.92059479738685 303.51265427712553
+mass outflow rate [msun / yr] 0.43952681243379055 Msun/yr
+mass inflow rate [msun / yr] 0.07192033822042877 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00398-589_13-myr-z-8_735.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00399/info_00399.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00399/info_00399.0.h5
+virial radius [pc] 2220.945520404315 , virial mass 1.63e+08 [Msun]
+outflow rates computed b/w [pc] r =  222.09455204043152 244.3040072444747
+mass outflow rate [msun / yr] 0.5486281361955151 Msun/yr
+mass inflow rate [msun / yr] 0.12976207369636863 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00399-590_14-myr-z-8_724.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00400/info_00400.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00400/info_00400.0.h5
+virial radius [pc] 2194.7404075681466 , virial mass 1.64e+08 [Msun]
+outflow rates computed b/w [pc] r =  219.47404075681467 241.42144483249615
+mass outflow rate [msun / yr] 0.5308783566850549 Msun/yr
+mass inflow rate [msun / yr] 0.13195683614416215 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00400-591_15-myr-z-8_713.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00401/info_00401.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00401/info_00401.0.h5
+virial radius [pc] 2245.755280300594 , virial mass 1.65e+08 [Msun]
+outflow rates computed b/w [pc] r =  224.57552803005944 247.03308083306538
+mass outflow rate [msun / yr] 0.536553555215222 Msun/yr
+mass inflow rate [msun / yr] 0.13118406929045107 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00401-592_16-myr-z-8_702.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00402/info_00402.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00402/info_00402.0.h5
+virial radius [pc] 2223.8499054627932 , virial mass 1.62e+08 [Msun]
+outflow rates computed b/w [pc] r =  222.38499054627934 244.62348960090728
+mass outflow rate [msun / yr] 0.5428671155889874 Msun/yr
+mass inflow rate [msun / yr] 0.13136770447247806 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00402-593_18-myr-z-8_691.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00403/info_00403.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00403/info_00403.0.h5
+virial radius [pc] 2214.5480271686565 , virial mass 1.63e+08 [Msun]
+outflow rates computed b/w [pc] r =  221.45480271686566 243.60028298855224
+mass outflow rate [msun / yr] 0.47214616727244657 Msun/yr
+mass inflow rate [msun / yr] 0.13152633254297963 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00403-594_19-myr-z-8_680.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00404/info_00404.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00404/info_00404.0.h5
+virial radius [pc] 2820.859361660367 , virial mass 1.66e+08 [Msun]
+outflow rates computed b/w [pc] r =  282.08593616603673 310.2945297826404
+mass outflow rate [msun / yr] 0.35933444156051186 Msun/yr
+mass inflow rate [msun / yr] 0.12257672185009934 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00404-595_21-myr-z-8_669.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00405/info_00405.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00405/info_00405.0.h5
+virial radius [pc] 2836.2931485073013 , virial mass 1.65e+08 [Msun]
+outflow rates computed b/w [pc] r =  283.62931485073017 311.9922463358032
+mass outflow rate [msun / yr] 0.349845964997228 Msun/yr
+mass inflow rate [msun / yr] 0.12679851620226962 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00405-596_21-myr-z-8_658.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00406/info_00406.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00406/info_00406.0.h5
+virial radius [pc] 2737.0497477842396 , virial mass 1.63e+08 [Msun]
+outflow rates computed b/w [pc] r =  273.70497477842395 301.0754722562663
+mass outflow rate [msun / yr] 0.35312290820353515 Msun/yr
+mass inflow rate [msun / yr] 0.14093506922128024 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00406-597_22-myr-z-8_647.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00407/info_00407.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00407/info_00407.0.h5
+virial radius [pc] 2169.8294055415895 , virial mass 1.63e+08 [Msun]
+outflow rates computed b/w [pc] r =  216.98294055415897 238.68123460957486
+mass outflow rate [msun / yr] 0.4553532200305692 Msun/yr
+mass inflow rate [msun / yr] 0.15077423009398958 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00407-598_23-myr-z-8_636.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00408/info_00408.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00408/info_00408.0.h5
+virial radius [pc] 2149.160781635066 , virial mass 1.62e+08 [Msun]
+outflow rates computed b/w [pc] r =  214.91607816350663 236.4076859798573
+mass outflow rate [msun / yr] 0.390194032262758 Msun/yr
+mass inflow rate [msun / yr] 0.14454631075195862 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00408-599_23-myr-z-8_625.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00409/info_00409.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00409/info_00409.0.h5
+virial radius [pc] 2095.359214976804 , virial mass 1.61e+08 [Msun]
+outflow rates computed b/w [pc] r =  209.53592149768042 230.48951364744846
+mass outflow rate [msun / yr] 0.3048955763052471 Msun/yr
+mass inflow rate [msun / yr] 0.14138850120396074 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00409-600_24-myr-z-8_615.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00410/info_00410.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00410/info_00410.0.h5
+virial radius [pc] 2199.0172838903154 , virial mass 1.64e+08 [Msun]
+outflow rates computed b/w [pc] r =  219.90172838903155 241.8919012279347
+mass outflow rate [msun / yr] 0.2957290720179934 Msun/yr
+mass inflow rate [msun / yr] 0.14271308301631105 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00410-601_26-myr-z-8_604.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00411/info_00411.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00411/info_00411.0.h5
+virial radius [pc] 2180.3481153030343 , virial mass 1.62e+08 [Msun]
+outflow rates computed b/w [pc] r =  218.03481153030344 239.8382926833338
+mass outflow rate [msun / yr] 0.2681106869125319 Msun/yr
+mass inflow rate [msun / yr] 0.1436532092922751 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00411-602_28-myr-z-8_593.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00412/info_00412.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00412/info_00412.0.h5
+virial radius [pc] 2278.9336654874587 , virial mass 1.66e+08 [Msun]
+outflow rates computed b/w [pc] r =  227.8933665487459 250.68270320362046
+mass outflow rate [msun / yr] 0.25693007275352064 Msun/yr
+mass inflow rate [msun / yr] 0.14675166494517947 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00412-603_29-myr-z-8_582.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00413/info_00413.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00413/info_00413.0.h5
+virial radius [pc] 2586.203408847522 , virial mass 1.67e+08 [Msun]
+outflow rates computed b/w [pc] r =  258.62034088475224 284.4823749732275
+mass outflow rate [msun / yr] 0.2776104592850786 Msun/yr
+mass inflow rate [msun / yr] 0.15379234814740872 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00413-604_31-myr-z-8_572.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00414/info_00414.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00414/info_00414.0.h5
+virial radius [pc] 2449.19518628055 , virial mass 1.65e+08 [Msun]
+outflow rates computed b/w [pc] r =  244.91951862805502 269.4114704908605
+mass outflow rate [msun / yr] 0.23023323084985808 Msun/yr
+mass inflow rate [msun / yr] 0.14788029459238108 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00414-605_31-myr-z-8_561.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00415/info_00415.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00415/info_00415.0.h5
+virial radius [pc] 2554.079465933736 , virial mass 1.68e+08 [Msun]
+outflow rates computed b/w [pc] r =  255.40794659337362 280.948741252711
+mass outflow rate [msun / yr] 0.2262616015463947 Msun/yr
+mass inflow rate [msun / yr] 0.14804876316032559 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00415-606_33-myr-z-8_550.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00416/info_00416.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00416/info_00416.0.h5
+virial radius [pc] 2638.760984022064 , virial mass 1.71e+08 [Msun]
+outflow rates computed b/w [pc] r =  263.8760984022064 290.2637082424271
+mass outflow rate [msun / yr] 0.21604940890551808 Msun/yr
+mass inflow rate [msun / yr] 0.14247405930415252 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00416-607_34-myr-z-8_540.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00417/info_00417.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00417/info_00417.0.h5
+virial radius [pc] 2659.37682495275 , virial mass 1.70e+08 [Msun]
+outflow rates computed b/w [pc] r =  265.93768249527506 292.53145074480256
+mass outflow rate [msun / yr] 0.19746306292635968 Msun/yr
+mass inflow rate [msun / yr] 0.14192572786255322 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00417-608_35-myr-z-8_529.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00418/info_00418.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00418/info_00418.0.h5
+virial radius [pc] 2687.1916094886637 , virial mass 1.70e+08 [Msun]
+outflow rates computed b/w [pc] r =  268.7191609488664 295.591077043753
+mass outflow rate [msun / yr] 0.18410543437095345 Msun/yr
+mass inflow rate [msun / yr] 0.1361855146395363 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00418-609_36-myr-z-8_519.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00419/info_00419.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00419/info_00419.0.h5
+virial radius [pc] 2427.8469630056 , virial mass 1.70e+08 [Msun]
+outflow rates computed b/w [pc] r =  242.78469630056003 267.06316593061604
+mass outflow rate [msun / yr] 0.1415065871880417 Msun/yr
+mass inflow rate [msun / yr] 0.14279866078562695 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00419-610_38-myr-z-8_508.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00420/info_00420.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00420/info_00420.0.h5
+virial radius [pc] 2471.8313782895966 , virial mass 1.71e+08 [Msun]
+outflow rates computed b/w [pc] r =  247.18313782895967 271.90145161185563
+mass outflow rate [msun / yr] 0.14207048232839276 Msun/yr
+mass inflow rate [msun / yr] 0.14336645997807226 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00420-611_39-myr-z-8_497.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00421/info_00421.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00421/info_00421.0.h5
+virial radius [pc] 2451.002055477893 , virial mass 1.71e+08 [Msun]
+outflow rates computed b/w [pc] r =  245.1002055477893 269.6102261025682
+mass outflow rate [msun / yr] 0.13577136482365199 Msun/yr
+mass inflow rate [msun / yr] 0.13693832129072248 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00421-612_39-myr-z-8_487.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00422/info_00422.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00422/info_00422.0.h5
+virial radius [pc] 2440.5511208070748 , virial mass 1.72e+08 [Msun]
+outflow rates computed b/w [pc] r =  244.0551120807075 268.46062328877827
+mass outflow rate [msun / yr] 0.1277301611511086 Msun/yr
+mass inflow rate [msun / yr] 0.13565082787267135 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00422-613_41-myr-z-8_477.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00423/info_00423.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00423/info_00423.0.h5
+virial radius [pc] 2421.1188327603836 , virial mass 1.72e+08 [Msun]
+outflow rates computed b/w [pc] r =  242.11188327603838 266.32307160364223
+mass outflow rate [msun / yr] 0.11735729916408143 Msun/yr
+mass inflow rate [msun / yr] 0.13036289700338616 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00423-614_42-myr-z-8_466.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00424/info_00424.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00424/info_00424.0.h5
+virial radius [pc] 2423.205651841511 , virial mass 1.71e+08 [Msun]
+outflow rates computed b/w [pc] r =  242.32056518415112 266.5526217025662
+mass outflow rate [msun / yr] 0.11074478539392851 Msun/yr
+mass inflow rate [msun / yr] 0.1303478527722694 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00424-615_42-myr-z-8_456.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00425/info_00425.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00425/info_00425.0.h5
+virial radius [pc] 2459.1545321532617 , virial mass 1.73e+08 [Msun]
+outflow rates computed b/w [pc] r =  245.91545321532618 270.5069985368588
+mass outflow rate [msun / yr] 0.11261003212196594 Msun/yr
+mass inflow rate [msun / yr] 0.12630768658233105 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00425-616_43-myr-z-8_446.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00426/info_00426.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00426/info_00426.0.h5
+virial radius [pc] 2707.83918332189 , virial mass 1.74e+08 [Msun]
+outflow rates computed b/w [pc] r =  270.783918332189 297.8623101654079
+mass outflow rate [msun / yr] 0.12502430919016552 Msun/yr
+mass inflow rate [msun / yr] 0.11752946096016013 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00426-617_44-myr-z-8_435.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00427/info_00427.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00427/info_00427.0.h5
+virial radius [pc] 2716.801202033972 , virial mass 1.76e+08 [Msun]
+outflow rates computed b/w [pc] r =  271.6801202033972 298.84813222373697
+mass outflow rate [msun / yr] 0.12198056188982535 Msun/yr
+mass inflow rate [msun / yr] 0.1175197225189117 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00427-618_46-myr-z-8_425.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00428/info_00428.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00428/info_00428.0.h5
+virial radius [pc] 2720.411104736888 , virial mass 1.73e+08 [Msun]
+outflow rates computed b/w [pc] r =  272.0411104736888 299.24522152105766
+mass outflow rate [msun / yr] 0.127996951134631 Msun/yr
+mass inflow rate [msun / yr] 0.1178321197030892 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00428-619_51-myr-z-8_414.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00429/info_00429.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00429/info_00429.0.h5
+virial radius [pc] 2723.1514326257416 , virial mass 1.73e+08 [Msun]
+outflow rates computed b/w [pc] r =  272.31514326257417 299.5466575888316
+mass outflow rate [msun / yr] 0.11934668500392197 Msun/yr
+mass inflow rate [msun / yr] 0.11783747929473581 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00429-620_56-myr-z-8_404.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00430/info_00430.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00430/info_00430.0.h5
+virial radius [pc] 2735.978048840479 , virial mass 1.74e+08 [Msun]
+outflow rates computed b/w [pc] r =  273.5978048840479 300.9575853724527
+mass outflow rate [msun / yr] 0.11335554470580876 Msun/yr
+mass inflow rate [msun / yr] 0.1145550692924065 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00430-621_58-myr-z-8_393.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00431/info_00431.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00431/info_00431.0.h5
+virial radius [pc] 2764.9855008154323 , virial mass 1.74e+08 [Msun]
+outflow rates computed b/w [pc] r =  276.4985500815432 304.1484050896975
+mass outflow rate [msun / yr] 0.11025832953197116 Msun/yr
+mass inflow rate [msun / yr] 0.1139853800652861 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00431-622_62-myr-z-8_383.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00432/info_00432.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00432/info_00432.0.h5
+virial radius [pc] 2442.9222348370176 , virial mass 1.71e+08 [Msun]
+outflow rates computed b/w [pc] r =  244.29222348370178 268.72144583207194
+mass outflow rate [msun / yr] 0.09509828929148638 Msun/yr
+mass inflow rate [msun / yr] 0.12301859259952701 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00432-623_63-myr-z-8_373.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00433/info_00433.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00433/info_00433.0.h5
+virial radius [pc] 3417.6371515114547 , virial mass 1.73e+08 [Msun]
+outflow rates computed b/w [pc] r =  341.7637151511455 375.9400866662601
+mass outflow rate [msun / yr] 0.11888282413929273 Msun/yr
+mass inflow rate [msun / yr] 0.11972328039766131 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00433-624_72-myr-z-8_362.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00434/info_00434.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00434/info_00434.0.h5
+virial radius [pc] 2609.6128899273335 , virial mass 1.75e+08 [Msun]
+outflow rates computed b/w [pc] r =  260.9612889927334 287.0574178920067
+mass outflow rate [msun / yr] 0.09691684741021042 Msun/yr
+mass inflow rate [msun / yr] 0.11811125120298278 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00434-625_75-myr-z-8_352.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00435/info_00435.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00435/info_00435.0.h5
+virial radius [pc] 2581.1563424913566 , virial mass 1.75e+08 [Msun]
+outflow rates computed b/w [pc] r =  258.11563424913567 283.92719767404924
+mass outflow rate [msun / yr] 0.09686011349606254 Msun/yr
+mass inflow rate [msun / yr] 0.11823437107639141 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00435-626_79-myr-z-8_341.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00436/info_00436.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00436/info_00436.0.h5
+virial radius [pc] 2568.101139173563 , virial mass 1.75e+08 [Msun]
+outflow rates computed b/w [pc] r =  256.8101139173563 282.49112530909196
+mass outflow rate [msun / yr] 0.09679077227863389 Msun/yr
+mass inflow rate [msun / yr] 0.12144075354866322 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00436-627_84-myr-z-8_331.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00437/info_00437.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00437/info_00437.0.h5
+virial radius [pc] 2899.140703148969 , virial mass 1.77e+08 [Msun]
+outflow rates computed b/w [pc] r =  289.9140703148969 318.9054773463866
+mass outflow rate [msun / yr] 0.09734632036686605 Msun/yr
+mass inflow rate [msun / yr] 0.13089287556092669 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00437-628_91-myr-z-8_320.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00438/info_00438.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00438/info_00438.0.h5
+virial radius [pc] 2884.8283592084895 , virial mass 1.77e+08 [Msun]
+outflow rates computed b/w [pc] r =  288.48283592084897 317.33111951293387
+mass outflow rate [msun / yr] 0.09643546133768895 Msun/yr
+mass inflow rate [msun / yr] 0.12959581915736318 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00438-629_97-myr-z-8_310.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00439/info_00439.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00439/info_00439.0.h5
+virial radius [pc] 2534.249270134317 , virial mass 1.77e+08 [Msun]
+outflow rates computed b/w [pc] r =  253.42492701343173 278.7674197147749
+mass outflow rate [msun / yr] 0.09303530767792632 Msun/yr
+mass inflow rate [msun / yr] 0.1370129716050076 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00439-631_01-myr-z-8_300.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00440/info_00440.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00440/info_00440.0.h5
+virial radius [pc] 3075.193350043084 , virial mass 1.78e+08 [Msun]
+outflow rates computed b/w [pc] r =  307.51933500430846 338.2712685047393
+mass outflow rate [msun / yr] 0.09170725185152341 Msun/yr
+mass inflow rate [msun / yr] 0.1191192185267254 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00440-632_11-myr-z-8_289.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00441/info_00441.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00441/info_00441.0.h5
+virial radius [pc] 2653.7681633055513 , virial mass 1.79e+08 [Msun]
+outflow rates computed b/w [pc] r =  265.37681633055513 291.91449796361064
+mass outflow rate [msun / yr] 0.09250428302588884 Msun/yr
+mass inflow rate [msun / yr] 0.13108488703556478 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00441-633_21-myr-z-8_278.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00442/info_00442.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00442/info_00442.0.h5
+virial radius [pc] 2650.2780344634166 , virial mass 1.80e+08 [Msun]
+outflow rates computed b/w [pc] r =  265.0278034463417 291.53058379097587
+mass outflow rate [msun / yr] 0.08937541987745729 Msun/yr
+mass inflow rate [msun / yr] 0.12357517884167685 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00442-634_26-myr-z-8_268.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00443/info_00443.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00443/info_00443.0.h5
+virial radius [pc] 2454.341547702562 , virial mass 1.80e+08 [Msun]
+outflow rates computed b/w [pc] r =  245.4341547702562 269.97757024728185
+mass outflow rate [msun / yr] 0.09122096460192963 Msun/yr
+mass inflow rate [msun / yr] 0.13371674264448696 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00443-635_33-myr-z-8_257.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00444/info_00444.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00444/info_00444.0.h5
+virial radius [pc] 2621.4697301270435 , virial mass 1.81e+08 [Msun]
+outflow rates computed b/w [pc] r =  262.14697301270434 288.36167031397474
+mass outflow rate [msun / yr] 0.08893145941353704 Msun/yr
+mass inflow rate [msun / yr] 0.12156205836351819 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00444-636_45-myr-z-8_246.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00445/info_00445.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00445/info_00445.0.h5
+virial radius [pc] 2476.8642769199423 , virial mass 1.79e+08 [Msun]
+outflow rates computed b/w [pc] r =  247.68642769199425 272.45507046119366
+mass outflow rate [msun / yr] 0.08859686421476758 Msun/yr
+mass inflow rate [msun / yr] 0.13088282836259485 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00445-637_48-myr-z-8_236.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00446/info_00446.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00446/info_00446.0.h5
+virial radius [pc] 2480.738886758555 , virial mass 1.79e+08 [Msun]
+outflow rates computed b/w [pc] r =  248.07388867585553 272.88127754344106
+mass outflow rate [msun / yr] 0.08835710758975125 Msun/yr
+mass inflow rate [msun / yr] 0.12778073068749776 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00446-638_54-myr-z-8_226.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00447/info_00447.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00447/info_00447.0.h5
+virial radius [pc] 3334.579191588525 , virial mass 1.84e+08 [Msun]
+outflow rates computed b/w [pc] r =  333.4579191588525 366.80371107473775
+mass outflow rate [msun / yr] 0.07830672697035519 Msun/yr
+mass inflow rate [msun / yr] 0.10157873430514602 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00447-639_55-myr-z-8_217.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00448/info_00448.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00448/info_00448.0.h5
+virial radius [pc] 3322.730782937091 , virial mass 1.83e+08 [Msun]
+outflow rates computed b/w [pc] r =  332.27307829370915 365.50038612308003
+mass outflow rate [msun / yr] 0.07499145847173683 Msun/yr
+mass inflow rate [msun / yr] 0.09979256616442125 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00448-640_58-myr-z-8_207.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00449/info_00449.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00449/info_00449.0.h5
+virial radius [pc] 3284.5766584249486 , virial mass 1.82e+08 [Msun]
+outflow rates computed b/w [pc] r =  328.45766584249486 361.30343242674434
+mass outflow rate [msun / yr] 0.07575346496985019 Msun/yr
+mass inflow rate [msun / yr] 0.10096848940218435 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00449-641_65-myr-z-8_196.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00450/info_00450.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00450/info_00450.0.h5
+virial radius [pc] 3274.734633571826 , virial mass 1.83e+08 [Msun]
+outflow rates computed b/w [pc] r =  327.47346335718265 360.2208096929009
+mass outflow rate [msun / yr] 0.07364146740824973 Msun/yr
+mass inflow rate [msun / yr] 0.10230022009516847 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00450-642_66-myr-z-8_187.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00451/info_00451.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00451/info_00451.0.h5
+virial radius [pc] 2658.320659465058 , virial mass 1.83e+08 [Msun]
+outflow rates computed b/w [pc] r =  265.8320659465058 292.41527254115636
+mass outflow rate [msun / yr] 0.08004507885018639 Msun/yr
+mass inflow rate [msun / yr] 0.1357978880171122 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00451-643_68-myr-z-8_177.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00452/info_00452.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00452/info_00452.0.h5
+virial radius [pc] 2501.8747174547743 , virial mass 1.81e+08 [Msun]
+outflow rates computed b/w [pc] r =  250.18747174547744 275.2062189200252
+mass outflow rate [msun / yr] 0.08208937449862083 Msun/yr
+mass inflow rate [msun / yr] 0.14638329757785062 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00452-644_78-myr-z-8_167.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00453/info_00453.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00453/info_00453.0.h5
+virial radius [pc] 2782.876312460529 , virial mass 1.81e+08 [Msun]
+outflow rates computed b/w [pc] r =  278.2876312460529 306.1163943706582
+mass outflow rate [msun / yr] 0.07864344395229385 Msun/yr
+mass inflow rate [msun / yr] 0.12909812581795385 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00453-645_86-myr-z-8_156.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00454/info_00454.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00454/info_00454.0.h5
+virial radius [pc] 2499.98886925252 , virial mass 1.83e+08 [Msun]
+outflow rates computed b/w [pc] r =  249.998886925252 274.9987756177772
+mass outflow rate [msun / yr] 0.0866563800488337 Msun/yr
+mass inflow rate [msun / yr] 0.150659662458499 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00454-646_90-myr-z-8_147.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00455/info_00455.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00455/info_00455.0.h5
+virial radius [pc] 2490.7603234106473 , virial mass 1.83e+08 [Msun]
+outflow rates computed b/w [pc] r =  249.07603234106475 273.9836355751712
+mass outflow rate [msun / yr] 0.08559084226908162 Msun/yr
+mass inflow rate [msun / yr] 0.14976857541970254 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00455-647_92-myr-z-8_137.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00456/info_00456.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00456/info_00456.0.h5
+virial radius [pc] 2497.824895404577 , virial mass 1.85e+08 [Msun]
+outflow rates computed b/w [pc] r =  249.78248954045773 274.7607384945035
+mass outflow rate [msun / yr] 0.08128503200835673 Msun/yr
+mass inflow rate [msun / yr] 0.15114921883005883 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00456-648_99-myr-z-8_127.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00457/info_00457.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00457/info_00457.0.h5
+virial radius [pc] 2484.461574830967 , virial mass 1.86e+08 [Msun]
+outflow rates computed b/w [pc] r =  248.44615748309673 273.2907732314064
+mass outflow rate [msun / yr] 0.07725685126159852 Msun/yr
+mass inflow rate [msun / yr] 0.15394277614296242 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00457-650_04-myr-z-8_117.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00458/info_00458.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00458/info_00458.0.h5
+virial radius [pc] 2489.5210360009273 , virial mass 1.89e+08 [Msun]
+outflow rates computed b/w [pc] r =  248.95210360009276 273.84731396010204
+mass outflow rate [msun / yr] 0.07222837633063035 Msun/yr
+mass inflow rate [msun / yr] 0.1563169083422444 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00458-651_06-myr-z-8_108.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00459/info_00459.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00459/info_00459.0.h5
+virial radius [pc] 2828.786618675787 , virial mass 1.88e+08 [Msun]
+outflow rates computed b/w [pc] r =  282.8786618675787 311.1665280543366
+mass outflow rate [msun / yr] 0.06881485700640558 Msun/yr
+mass inflow rate [msun / yr] 0.1334283509812186 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00459-652_08-myr-z-8_098.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00460/info_00460.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00460/info_00460.0.h5
+virial radius [pc] 2801.608520087811 , virial mass 1.88e+08 [Msun]
+outflow rates computed b/w [pc] r =  280.1608520087811 308.1769372096592
+mass outflow rate [msun / yr] 0.0648949379127294 Msun/yr
+mass inflow rate [msun / yr] 0.13698945568757523 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00460-653_10-myr-z-8_089.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00461/info_00461.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00461/info_00461.0.h5
+virial radius [pc] 2790.9825435848466 , virial mass 1.89e+08 [Msun]
+outflow rates computed b/w [pc] r =  279.09825435848467 307.0080797943331
+mass outflow rate [msun / yr] 0.060761035030936494 Msun/yr
+mass inflow rate [msun / yr] 0.14100705507249117 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00461-654_16-myr-z-8_079.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00462/info_00462.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00462/info_00462.0.h5
+virial radius [pc] 3229.2501524074896 , virial mass 1.88e+08 [Msun]
+outflow rates computed b/w [pc] r =  322.92501524074896 355.21751676482387
+mass outflow rate [msun / yr] 0.05975808124124765 Msun/yr
+mass inflow rate [msun / yr] 0.11990166819679923 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00462-655_16-myr-z-8_069.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00463/info_00463.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00463/info_00463.0.h5
+virial radius [pc] 3216.958041778263 , virial mass 1.87e+08 [Msun]
+outflow rates computed b/w [pc] r =  321.69580417782635 353.865384595609
+mass outflow rate [msun / yr] 0.05779637523633196 Msun/yr
+mass inflow rate [msun / yr] 0.12264946122242208 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00463-656_18-myr-z-8_060.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00464/info_00464.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00464/info_00464.0.h5
+virial radius [pc] 2534.2356144322107 , virial mass 1.87e+08 [Msun]
+outflow rates computed b/w [pc] r =  253.42356144322108 278.7659175875432
+mass outflow rate [msun / yr] 0.059101874930375525 Msun/yr
+mass inflow rate [msun / yr] 0.1711586312938331 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00464-657_20-myr-z-8_051.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00465/info_00465.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00465/info_00465.0.h5
+virial radius [pc] 3227.673596972286 , virial mass 1.92e+08 [Msun]
+outflow rates computed b/w [pc] r =  322.7673596972286 355.0440956669514
+mass outflow rate [msun / yr] 0.05493359451941373 Msun/yr
+mass inflow rate [msun / yr] 0.12629587419414245 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00465-658_23-myr-z-8_041.hdf5
+# ________________________________________________________________________
+# reading in /scratch/zt1/project/ricotti-prj/user/ricotti/GC-Fred/CC-Fiducial/output_00466/info_00466.txt
+>> catalogue already exists
+../../container_tiramisu/post_processed/dm_hop/CC-Fiducial/info_00466/info_00466.0.h5
+virial radius [pc] 2529.8987719512184 , virial mass 1.91e+08 [Msun]
+outflow rates computed b/w [pc] r =  252.98987719512184 278.288864914634
+mass outflow rate [msun / yr] 0.06907890744404184 Msun/yr
+mass inflow rate [msun / yr] 0.17465805016167177 Msun/yr
+saved ../../container_tiramisu/post_processed/gas_properties/CC-Fiducial/profiles-00466-659_26-myr-z-8_032.hdf5

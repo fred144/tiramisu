@@ -1,0 +1,25 @@
+Loading python/zen2/3.8.12
+  Loading requirement: matplotlib/3.4.3/zen2
+=============================================================================
+Warning: particle_families are modified at /site-packages/yt/frontends/ramses
+=============================================================================
+********************************************************************
+post processing global gas quantitites
+********************************************************************
+Traceback (most recent call last):
+  File "./gas_pipeline.py", line 107, in <module>
+    fpaths, snums = filter_snapshots(
+  File "/scratch/zt1/project/ricotti-prj/user/fgarcia4/tiramisu/postprocessing/../tools/fscanner.py", line 20, in filter_snapshots
+    files = sorted(os.listdir(folder_path))
+FileNotFoundError: [Errno 2] No such file or directory: '/home/fgarcia4/scratch/sim_data/cluster_evolution/CC-Fiducial'
+--------------------------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code. Per user-direction, the job has been aborted.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun detected that one or more processes exited with non-zero status, thus causing
+the job to be terminated. The first process to do so was:
+
+  Process name: [[48782,1],0]
+  Exit code:    1
+--------------------------------------------------------------------------
